@@ -1,0 +1,131 @@
+{% load static %}
+{% load FindResponseTrue %}
+{% load FindResponseDate %}
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 29 Mar 2020 03:49:10 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="This is an example dashboard created using build-in elements and components.">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="icon" href="{% static 'mysite/images/ndm.png' %}" type="image/x-icon">
+    <link href="{% static 'mysite/css/main.css' %}" rel="stylesheet">
+    <script src="https://use.fontawesome.com/5c63f75774.js"></script>
+
+    <title>{% block title %}{% endblock %}</title>
+
+</head>
+
+<body>
+    
+    
+    {% if all_petitions_section %}
+
+    
+    
+    {% if petitions %}
+
+
+
+    {% for petition in petitions %}
+    {% if not request.user.id|FindResponseTrue:petition.id  %}
+    {% if petition.id|FindResponseDate %}
+<!-- Modal -->
+    <div class="modal fade" id="exampleModal{{ petition.Petition_Title|slugify  }}{{ petition.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel_{{ petition.Petition_Title|slugify  }}_{{ petition.id }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel_{{ petition.Petition_Title|slugify  }}_{{ petition.id }}">{{ petition.Petition_Title }}'s Response</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'PetitionResponse' petition.id %}" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="Feedback" style="resize: none;"></textarea>
+                      </div>
+                      
+                    <button type="submit" class="btn btn-primary" >Send Response</button>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+<!-- End Modal Section -->
+    {% endif %}    
+{% endif %}
+    {% endfor %}
+
+
+
+{% endif %}
+
+    {% endif %}
+
+    <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
+        {% include 'mysite/header.html' %}
+        
+        <div class="app-main">
+            <div class="app-sidebar sidebar-shadow">
+                <div class="app-header__logo">
+                    <div class="logo-src"></div>
+                    <div class="header__pane ml-auto">
+                        <div>
+                            <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
+                                data-class="closed-sidebar">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-header__mobile-menu">
+                    <div>
+                        <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="app-header__menu">
+                    <span>
+                        <button type="button"
+                            class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                            <span class="btn-icon-wrapper">
+                                <i class="fa fa-ellipsis-v fa-w-6"></i>
+                            </span>
+                        </button>
+                    </span>
+                </div>
+                {% include 'mysite/sidebar.html' %}
+            </div>
+        {% block content %}
+        {% endblock %}    
+
+    </div>
+    </div>
+
+    <div class="app-drawer-overlay d-none animated fadeIn"></div>
+    <script type="text/javascript" src="{% static 'mysite/js/main1.js' %}"></script>
+
+
+</body>
+
+
+</html>

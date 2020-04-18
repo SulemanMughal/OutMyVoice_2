@@ -1,0 +1,137 @@
+{% extends 'mysite/dashboard_base.html' %}
+{% load static %}
+{% load FindResponseTrue %}
+{% load FindResponseDate %}
+{% block title %}Voice It Out - User Dashboard{% endblock %}
+
+{% block content %}
+
+
+<div class="app-main__outer">
+    <div class="app-main__inner">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="fa fa-eye icon-gradient bg-mean-fruit">
+                        </i>
+                    </div>
+                    <div>Petitions
+                       
+                    </div>
+                </div>
+                <div class="page-title-actions">
+
+                    <div class="d-inline-block dropdown">
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                            <span class="btn-icon-wrapper pr-2 opacity-7">
+                                <i class="fa fa-business-time fa fa-eye"></i>
+                            </span>
+                            Buttons
+                        </button>
+                        <div tabindex="-1" role="menu" aria-hidden="true"
+                            class="dropdown-menu dropdown-menu-right">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'Self-Petitions' %}">
+                                        <i class="nav-link-icon fa fa-eye"></i>
+                                        <span>
+                                            My Petitions
+                                        </span>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'Start-a-Petition' %}">
+                                        <i class="nav-link-icon fa fa-plus-circle"></i>
+                                        <span>
+                                            Create Petition
+                                        </span>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tabs-animation">
+
+
+            <div class="card mb-3">
+                <div class="card-header-tab card-header">
+                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                            class="header-icon fa fa-laptop mr-3 text-muted opacity-6"> </i>All Petitions
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <table style="width: 100%;" id="example"
+                        class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Petition Coverage</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Petition Attendant</th>
+                                <th>Description</th>
+                                {% if all_petitions_section %}
+                                    
+                                    <th>Response</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for petition in petitions %}
+                                <tr>
+                                    <td>{{ petition.Petition_Coverage }}</td>
+                                    <td>{{ petition.Petition_Title }}</td>
+                                    <td>{{ petition.Petition_Category }}</td>
+                                    <td>{{ petition.Action_Person }}</td>
+                                    <td>{{ petition.Expalnation|truncatechars_html:"50"|striptags }}</td>
+                                    {% if all_petitions_section %}
+                                    
+                                                    
+                                        {% if not request.user.id|FindResponseTrue:petition.id  %}
+                                            {% if  petition.id|FindResponseDate %}
+                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ petition.Petition_Title|slugify  }}{{ petition.id }}">Response</button></td>
+                                            {% else %}
+                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button></td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Done</button></td>
+                                        {% endif %}
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Petition Coverage</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Petition Attendant</th>
+                                <th>Description</th>
+                                {% if all_petitions_section %}
+                                    <th>Response</th>
+                                {% endif %}
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="app-wrapper-footer">
+        <div class="app-footer">
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

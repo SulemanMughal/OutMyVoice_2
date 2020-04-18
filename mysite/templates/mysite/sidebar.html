@@ -1,0 +1,37 @@
+{% load static %}
+<div class="scrollbar-sidebar">
+    <div class="app-sidebar__inner">
+        <ul class="vertical-nav-menu">
+            <li class="app-sidebar__heading">Petitions</li>
+            <li {% if all_petitions_section %} class="mm-active" {% endif %}>
+                <a href="{% url 'dashboard' %}"><i class="metismenu-icon fa fa-eye"></i>All Petitions</a>
+            </li>
+            <li {% if my_petition_view %} class="mm-active" {% endif %}>
+                <a href="{% url 'Self-Petitions' %}"><i class="metismenu-icon fa fa-eye"></i>My Petitions</a>
+            </li>
+            <li  {% if create_petition_section %} class="mm-active" {% endif %}>
+                <a href="{% url 'Start-a-Petition' %}"><i class="metismenu-icon fa fa-plus-circle"></i>Create Petition</a>
+            </li>
+            <li class="app-sidebar__heading">Commendations</li>
+            <li>
+                <a href="#"><i class="metismenu-icon fa fa-eye"></i>All Commendations</a>
+            </li>
+            <li>
+                <a href="#"><i class="metismenu-icon fa fa-eye"></i>My Commendations</a>
+            </li>
+            <li>
+                <a href="#"><i class="metismenu-icon fa fa-plus-circle"></i>Make Commendation</a>
+            </li>
+            <li class="app-sidebar__heading">Profile</li>
+            <li {% if profile_section %} class="mm-active" {% endif %}>
+                <a href="{% url  'profile' %}"><i class="metismenu-icon fa fa-user"></i>View Profile</a>
+            </li>
+            <li {% if change_password_section %} class="mm-active" {% endif %}>
+                <a href="{% url 'change_password' %}"><i class="metismenu-icon fa fa-key"></i>Change Password</a>
+            </li>
+            <li>
+                <a href="{% url 'logout_user_url' %}"><i class="metismenu-icon fa fa-sign-out"></i>Logout</a>
+            </li>
+        </ul>
+    </div>
+</div>

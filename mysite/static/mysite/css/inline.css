@@ -1,0 +1,369 @@
+#site-logo img {
+ max-width:250px !important
+}
+#sidebar {
+ display:none
+}
+#top-bar-content span.wpex-inline .ticon {
+ color:#50d8af !important
+}
+.theme-button,
+input[type="submit"],
+button,
+#site-navigation .menu-button>a>span.link-inner,
+.woocommerce .button {
+ background:#50d8af
+}
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="week"],
+input[type="month"],
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+textarea {
+ width:100% !important
+}
+.login_error_message,
+.login_success_message {
+ padding-bottom:30px;
+ margin-top:-40px;
+ color:red;
+ text-align:center;
+ font-size:14px
+}
+.login_error_message a {
+ color:#5bd9af
+}
+.login_success_message {
+ color:#56caa3
+}
+.login-loader {
+ text-align:center;
+ margin-top:40px;
+ display:none
+}
+#show_states .vc_column-inner .vc_row .vc_column-inner:hover,
+#show_states .vc_column-inner .vc_row .vc_column-inner.selected {
+ background-color:#5bd9af;
+ color:white;
+ border:2px solid white;
+ border-radius:15px
+}
+#show_states .vc_column-inner .vc_row .vc_column-inner {
+ cursor:pointer;
+ padding-top:10px;
+ padding-bottom:5px;
+ border:2px solid transparent
+}
+#show_states .vc_column-inner .vc_row .vc_column-inner .vc_single_image-wrapper {
+ min-height:61px;
+ display:flex;
+ align-items:center;
+ justify-content:center
+}
+@media (min-width:768px) {
+ #show_states .vc_col-sm-3 {
+  display:none
+ }
+ #show_states .states_row .vc_col-sm-3 {
+  display:block
+ }
+ #show_states .vc_col-sm-6 {
+  width:60%;
+  margin:0 auto;
+  float:none
+ }
+}
+div#show_states {
+ display:none
+}
+.arfshowmainform #show_states {
+ display:block;
+ text-align:center
+}
+.wpb_column.states_row.vc_column_container.vc_col-sm-6 .wpb_text_column p {
+ margin-top:5px
+}
+.states-mobile {
+ display:none
+}
+@media(max-width:440px) {
+ .states-desktop {
+  display:none
+ }
+ .states-mobile {
+  display:block
+ }
+ #show_states .vc_column-inner .vc_row .vc_column-inner {
+  word-break:break-word
+ }
+ .wpb_column.states_row.vc_column_container.vc_col-sm-6 {
+  width:118%;
+  margin-left:-10%
+ }
+}
+button.show_more_states_btn {
+ margin-top:20px;
+ margin-bottom:20px;
+ width:100%;
+ font-size:13px;
+ border:1px solid transparent;
+ transition:0.4s all
+}
+button.show_more_states_btn:hover,
+button.show_more_states_btn:focus {
+ background-color:white;
+ border-color:grey;
+ color:black
+}
+div#show_more_states {
+ display:none
+}
+a.richText-btn[title="Add video"] {
+ display:none !important
+}
+a.richText-help {
+ display:none !important
+}
+.richText .richText-toolbar ul li a {
+ color:black;
+ border-right:#EFEFEF solid 1px !important
+}
+.richText i {
+ font-style:italic !important
+}
+.arf_field_description.arf_heading_description {
+ text-align:left !important
+}
+.arfsubmitbutton input {
+ border:none !important
+}
+.arf_heading_div h2.arf_sec_heading_field[data-field-type="divider"] {
+ margin-top:0;
+ margin-bottom:10px
+}
+.richText-editor:focus {
+ border-color:#12368a !important
+}
+.popmake-content .um-field-checkbox-option {
+ color:black !important
+}
+.popmake-content .um .um-form input[type=text] {
+ color:black
+}
+body.has-sidebar .content-area {
+ width:100%;
+ max-width:100%
+}
+.arf_main_label {
+ display:none !important
+}
+div#states-first-row .wpb_column {
+ float:none;
+ display:inline-block !important
+}
+div#states-first-row {
+ text-align:center
+}
+div#states-first-row img {
+ max-width:74px
+}
+#states-first-row .vc_column-inner {
+ padding-left:0;
+ padding-right:0;
+ padding-bottom:5px
+}
+.swal2-popup {
+ width:45em !important
+}
+.paypal-donations {
+ text-align:center
+}
+.arf_heading_div {
+ padding-left:0 !important;
+ padding-top:0 !important
+}
+.ar_main_div_101.arf_form .arf_heading_div h2.arf_sec_heading_field,
+.ar_main_div_103.arf_form .arf_heading_div h2.arf_sec_heading_field {
+ font-weight:bold !important;
+ font-size:18px !important;
+ color:#4c4c4c
+}
+.ar_main_div_101.arf_form .sltstandard_time .btn-group .arfbtn.dropdown-toggle,
+.ar_main_div_101.arf_form .sltstandard_front .btn-group .arfbtn.dropdown-toggle,
+.ar_main_div_103.arf_form .sltstandard_time .btn-group .arfbtn.dropdown-toggle,
+.ar_main_div_103.arf_form .sltstandard_front .btn-group .arfbtn.dropdown-toggle {
+ color:gray !important
+}
+.arf_field_220 {
+ display:none
+}
+.arf_field_224,
+.arf_field_223,
+.arf_field_225 {
+ display:none
+}
+#arf_message_error {
+ display:block !important;
+ color:red !important
+}
+.single-petitions .entry-title,
+.single-commendations .entry-title {
+ font-size:3em;
+ text-align:center
+}
+.single-petitions main#main >.page-header,
+.single-petitions .post-pagination-wrap.clr,
+.single-commendations main#main >.page-header,
+.single-commendations .post-pagination-wrap.clr {
+ display:none
+}
+.single-petitions .page-header,
+.single-commendations .page-header {
+ padding:10px 0;
+ margin-bottom:30px
+}
+.single-petitions .entry-content,
+.single-commendations .entry-content {
+ font-size:16px;
+ line-height:28px;
+ font-weight:normal
+}
+.submitted-to {
+ font-size:13px;
+ font-weight:500
+}
+.submitted-to strong {
+ font-weight:bold
+}
+.entry-content.petition-content,
+.entry-content.commendation-content {
+ width:66.666%;
+ float:left
+}
+.sign-petition-form {
+ width:33.33%;
+ float:left
+}
+.inside-petition-container {
+ margin-right:40px
+}
+.sign-petition-cform input.wpcf7-form-control.wpcf7-submit {
+ width:100%;
+ font-size:14px
+}
+.people-signed-container {
+ font-size:16px;
+ margin-bottom:20px
+}
+.signed-box {
+ color:#737273;
+ font-weight:normal;
+ font-size:13px
+}
+.signed-box strong {
+ font-weight:bold
+}
+@media(max-width:768px) {
+ #content .container {
+  display:flex;
+  flex-direction:column
+ }
+ .entry-content.petition-content {
+  width:100%
+ }
+ .sign-petition-form {
+  width:100%;
+  order:-1
+ }
+}
+.supporting-images img {
+ max-height:300px;
+ display:block;
+ margin:20px auto
+}
+.supporting-images video {
+ display:block;
+ margin:20px auto
+}
+.sign-petition-form .wpcf7-not-valid-tip {
+ display:block !important
+}
+.vcex-post-type-entry-media {
+ border:1px solid #eee;
+ border-bottom:0
+}
+.vcex-post-type-entry-details {
+ border-top:0
+}
+.entry-readmore-wrap {
+ text-transform:capitalize
+}
+.supported_by_counter {
+ float:right;
+ margin-top:7px
+}
+.vcex-post-type-entry-inner {
+ border:1px solid #eee
+}
+.vcex-post-type-entry-media {
+ border-top:0;
+ border-bottom:0
+}
+h2.vcex-post-type-entry-title.entry-title {
+ padding-left:10px;
+ padding-top:5px
+}
+.vcex-post-type-entry-details.entry-details {
+ border-top:1px solid #eee;
+ margin-top:10px;
+ padding-top:5px
+}
+.supported_by_counter {
+ font-size:11px
+}
+.sign-petition-form input[readonly] {
+ background-color:#eee
+}
+.tcm-powered-by {
+ display:none !important
+}
+.vcex-post-type-entry-excerpt p {
+ height:45px;
+ font-weight:normal;
+ overflow:hidden
+}
+.vcex-post-type-entry-media {
+ max-height:320px;
+ overflow:hidden
+}
+p.nocomments {
+ display:none
+}
+input[name="showMyComment"] {
+ vertical-align:text-bottom;
+ margin-right:0
+}
+article.comment-body {
+ margin-left:0 !important
+}
+.lostpassword-submit {
+ text-align:center;
+ margin-top:10px;
+ font-size:16px
+}
+input#somfrp_user_info {
+ color:black
+}
+#lostpasswordform legend {
+ display:none
+}
+.page-id-4896 label.arf_main_label {
+ display:inline-block !important
+}

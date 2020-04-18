@@ -1,0 +1,209 @@
+{% extends 'mysite/dashboard_base.html' %}
+{% load static %}
+{% block title %}Voice It Out - User Profile {% endblock %}
+
+{% block content %}
+<style>
+    /* HIDE RADIO */
+    [type=radio] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* IMAGE STYLES */
+    [type=radio]+img {
+        cursor: pointer;
+    }
+
+    /* CHECKED STYLES */
+    [type=radio]:checked+.states {
+
+        background-color: #5bd9af;
+        padding-top: 8px;
+        padding-left: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+        padding-right: 5px;
+    }
+
+    .state {
+        max-width: 74px;
+    }
+
+    #show_more {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-size: 13px;
+        border: 1px solid transparent;
+        transition: 0.4s all;
+        background-color: #5bd9af;
+        border-radius: 3px;
+        padding: .538em 1.077em;
+        font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+        font-weight: 600;
+        color: white;
+    }
+
+    #show_more:hover,
+    #show_more:focus {
+        background-color: white;
+        border-color: grey;
+        color: black;
+    }
+
+    .states_margin {
+        margin-right: 5px;
+    }
+
+    .center-block {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<div class="app-main__outer">
+    <div class="app-main__inner">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="fa fa-eye icon-gradient bg-mean-fruit">
+                        </i>
+                    </div>
+                    <div>My Profile
+                        <div class="page-title-subheading">View all fields carefully and click on edit
+                            profile if necessary.
+                        </div>
+                    </div>
+                </div>
+                <div class="page-title-actions">
+
+                    <div class="d-inline-block dropdown">
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                            <span class="btn-icon-wrapper pr-2 opacity-7">
+                                <i class="fa fa-business-time fa fa-eye"></i>
+                            </span>
+                            Actions
+                        </button>
+                        <div tabindex="-1" role="menu" aria-hidden="true"
+                            class="dropdown-menu dropdown-menu-right">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'profile' %}">
+                                        <i class="nav-link-icon fa fa-eye"></i>
+                                        <span>
+                                            Edit Profile
+                                        </span>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url  'change_password' %}">
+                                        <i class="nav-link-icon fa fa-plus-circle"></i>
+                                        <span>
+                                            Change Password
+                                        </span>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <form id="signupForm" class="col-md-10 mx-auto" method="post" action="{% url 'profile' %}">
+                {% csrf_token %}
+                {% if request.user.is_authenticated %}
+                <div class="form-group">
+                    <label for="firstname">First name</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ user.first_name }}" name="first_name" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">Last name</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ user.last_name }}" name="last_name" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ user.username }}" name="username" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ user.email }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                {% endif %}
+
+
+                <div class="form-group">
+                    <input type="hidden" name="password" value="{{ request.user.password }}" id="id_password">
+                    <button type="submit" class="btn btn-primary" name="signup" value="Sign up">Edit
+                        Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="app-wrapper-footer">
+        <div class="app-footer">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="{% static 'mysite/js/jquery.min.js' %}"></script>
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script>
+
+        $("#show_more").click(function () {
+
+            $("#show_more_states").slideDown();
+            $("#show_more").hide();
+
+        });
+
+        $(".category").change(function () {
+            if ($(this).val() == "Others") {
+                $("#other_cat").show();
+            }
+            else {
+                $("#other_cat").hide();
+            }
+        });
+
+        $(".action").change(function () {
+            if ($(this).val() == "Others") {
+                $("#action_person").show();
+            }
+            else {
+                $("#action_person").hide();
+            }
+        });
+
+
+
+    </script>
+    <script>
+        CKEDITOR.replace('editor1');
+    </script>
+
+{% endblock %}

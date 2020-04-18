@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Responsive Settings -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <!-- Stylesheets -->
+    <link href="{% static 'mysite/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'mysite/css/style.css' %}" rel="stylesheet">
+
+    <!-- Responsive File -->
+    <link href="{% static 'mysite/css/responsive.css' %}" rel="stylesheet">
+
+    <!-- Icons File -->
+    <link rel="shortcut icon" href="{% static 'mysite/images/favicon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'mysite/images/ndm.png' %}" type="image/x-icon">
+
+    <title>{% block title %}Voice It Out{% endblock %}</title>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+        <!-- Preloader -->
+        <div class="preloader">
+            <div class="icon"></div>
+        </div>
+
+        <!-- Main Header -->
+            
+            <header class="main-header header-style-one">
+
+                <!-- Header Top -->
+                <!-- End Header Top -->
+
+                <!-- Header Upper -->
+                <div class="header-upper">
+                    <div class="auto-container">
+                        <div class="inner-container clearfix">
+                            <!--Logo-->
+                            <div class="logo-box clearfix">
+                                <div class="logo">
+                                    <a href="{% url 'home_page' %}" title="Voice It Out">
+                                        <img style="margin-top: 20px;" src="{% static 'mysite/images/voics.png' %}" alt="Voice It Out" title="Voice It Out">
+                                    </a>
+                                </div>
+                                <div class="search-btn search-btn-one">
+                                    <button type="button" class="theme-btn search-toggler">
+                                        <span class="txt">Explore</span> 
+                                        <span class="icon flaticon-loupe-1"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!--Nav-->
+                            <div class="nav-outer clearfix">
+                                <!--Mobile Navigation Toggler-->
+                                <div class="mobile-nav-toggler"><span class="icon flaticon-menu-1"></span></div>
+
+                                <!-- Main Menu -->
+                                <nav class="main-menu navbar-expand-md navbar-light">
+                                    <div class="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
+                                        <ul class="navigation clearfix">
+                                            <li {% if home_section %} class="current" {% endif %}><a href="{% url 'home_page' %}">Home</a>
+                                            </li>
+                                            <li class=""><a href="{% url 'Start-a-Petition' %}">Start Petition</a>
+                                            </li>
+                                            <li class=""><a href="#">Start Commendation</a>
+                                            </li>
+                                            <li class=""><a href="#">Partner</a>
+                                            </li>
+                                            <li class=""><a href="#">Blog</a>
+                                            </li>
+                                            {% if user.is_authenticated %}
+                                                <li {% if dashboard_section %}class="current" {% endif %}><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                                <li><a href="{% url 'logout_user_url' %}">Logout</a></li>
+                                            {% else %}
+                                                <li {% if login_section %} class="current" {% endif %}><a href="{% url 'login_user_url' %}">Sig In</a></li>
+                                                <li {% if reigster_section %} class="current" {% endif %}><a href="{% url 'register' %}">Sign Up</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </nav>
+                            </div>
+
+                            <!--Other Links-->
+                            <div class="other-links clearfix">
+                                <!--Social Links-->
+                                <div class="social-links-one">
+                                    <ul class="clearfix">
+                                        <li><a href="#" class="has-tooltip"><span class="fab fa-facebook-f"></span>
+                                                <div class="c-tooltip">
+                                                    <div class="tooltip-inner">Facebook</div>
+                                                </div>
+                                            </a></li>
+                                        <li><a href="#" class="has-tooltip"><span class="fab fa-twitter"></span>
+                                                <div class="c-tooltip">
+                                                    <div class="tooltip-inner">Twitter</div>
+                                                </div>
+                                            </a></li>
+                                        <li><a href="#" class="has-tooltip"><span class="fab fa-instagram"></span>
+                                                <div class="c-tooltip">
+                                                    <div class="tooltip-inner">Linkedin</div>
+                                                </div>
+                                            </a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--End Header Upper-->
+
+                <!-- Sticky Header  -->
+                <div class="sticky-header">
+                    <div class="auto-container clearfix">
+                        <!--Logo-->
+                        <div class="logo pull-left">
+                            <a href="{% url 'home_page' %}" title=""><img src="{% static 'mysite/images/voice1.png' %}" alt=""
+                                    title=""></a>
+                        </div>
+                        <!--Right Col-->
+                        <div class="pull-right">
+                            <!-- Main Menu -->
+                            <nav class="main-menu clearfix">
+                                <!--Keep This Empty / Menu will come through Javascript-->
+                            </nav><!-- Main Menu End-->
+                        </div>
+                    </div>
+                </div><!-- End Sticky Menu -->
+
+                <!-- Mobile Menu  -->
+                <div class="mobile-menu">
+                    <div class="menu-backdrop"></div>
+                    <div class="close-btn"><span class="icon flaticon-targeting-cross"></span></div>
+
+                    <nav class="menu-box">
+                        <div class="nav-logo"><a href="{% url 'home_page' %}"><img src="{% static 'mysite/images/voics.png' %}"
+                                    alt="" title=""></a>
+                        </div>
+                        <div class="menu-outer">
+                            <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+                        </div>
+                        <!--Social Links-->
+                        <div class="social-links">
+                            <ul class="clearfix">
+                                <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                <li><a href="#"><span class="fab fa-facebook-square"></span></a></li>
+                                <li><a href="#"><span class="fab fa-pinterest-p"></span></a></li>
+                                <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                                <li><a href="#"><span class="fab fa-youtube"></span></a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div><!-- End Mobile Menu -->
+            
+            </header>
+
+        <!-- End Main Header -->
+
+        <!--Search Popup-->
+            
+            <div id="search-popup" class="search-popup">
+                <div class="close-search theme-btn"><span class="flaticon-targeting-cross"></span></div>
+                <div class="popup-inner">
+                    <div class="overlay-layer"></div>
+                    <div class="search-form">
+                        <form method="post" action="{% url 'home_page' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <fieldset>
+                                    <input type="search" class="form-control" name="search-input" value=""
+                                        placeholder="Search Here" required>
+                                    <input type="submit" value="Search Now!" class="theme-btn">
+                                </fieldset>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        <!-- End Search Popup -->
+
+        <!-- Banner Section -->
+        <!--End Banner Section -->
+
+        {%  block content %}
+
+        {% endblock %}
+        
+<!-- Main Footer -->
+    <footer class="main-footer">
+            
+        <!--Widgets Section-->
+        <div class="widgets-section">
+            <div class="auto-container">
+                <div class="row clearfix">
+                    <!--Column-->
+                    <div class="column col-lg-3 col-md-6 col-sm-12">
+                        <div class="footer-widget links-widget">
+                            <div class="widget-title">
+                                <h4>Departments</h4>
+                            </div>
+                            <div class="widget-content">
+                                <ul class="links linka">
+                                    <li><a href="#">Police and crime</a></li>
+                                    <li><a href="#">Arts and culture</a></li>
+                                    <li><a href="#">Transport and traffic</a></li>
+                                    <li><a href="#">Housing and land</a></li>
+                                    <li><a href="#">Education</a></li>
+                                </ul>
+                            </div>  
+                        </div>
+                    </div>
+                    <!--Column-->
+                    <div class="column col-lg-3 col-md-6 col-sm-12">
+                        <div class="footer-widget links-widget">
+                            <div class="widget-title">
+                                <h4>Information</h4>
+                            </div>
+                            <div class="widget-content">
+                                <ul class="links linka">
+                                    <li><a href="#">About city govt</a></li>
+                                    <li><a href="#">Mayor’s profile</a></li>
+                                    <li><a href="#">Highlights</a></li>
+                                    <li><a href="#">Online services</a></li>
+                                    <li><a href="#">About 311</a></li>
+                                </ul>
+                            </div>  
+                        </div>
+                    </div>
+                    <!--Column-->
+                    <div class="column col-lg-3 col-md-6 col-sm-12">
+                        <div class="footer-widget num-widget">
+                            <div class="widget-title">
+                                <h4>Emergency</h4>
+                            </div>
+                            <div class="widget-content">
+                                <ul class="num-links linka">
+                                    <li><a href="#">Police <span class="hvr-info">Call: 977</span></a></li>
+                                    <li><a href="#">Ambulance <span class="hvr-info">Call: 911</span></a></li>
+                                    <li><a href="#">Fire Brigade <span class="hvr-info">Call: 922</span></a></li>
+                                    <li><a href="#">Gas service <span class="hvr-info">Call: 111</span></a></li>
+                                    <li><a href="#">Poison centre <span class="hvr-info">Call: 101</span></a></li>
+                                </ul>
+                            </div>  
+                        </div>
+                    </div>
+                    <!--Column-->
+                    <div class="column col-lg-3 col-md-6 col-sm-12">
+                        <div class="footer-widget about-widget">
+                            <div class="logo">
+                                <a href="#"><img src="{% static 'mysite/images/footer-logo.png' %}" alt=""></a>
+                            </div>
+                            <div class="address">
+                                <h5>London city govt</h5>
+                                <div class="text">46, The queen's walk <br>london 5241, UK</div>
+                            </div>
+                            <div class="address">
+                                <h5>Opening hrs</h5>
+                                <div class="text">10am to 6pm, Sun: Closed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="auto-container">
+                <div class="inner">
+                    <div class="copyright">Copyrights <a href="#">&copy; 2020 voiceitout.</a> All rights reserved.</div>
+                    <ul class="social-links clearfix linka">
+                        <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                        <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                        <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+    </footer>
+<!-- End Main Footer -->
+
+    </div>
+    <!--End pagewrapper-->
+    <!--Scroll to top-->
+    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="icon flaticon-up-arrow-angle"></span>
+    </div>
+
+
+    <script src="{% static 'mysite/js/jquery.js' %}"></script>
+    <script src="{% static 'mysite/js/popper.min.js' %}"></script>
+    <script src="{% static 'mysite/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'mysite/js/jquery-ui.js' %}"></script>
+    <script src="{% static 'mysite/js/jquery.fancybox.js' %}"></script>
+    <script src="{% static 'mysite/js/owl.js' %}"></script>
+    <script src="{% static 'mysite/js/scrollbar.js' %}"></script>
+    <script src="{% static 'mysite/js/appear.js' %}"></script>
+    <script src="{% static 'mysite/js/wow.js' %}"></script>
+    <script src="{% static 'mysite/js/custom-script.js' %}"></script>
+
+</body>
+
+</html>

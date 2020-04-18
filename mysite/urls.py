@@ -1,0 +1,100 @@
+from django.conf.urls import url
+from django.urls import path
+from django.views.generic import TemplateView
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView, 
+    PasswordResetConfirmView, 
+    PasswordResetCompleteView
+)
+
+# App View Import Statements
+from . import views
+
+urlpatterns = [
+    
+    # Home View URL
+    url(r'^$', 
+        views.home, 
+        name="home_page"
+    ),
+    
+    # User Login View URL
+    url(r'^login/$',
+        views.login_User,
+        name="login_user_url"
+    ),
+    
+    # User Logout View URL
+    url(r'^logout/$', 
+        views.logout_User, 
+        name= "logout_user_url"
+    ),
+
+    # User Dashboard View URL
+    url(r'^dashbaord/$', 
+        views.dashboard, 
+        name = "dashboard"
+    ),
+    
+    # User Registration View URL
+    url(r'^register/$', 
+        views.register_user, 
+        name= "register"
+    ),
+    
+    # Register Account Email Confirmation View URL
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, 
+        name='activate'
+    ),
+    
+    # -------------------------------------------------------------------------------------------------------
+    # Password Reset URL(s)
+    path('password_reset/', 
+        PasswordResetView.as_view(), 
+        name='password_reset' 
+    ),
+    path('password_reset/done/', 
+        PasswordResetDoneView.as_view(), 
+        name='password_reset_done'
+    ),
+    path('reset/<uidb64>/<token>/',
+        PasswordResetConfirmView.as_view(), 
+        name='password_reset_confirm'
+    ),
+    path('reset/done/', 
+        PasswordResetCompleteView.as_view(), 
+        name='password_reset_complete'
+    ),
+    
+    # Profile View URL
+    url(r'^profile/$', 
+        views.profile_user, 
+        name= "profile"
+    ),
+    
+    # User Change Password View URL
+    url(r'^change_password/$', 
+        views.change_password, 
+        name = "change_password"
+    ),
+    
+    # Create Petition View URL
+    path("petition_start/", 
+         views.petition_start, 
+        name="Start-a-Petition"
+    ),
+    
+    # User (Itself) Petitions View URL
+    path("view-petitions/", 
+         views.User_Petitions, 
+        name="Self-Petitions"
+    ),
+    
+    # Petition Feedback Response View
+    path("submit-a-response-petition/<int:petition_id>/",
+         views.PetitionResponseFeedbackView,
+         name="PetitionResponse")
+    
+]
