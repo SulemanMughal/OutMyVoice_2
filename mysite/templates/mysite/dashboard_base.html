@@ -1,4 +1,6 @@
 {% load static %}
+{% load FindCommendationResponseTrue %}
+{% load FindCommendationResponseDate %}
 {% load FindResponseTrue %}
 {% load FindResponseDate %}
 <!doctype html>
@@ -29,52 +31,78 @@
 </head>
 
 <body>
-    
-    
+        
     {% if all_petitions_section %}
-
-    
-    
-    {% if petitions %}
-
-
-
-    {% for petition in petitions %}
-    {% if not request.user.id|FindResponseTrue:petition.id  %}
-    {% if petition.id|FindResponseDate %}
-<!-- Modal -->
-    <div class="modal fade" id="exampleModal{{ petition.Petition_Title|slugify  }}{{ petition.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel_{{ petition.Petition_Title|slugify  }}_{{ petition.id }}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel_{{ petition.Petition_Title|slugify  }}_{{ petition.id }}">{{ petition.Petition_Title }}'s Response</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="{% url 'PetitionResponse' petition.id %}" >
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="Feedback" style="resize: none;"></textarea>
-                      </div>
-                      
-                    <button type="submit" class="btn btn-primary" >Send Response</button>
-                </form>
-            </div>
-        </div>
-        </div>
-    </div>
-<!-- End Modal Section -->
-    {% endif %}    
-{% endif %}
-    {% endfor %}
-
-
-
-{% endif %}
-
+        {% if petitions %}
+            {% for petition in petitions %}
+                {% if not request.user.id|FindResponseTrue:petition.id  %}
+                    {% if petition.id|FindResponseDate %}
+                        <!-- Modal -->
+                            <div class="modal fade" id="exampleModal{{ petition.Petition_Title|slugify  }}{{ petition.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel_{{ petition.Petition_Title|slugify  }}_{{ petition.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel_{{ petition.Petition_Title|slugify  }}_{{ petition.id }}">{{ petition.Petition_Title }}'s Response</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST" action="{% url 'PetitionResponse' petition.id %}" >
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="Feedback" style="resize: none;"></textarea>
+                                            </div>
+                                            
+                                            <button type="submit" class="btn btn-primary" >Send Response</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <!-- End Modal Section -->
+                    {% endif %}    
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     {% endif %}
+
+
+    {% if commendations_section %}
+        {% if commendations %}
+            {% for commendation in commendations %}
+                {% if not request.user.id|FindCommendationResponseTrue:commendation.id  %}
+                    {% if commendation.id|FindCommendationResponseDate %}
+                        <!-- Modal -->
+                            <div class="modal fade" id="exampleModal{{ commendation.Commendation_Title|slugify  }}{{ commendation.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel_{{ commendation.Commendation_Title|slugify  }}_{{ commendation.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel_{{ commendation.Commendation_Title|slugify  }}_{{ commendation.id }}">{{ commendation.Commendation_Title }}'s Response</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST" action="{% url 'CommendationResponse' commendation.id  %}" >
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="Feedback" style="resize: none;"></textarea>
+                                            </div>
+                                            
+                                            <button type="submit" class="btn btn-primary" >Send Response</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <!-- End Modal Section -->
+                    {% endif %}    
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+
 
     <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
         {% include 'mysite/header.html' %}

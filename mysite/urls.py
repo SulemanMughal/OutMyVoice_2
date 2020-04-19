@@ -82,19 +82,41 @@ urlpatterns = [
     
     # Create Petition View URL
     path("petition_start/", 
-         views.petition_start, 
+        views.petition_start, 
         name="Start-a-Petition"
     ),
     
     # User (Itself) Petitions View URL
     path("view-petitions/", 
-         views.User_Petitions, 
+        views.User_Petitions, 
         name="Self-Petitions"
     ),
     
     # Petition Feedback Response View
     path("submit-a-response-petition/<int:petition_id>/",
-         views.PetitionResponseFeedbackView,
-         name="PetitionResponse")
+        views.PetitionResponseFeedbackView,
+        name="PetitionResponse"),
+
+    # Create Commendation View URL
+    path("commendation_start/", 
+        views.commendation_start, 
+        name="Start-a-Commendation"
+    ),
     
+    # User All Commendations View URL
+    url(r'^all-commendations/$',
+        views.All_Commendations,
+        name="all-commendations-url"),
+    
+    # Uer Commendation Response Feedback View URL
+    path("submit-a-response-commendation/<int:commendation_id>/",
+        views.CommendationResponseFeedbackView,
+        name="CommendationResponse"),
+    
+    # User (Itself) Commendation View URL
+    path("view-commendation/", 
+        views.User_Commendation, 
+        name="Self-Commendation"
+    ),
+
 ]

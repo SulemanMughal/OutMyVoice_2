@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'mysite',
     'ckeditor',
     'ckeditor_uploader',
+    'blogs',
+    'django_social_share',
+    'embed_video',
+    'bootstrap_pagination',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +137,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),'media')
 
 
 # ------------------------------------------------------------------------------

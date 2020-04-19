@@ -5,11 +5,14 @@ from django.contrib import admin
 from .models import (
     Petition,
     UserProfile,
-    PetitionResponseFeedback
+    PetitionResponseFeedback,
+    Commendation,
+    CommendationResponseFeedback
 )
 
 
-class PetitionAadmin(admin.ModelAdmin):
+# Petition Admin
+class PetitionAdmin(admin.ModelAdmin):
     list_filter=[
         'approve',
         # 'Petition_Category'
@@ -26,9 +29,8 @@ class PetitionAadmin(admin.ModelAdmin):
         'Action_Person'
     ]
     
-
-
-class PetitionResponseFeedbackAadmin(admin.ModelAdmin):
+# Petition Response Feedback Admin
+class PetitionResponseFeedbackAdmin(admin.ModelAdmin):
     list_filter=[
         'petition__approve',
         # 'Petition_Category'
@@ -45,6 +47,41 @@ class PetitionResponseFeedbackAadmin(admin.ModelAdmin):
         'petition__Action_Person'
     ]
 
-admin.site.register(Petition, PetitionAadmin)
+# Commendation Admin
+class CommendationAdmin(admin.ModelAdmin):
+    list_filter=[
+        'approve',
+        # 'Petition_Category'
+        'timestamp'
+    ]
+    date_hierarchy = 'timestamp'
+    search_fields =[
+        'Commendation_Title',
+        'Commendation_Category',
+        'Commendation_Category_Other',
+        'Action_Person'
+    ]
+    
+# Commendation Response Feedback Admin
+class CommendationResponseFeedbackAdmin(admin.ModelAdmin):
+    list_filter=[
+        'commendation__approve',
+        # 'Petition_Category'
+        'timestamp'
+    ]
+    date_hierarchy = 'timestamp'
+    # filter_horizontal = [
+    #     'user'
+    # ]
+    search_fields =[
+        'commendation__Commendation_Title',
+        'commendation__Commendation_Category',
+        'commendation__Commendation_Category_Other',
+        'commendation__Action_Person'
+    ]
+
+admin.site.register(Petition, PetitionAdmin)
 admin.site.register(UserProfile)
-admin.site.register(PetitionResponseFeedback, PetitionResponseFeedbackAadmin)
+admin.site.register(PetitionResponseFeedback, PetitionResponseFeedbackAdmin)
+admin.site.register(Commendation, CommendationAdmin)
+admin.site.register(CommendationResponseFeedback, CommendationResponseFeedbackAdmin)

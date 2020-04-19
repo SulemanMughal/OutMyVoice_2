@@ -6,7 +6,9 @@ from django.utils.translation import gettext_lazy as _
 from django.core import validators
 from .models import (
     Petition,
-    PetitionResponseFeedback
+    PetitionResponseFeedback,
+    Commendation,
+    CommendationResponseFeedback
 )
 from django.contrib.auth.forms import (
     UserCreationForm, 
@@ -104,10 +106,28 @@ class Petitionform(forms.ModelForm):
         exclude =  ['user','approve']
 
 
-# Petitio Response Feedback Form
+# Petition Response Feedback Form
 class PetitionResponseForm(forms.ModelForm):
     class Meta:
         model = PetitionResponseFeedback
         fields = [
             'Feedback'
+        ]
+
+# Create Commendation Form
+class Commendationform(forms.ModelForm):
+    class Meta:
+        model=Commendation
+        exclude =  [
+            'user',
+            'approve'
+        ]
+        
+# Commendation Response Feedback Response Form
+class CommendationResponseFeedbackForm(forms.ModelForm):
+    class Meta:
+        model=CommendationResponseFeedback
+        exclude =  [
+            'user',
+            'approve'
         ]

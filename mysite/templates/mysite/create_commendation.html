@@ -1,0 +1,809 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <style>
+        /* HIDE RADIO */
+    [type=radio] { 
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      /* IMAGE STYLES */
+      [type=radio] + img {
+        cursor: pointer;
+      }
+      
+      /* CHECKED STYLES */
+      [type=radio]:checked + .states {
+        
+        background-color: #5bd9af;
+        padding-top: 8px;
+        padding-left: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+        padding-right: 5px;
+      }
+    
+      .state{
+        max-width:74px; 
+      }
+      #show_more{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-size: 13px;
+        border: 1px solid transparent;
+        transition: 0.4s all;
+        background-color: #5bd9af;
+        border-radius: 3px;
+        padding: .538em 1.077em;
+        font-family: "Raleway","Helvetica Neue",Arial,sans-serif;
+        font-weight: 600;
+        color: white;
+    }
+    #show_more:hover, #show_more:focus{
+        background-color: white;
+        border-color: grey;
+        color: black;
+    }
+    .states_margin{
+        margin-right: 5px;
+    }
+    .center-block {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+     }
+    </style>
+
+<!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 29 Mar 2020 03:49:10 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+{% include 'mysite/head.html' %}
+<body>
+<div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
+    {% include 'mysite/header.html' %}
+    <div class="app-main">
+        <div class="app-sidebar sidebar-shadow">
+            <div class="app-header__logo">
+                <div class="logo-src"></div>
+                    <div class="header__pane ml-auto">
+                        <div>
+                            <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-header__mobile-menu">
+                    <div>
+                        <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="app-header__menu">
+                    <span>
+                        <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                            <span class="btn-icon-wrapper">
+                                <i class="fa fa-ellipsis-v fa-w-6"></i>
+                            </span>
+                        </button>
+                    </span>
+                </div>
+                {% include 'mysite/sidebar.html' %}
+            </div>    
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    <div class="app-page-title">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-heading">
+                                <div class="page-title-icon">
+                                    <i class="fa fa-eye icon-gradient bg-mean-fruit">
+                                    </i>
+                                </div>
+                                <div>Create a Commendation
+                                    <div class="page-title-subheading">Fill all fields carefully to start a commendation.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="page-title-actions">
+                                
+                                <div class="d-inline-block dropdown">
+                                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                                        <span class="btn-icon-wrapper pr-2 opacity-7">
+                                            <i class="fa fa-business-time fa fa-eye"></i>
+                                        </span>
+                                        Buttons
+                                    </button>
+                                    <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#">
+                                                    <i class="nav-link-icon fa fa-eye"></i>
+                                                    <span>
+                                                        My Commendations
+                                                    </span>
+                                                    
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'Start-a-Commendation' %}">
+                                                    <i class="nav-link-icon fa fa-plus-circle"></i>
+                                                    <span>
+                                                        Make Commendation
+                                                    </span>
+                                                    
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="main-card mb-3 card">
+                                        <form method="post" enctype="multipart/form-data" action="{% url 'Start-a-Commendation' %}">
+                                            {% csrf_token %}
+                                            <div class="card-body">
+        
+                                                <div id="smartwizard">
+                                                    <ul class="forms-wizard">
+                                                        <li>
+                                                            <a href="#step-1">
+                                                                <em>1</em><span>Start Commendation</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#step-2">
+                                                                <em>2</em><span>Commendation Title</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#step-3">
+                                                                <em>3</em><span>Details & Upload Image</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#step-4">
+                                                                <em>3</em><span>Submission</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+            
+                                                    <div class="form-wizard-content">
+                                                        <div id="step-1">
+                                                            <legend style="color: #fa5e5b; font-size:medium; ">Select Commendation Coverage:</legend>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="row">
+                                                                    <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline">
+                                                                        <label>
+                                                                        <input type="radio" name="Commendation_Coverage" value="National Coverage" checked>
+                                                                        <div class="states">
+                                                                            <img style="max-width:74px;" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/nigeria.jpg' %}">
+                                                                            <p style="text-align: center;font-size:12px;font-weight: bold;">Nigeria <br />
+                                                                            (National Coverage)</p>
+                                                                        </div>
+                                                                        
+                                                                      </label>
+                                                                    </div>
+        
+                                                                    <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline" style="margin-left: 40px;">
+                                                                        <label>
+                                                                        <input type="radio" name="Commendation_Coverage" value="Abuja">
+                                                                        <div class="states">
+                                                                            <img style="max-width:74px;" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/abuja.png' %}">
+                                                                            <p style="text-align: center;font-size:12px;font-weight: bold;"> Abuja <br />
+                                                                                (Federal Capital)</p>
+                                                                        </div>
+                                                                        
+                                                                      </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center">
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Abia">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/abia.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Abia </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Adamawa">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/adamawa.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Adamawa </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Akwa Ibom">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/akwa_ibom.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Akwa Ibom </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Anambra">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/anambra.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Anambra </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Bauchi">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/bauchi.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Bauchi </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Bayelsa">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/bayelsa.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Bayelsa </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Benue">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/benue.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Benue </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Cross River">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/cross_river.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Cross River </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div id="show_more" class="text-center show_more">
+                                                                    Show More
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div style="display: none;" class="row justify-content-center" id="show_more_states">
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Delta">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/Delta.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Delta </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Ebonyi">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/ebonyi.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Ebonyi </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Edo">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/edo.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Edo </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Ekiti">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/ekiti.gif' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Ekiti </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Enugu">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/enugu.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Enugu </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Gombe">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/gombe.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Gombe </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Imo">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/imo.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Imo </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Jigawa">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/jigawa.gif' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Jigawa </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Kaduna">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/kaduna.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Kaduna </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Kano">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/kano.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Kano </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Katsina">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/katsina.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Katsina </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Kebbi">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/kebbi.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Kebbi </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Kogi">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/kogi.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Kogi </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Kwara">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/kwara.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Kwara </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Lagos">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/lagos.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Lagos </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Nasarawa">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/nasarawa.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Nasarawa </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Niger">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/niger.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Niger </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Ogun">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/ogun.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Ogun </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Ondo">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/ondo.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Ondo </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Osun">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/osun.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Osun </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Oyo">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/oyo.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Oyo </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Plateau">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/plateau.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Plateau </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Rivers">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/rivers.png' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Rivers </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Sokoto">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/sokoto.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Sokoto </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Taraba">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/taraba.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Taraba </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Yobe">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/yobe.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Yobe </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                                <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline states_margin">
+                                                                    <label>
+                                                                    <input type="radio" name="Commendation_Coverage" value="Zamfara">
+                                                                    <div class="states">
+                                                                        <img class="state" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/zamfara.jpg' %}">
+                                                                        <p style="text-align: center;font-size:12px;"> Zamfara </p>
+                                                                    </div>
+                                                                    
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <div class="form-row">
+                                                                <div class="col-md-6">
+                                                                    <div class="position-relative form-group"><label for="exampleEmail55">Email</label><input name="email" id="exampleEmail55" placeholder="with a placeholder" type="email" class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="position-relative form-group"><label for="examplePassword22">Password</label><input name="password" id="examplePassword22" placeholder="password placeholder" type="password"
+                                                                                                                                                                    class="form-control"></div>
+                                                                </div>
+                                                            </div> -->
+                                                            <!-- <div class="position-relative form-group"><label for="exampleAddress">Address</label><input name="address" id="exampleAddress" placeholder="1234 Main St" type="text" class="form-control"></div>
+                                                            <div class="position-relative form-group"><label for="exampleAddress2">Address 2</label><input name="address2" id="exampleAddress2" placeholder="Apartment, studio, or floor" type="text"
+                                                                                                                                                           class="form-control">
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="col-md-6">
+                                                                    <div class="position-relative form-group"><label for="exampleCity">City</label><input name="city" id="exampleCity" type="text" class="form-control"></div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="position-relative form-group"><label for="exampleState">State</label><input name="state" id="exampleState" type="text" class="form-control"></div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="position-relative form-group"><label for="exampleZip">Zip</label><input name="zip" id="exampleZip" type="text" class="form-control"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="position-relative form-check"><input name="check" id="exampleCheck" type="checkbox" class="form-check-input"><label for="exampleCheck" class="form-check-label">Check me out</label></div> -->
+                                                        </div>
+                                                        <div id="step-2">
+                                                            <div id="accordion" class="accordion-wrapper mb-3">
+                                                                <div class="card">
+                                                                    <div id="headingOne" class="card-header">
+                                                                        <button type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="text-left m-0 p-0 btn btn-link btn-block">
+                                                                            <span class="form-heading" style="color: #fa5e5b; font-weight: bold;">Title of your Commendation:<p>Please use compelling language to gain strong support and endorsement.</p></span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div data-parent="#accordion" id="collapseOne" aria-labelledby="headingOne" class="collapse show">
+                                                                        <div class="card-body">
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="position-relative form-group">
+                                                                                        <label for="title">Commendation Title</label>
+                                                                                        <input name="Commendation_Title" autocomplete="off" id="title" aria-describedby="lastname-error" placeholder="Commendation Title (Keep it Short and Concise)" type="text" class="form-control is-invalid" aria-invalid="true"/>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="position-relative form-group">
+                                                                                        <label for="category">Commendation Category</label>
+                                                                                        <select name="Commendation_Category" class="category selectpicker form-control" id="category">
+                                                                                            <option value="">Select Category</option>
+                                                                                            <option value="Corporate Accountability">Corporate Accountability</option>
+                                                                                            <option value="Corruption">Corruption</option>
+                                                                                            <option value="Entertainment">Entertainment</option>
+                                                                                            <option value="Environment">Environment</option>
+                                                                                            <option value="Governance">Governance</option>
+                                                                                            <option value="Health">Health</option>
+                                                                                            <option value="Judiciary">Judiciary</option>
+                                                                                            <option value="Media, Arts and Culture">Media, Arts and Culture</option>
+                                                                                            <option value="Power Electricity">Power Electricity</option>
+                                                                                            <option value="Politic, Election">Politic, Election</option>
+                                                                                            <option value="Road and Transport">Road and Transport</option>
+                                                                                            <option value="Safety and Security">Safety and Security</option>
+                                                                                            <option value="Others">Others</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12"  class="others" id="other_cat">
+                                                                                    <div class="position-relative form-group">
+                                                                                        <label for="title">Specify your Commendation Category if not listed above</label>
+                                                                                        <input name="Commendation_Category_Other" id="category1" autocomplete="off" placeholder="Commendation Category" type="text" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h6>Examples:</h6>
+                                                                            <ol>
+                                                                                <li>Stable power supply is the engine of growth and development, FGN resolve power problem now!</li>
+                                                                                <li>Benin - Ore express road needs urgent repair, FGN please stop this deprivation and suffering</li>
+                                                                            </ol>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="step-3">
+                                                            <div id="accordion" class="accordion-wrapper mb-3">
+                                                                <div class="card">
+                                                                    <div id="headingOne" class="card-header">
+                                                                        <button type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="text-left m-0 p-0 btn btn-link btn-block">
+                                                                            <span class="form-heading" style="color: #fa5e5b; font-weight: bold;">Commendation Details:</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div data-parent="#accordion" id="collapseOne" aria-labelledby="headingOne" class="collapse show">
+                                                                        <div class="card-body">
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="position-relative form-group">
+                                                                                        <label for="petition_attend">Name of Person or Group to Commend(Local Government Chairman, State Governor etc)</label>
+                                                                                        <select name="Action_Person" class="action selectpicker form-control" id="action" autocomplete="off">
+                                                                                            <option value="">Select Category</option>
+                                                                                            <option value="President">President</option>
+                                                                                            <option value="Minister">Minister</option>
+                                                                                            <option value="Senate">Senate</option>
+                                                                                            <option value="State Governor">State Governor</option>
+                                                                                            <option value="State Assembly">State Assembly</option>
+                                                                                            <option value="Local Gov. Chairman">Local Gov. Chairman</option>
+                                                                                            <option value="Others">Others</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12" id="action_person">
+                                                                                    <div class="position-relative form-group">
+                                                                                        <label for="title">Specify other Person responsible to commend if not listed above </label>
+                                                                                        <input name="Action_Person_Other" id="action1" placeholder="Action Person" type="text" autocomplete="off" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="position-relative form-group">
+                                                                                        <label for="explain">Explanation</label>
+                                                                                        <textarea required id="editor1" name="Expalnation" class="form-control editor" rows="12" required="true"></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="position-relative form-group">
+                                                                                        <label for="image_upload">Upload Supporting Image(s)</label>
+                                                                                        <input type="file" name="Image" id="image_upload" type="file" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h6>Examples:</h6>
+                                                                            <p>Your petition can be directed towards Federal, State, Local Government, Individuals or organization.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="step-4">
+                                                            
+                                                            <div class="no-results">
+                                                                <div class="swal2-icon swal2-success swal2-animate-success-icon">
+                                                                    <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+                                                                    <span class="swal2-success-line-tip"></span>
+                                                                    <span class="swal2-success-line-long"></span>
+                                                                    <div class="swal2-success-ring"></div>
+                                                                    <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+                                                                    <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+                                                                </div>
+                                                                <div class="results-subtitle mt-4">Finished!</div>
+                                                                <div class="results-title">Click on previous to crosscheck everything filled in the form. Once you are satisfied with it, click on submit to post the commend</div>
+                                                                <div class="mt-3 mb-3"></div>
+                                                                <div class="text-center">
+                                                                    <button type="submit" class="btn-shadow btn-wide btn btn-success btn-lg">Submit</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="divider"></div>
+                                                <div class="clearfix">
+                                                    <button type="button" id="next-btn" class="btn-shadow btn-wide float-right btn-pill btn-hover-shine btn btn-primary">Next</button>
+                                                    <button type="button" id="prev-btn" class="btn-shadow float-right btn-wide btn-pill mr-3 btn btn-outline-secondary">Previous</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="app-wrapper-footer">
+                    <div class="app-footer">
+                        
+                    </div>
+                </div>    </div>
+    </div>
+</div>
+
+    <div class="app-drawer-overlay d-none animated fadeIn"></div>
+    <script type="text/javascript" src="{% static 'mysite/js/main1.js' %}"></script>
+    <script src="{% static 'mysite/js/jquery.min.js' %}"></script>
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script>
+        
+        $("#show_more").click(function(){
+            
+            $("#show_more_states").slideDown();
+            $("#show_more").hide();
+            
+        });
+        
+        $(".category").change(function(){
+            if($(this).val()=="Others")
+            {    
+                $("#other_cat").show();
+            }
+            else
+            {
+                $("#other_cat").hide();
+            }
+        });
+
+        $(".action").change(function(){
+            if($(this).val()=="Others")
+            {    
+                $("#action_person").show();
+            }
+            else
+            {
+                $("#action_person").hide();
+            }
+        });
+        
+
+        
+    </script>
+    <script>
+        CKEDITOR.replace( 'editor1' );
+    </script>
+</body>
+
+<!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 29 Mar 2020 03:50:24 GMT -->
+</html>

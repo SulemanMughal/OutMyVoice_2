@@ -39,7 +39,8 @@ from .forms import (
     registerForm,
     EditProfileForm,
     Petitionform,
-    PetitionResponseForm
+    PetitionResponseForm,
+    Commendationform
 )
 
 # Import APP Tokens
@@ -49,7 +50,9 @@ from .tokens import account_activation_token
 from .models import (
     UserProfile,
     Petition,
-    PetitionResponseFeedback
+    PetitionResponseFeedback,
+    Commendation,
+    CommendationResponseFeedback
 )
 
 # Create your views here.
@@ -178,6 +181,10 @@ def activate(request, uidb64, token):
 @login_required
 def profile_user(request):
     template_name = "mysite/profile.html"
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except:
+        profile = None
     if request.method!='POST':
         form = EditProfileForm(instance = request.user)
     else:
@@ -187,7 +194,8 @@ def profile_user(request):
             return redirect(reverse("profile"))
     context={
         'form': form,
-        'profile_section': True
+        'profile_section': True,
+        'profile': profile
     }
     return render(request,
                 template_name,
@@ -225,7 +233,7 @@ def petition_start(request):
             new = form.save(commit=False)
             new.user=request.user
             new.save()
-            print(new)
+            # print(new)
             form.save()
             return redirect(reverse("dashboard"))
 
@@ -270,3 +278,72 @@ def PetitionResponseFeedbackView(request, petition_id):
             return redirect("dashboard")
         except:
             return redirect(reverse("dashboard"))
+
+# Create Commendation View
+@login_required
+def commendation_start(request):
+    template_name="mysite/create_commendation.html"
+    form=Commendationform()
+    if request.method == 'POST':
+        form=Commendationform(request.POST,request.FILES)
+        # print(request.POST, request.FILES, sep="\n")
+        if form.is_valid():
+            new = form.save(commit=False)
+            new.user=request.user
+            new.save()
+            form.save()
+            return redirect('dashboard')
+    context={
+        'form':form,
+        'create_commendation_section': True,
+    }
+    return render(request, template_name,context)
+
+# User All Commendations View
+@login_required
+def All_Commendations(request):
+    template_name="mysite/commendations.html"
+    commendations = Commendation.objects.all()
+    context={
+        'commendations':commendations,
+        'commendations_section': True
+    }
+    return render(request,
+                template_name,
+                context)
+    
+# User Commendation Feedback Response View
+@login_required
+def CommendationResponseFeedbackView(request, commendation_id):
+    if request.method == "GET":
+        return redirect(reverse("all-commendations-url"))
+    else:
+        try:
+            commendation = Commendation.objects.get(id = commendation_id)
+            feedback_obj, created =  CommendationResponseFeedback.objects.get_or_create(
+                user = request.user,
+                commendation = commendation,
+                Coverage_Admin = UserProfile.objects.get(user=request.user).Coverage_Admin,
+            )
+            if created:
+                feedback_obj.Feedback = request.POST['Feedback']
+                feedback_obj.save()
+                return redirect("all-commendations-url")
+            feedback_obj.save()
+            return redirect("all-commendations-url")
+        except:
+            return redirect("all-commendations-url")
+        
+# User (Itself) Commendation View
+@login_required
+def User_Commendation(request):
+    template_name = "mysite/commendations.html"
+    commendations = Commendation.objects.filter(user = request.user)
+    context = {
+        'commendations': commendations,
+        'my_commendation_view': True
+    }
+    return render(request,
+                template_name,
+                context
+            )

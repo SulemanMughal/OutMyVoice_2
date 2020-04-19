@@ -1,0 +1,198 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+{% block title %}{{ blogs.title|truncatechars:20 }}{% endblock %}
+{% block content %}
+
+    <!--Page Title-->
+    <section class="blog-banner">
+        <div class="image-layer" style="background-image:url(images/background/banner-image-6.jpg);"></div>
+
+        <div class="banner-inner">
+            <div class="auto-container">
+                <div class="inner-container clearfix">
+                    <div class="meta-info clearfix">
+                        <a href="#"><span class="fa fa-comment"></span>
+                            {% with total=blogs.blogcomment_set.count %}
+                            {{ total }} Comment{{ total|default:1|pluralize }}
+                            {% endwith %}
+                        </a>
+                    </div>
+                    <h1>{{ blogs.title|linebreaksbr|linebreaks   }}</h1>
+                    <div class="author-info clearfix">
+                        <div class="author-icon fa-1x" ><span class="flaticon-user-3  fa-2x"></span> By {{ blogs.author.username|capfirst  }}</div>
+                    </div>
+                    <div class="other-info clearfix">
+                        <div class="date"><span>{{ blogs.created_at|timesince }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="sidebar-page-container">
+        <div class="auto-container">
+            <div class="row clearfix">
+                
+                <!--Content Side-->
+                <div class="content-side col-lg-8 col-md-12 col-sm-12">
+                    <div class="content-inner">
+                        <div class="single-post">
+                            <div class="post-details">
+                                <div class="main-image-box">
+                                    <figure class="image"><img src="/media/{{ blogs.image }}" alt=""></figure>
+                                </div>
+                               {{ blogs.description|safe|escape  }}
+                            </div>
+
+                            <div class="share-post">
+                                <strong>Share this post with your friends</strong>
+                                <ul class="links clearfix">
+                                    <li class="facebook"><a href="#"><span class="icon fab fa-facebook-f"></span><span class="txt">Facebook</span></a></li>
+                                    <li class="twitter"><a href="#"><span class="icon fab fa-twitter"></span><span class="txt">Twiter</span></a></li>
+                                    <li class="linkedin"><a href="#"><span class="icon fab fa-linkedin-in"></span><span class="txt">Linkedin</span></a></li>
+                                    <li class="pinterest"><a href="#"><span class="icon fab fa-pinterest-p"></span><span class="txt">Pinterest</span></a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Author Box -->
+
+                            <!-- End Author Box -->
+
+                            <!-- Post Controls -->
+                            
+                            <!-- End Post Controls -->
+
+                            <div class="comments-area">
+                                <div class="group-title">
+                                    {% with total=blogs.blogcomment_set.count %}
+                                    <h2>Comment{{ total|default:1|pluralize }} <span>- {{ total }}</span></h2>
+                                    {% endwith %}
+                                    
+                                </div>
+                                {% if blogs.blogcomment_set.all %}
+                                {% for comment in blogs.blogcomment_set.all %}
+                                    <div class="comment-box">
+                                        <div class="comment">
+                                            <div class="author-thumb">
+                                                <figure class="thumb"><img src="{% static 'mysite/images/resource/author-image-6.jpg' %}" alt=""></figure>
+                                            </div> 
+                                            <div class="info">
+                                                <span class="name">{{ comment.name|capfirst }}</span>
+                                                <span class="date">{{ comment.post_date|timesince }}</span>
+                                            </div>
+                                            <div class="text">{{  comment.description|safe }}</div>
+                                            {% if comment.blogreply_set.all %}
+                                                
+                                                {% for reply in comment.blogreply_set.all %}
+                                                    <div class="default-form comment-form ml-4 mb-3 mt-4" >
+                                                            <div class="comment">
+                                                                <div class="author-thumb">
+                                                                    <figure class="thumb"><img src="{% static 'mysite/images/resource/author-image-6.jpg' %}" alt=""></figure>
+                                                                </div> 
+                                                                <div class="info">
+                                                                    <span class="name">{{ reply.name|capfirst }}</span>
+                                                                    <span class="date">{{ reply.post_date|timesince }}</span>
+                                                                </div>
+                                                                <div class="text">{{  reply.description|safe }}</div>
+                                                            </div>
+                                                        
+                                                    </div>
+                                                {% endfor %}
+                                                <div class="reply-link mb-2 ml-2" style="cursor: pointer;"><li id="{{ comment }}_reply_{{ comment.post_date }}" data-toggle="#reply_form_{{ comment|slugify }}_reply_{{ comment.post_date|slugify }}" onclick="$($(this).attr('data-toggle')).toggle();">Reply</li></div>
+                                                {% else %}
+                                                <div class="reply-link mb-2" style="cursor: pointer;"><li id="{{ comment }}_reply_{{ comment.post_date }}" data-toggle="#reply_form_{{ comment|slugify }}_reply_{{ comment.post_date|slugify }}" onclick="$($(this).attr('data-toggle')).toggle();">Reply</li></div>
+                                            {% endif %}
+                                            
+                                            <div class="default-form comment-form ml-4" id="reply_form_{{ comment|slugify }}_reply_{{ comment.post_date|slugify }}" style="display: none;">
+                                                    <form method="POST" action="{% url 'reply' comment.id  blogs.slug %}">
+                                                        {% csrf_token %}
+                                                        <div class="row clearfix">
+                                                            <div class="col-md-5 col-sm-5 form-group">
+                                                                <textarea name="description" placeholder="Your Reply" style="width:300px; height:50px; " required=""></textarea>
+                                                            </div>
+                                                            <div class="col-md-5 col-sm-5 form-group">
+                                                                <input type="text" name="name" value="{{ request.user.username }}" autocomplete="off" hidden>
+                                                                <input type="email" name="email" value="{{ request.user.email }}" autocomplete="off" hidden>
+                                                            <button type="submit" class="theme-btn btn-style-one mt-0" style="height:50px;"><span class="btn-title">Submit Now</span></button>
+                                                        </div>
+                                                        </div>
+                                                    </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="leave-comments">
+                                <div class="group-title">
+                                    <h2>Leave a Comment</h2>
+                                    <div class="instruction">Your email address will not be published. Required fields are marked *</div>
+                                </div>
+                                
+                                <div class="default-form comment-form">
+                                    <form method="post" action="{% url 'detail' blogs.slug %}">
+                                        {% csrf_token %}
+                                        <div class="row clearfix">
+
+                                            <div class="col-md-12 col-sm-12 form-group">
+                                                <textarea name="description" placeholder="Your Comments"></textarea>
+                                            </div>
+
+                                            <div class="col-md-6 col-sm-12 form-group">
+                                                <input type="text" name="name" placeholder="Name*" required="" autocomplete="off">
+                                            </div>
+                                            
+                                            <div class="col-md-6 col-sm-12 form-group">
+                                                <input type="email" name="email" placeholder="Email *" required="" autocomplete="off">
+                                            </div>
+                    
+                                            <div class="col-md-12 col-sm-12 form-group">
+                                                <button type="submit" class="theme-btn btn-style-one"><span class="btn-title">Submit Now</span></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Related Posts -->  
+                            <!-- End Related Posts -->
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--Sidebar Side-->
+                <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
+                    <aside class="sidebar">
+                        <div class="bg-layer">
+                            <div class="image-layer" style="background-image:url(images/background/sidebar-bg-image.jpg);"></div>
+                        </div>
+
+                        <div class="sidebar-widget search-box">
+                            <div class="widget-inner">
+                                <div class="sidebar-title">
+                                    <h4>Search</h4>
+                                </div>
+                                <form method="GET" action="{% url 'search' %}">
+                                    <div class="form-group">
+                                        <input type="search" name="query" value="" placeholder="Keyword..." required="" autocomplete="off">
+                                        <button type="submit"><span class="icon flaticon-magnifying-glass"></span></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </aside>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

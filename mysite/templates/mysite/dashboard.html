@@ -2,7 +2,15 @@
 {% load static %}
 {% load FindResponseTrue %}
 {% load FindResponseDate %}
-{% block title %}Voice It Out - User Dashboard{% endblock %}
+{% block title %}
+    {% if my_petition_view %}
+        Voice It Out - User Petitions
+    {% elif create_petition_section %}
+        Voice It Out - Create Petition
+    {% else %}
+        Voice It Out - User Dashboard
+    {% endif %}
+    {% endblock %}
 
 {% block content %}
 

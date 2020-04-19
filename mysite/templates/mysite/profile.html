@@ -149,6 +149,15 @@
                     </div>
                 </div>
 
+                {% if profile %}
+                <div class="form-group">
+                    <label for="email">Coverage Admin</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ profile.Coverage_Admin }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+                {% endif %}
+
                 {% endif %}
 
 

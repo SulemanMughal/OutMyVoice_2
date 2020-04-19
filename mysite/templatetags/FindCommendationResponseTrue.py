@@ -1,0 +1,18 @@
+from django import template
+from mysite.models import *
+from django.contrib.auth.models import User
+
+register = template.Library()
+
+
+def FindCommendationResponseTrue(user_value, commendation_id):
+    try:
+        CommendationResponseFeedback.objects.get(
+            user=User.objects.get(id=user_value), 
+            commendation = Commendation.objects.get(id=commendation_id)
+        )
+        return True
+    except:
+        return False
+
+register.filter(FindCommendationResponseTrue)

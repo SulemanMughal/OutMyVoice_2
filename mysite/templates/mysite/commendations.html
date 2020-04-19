@@ -1,0 +1,147 @@
+{% extends 'mysite/dashboard_base.html' %}
+{% load static %}
+{% load FindCommendationResponseTrue %}
+{% load FindCommendationResponseDate %}
+{% block title %}
+    {% if my_petition_view %}
+        Voice It Out - User Petitions
+    {% elif create_petition_section %}
+        Voice It Out - Create Petition
+    {% elif commendations_section %}
+        Voice It Out - User Commendations
+    {% else %}
+        Voice It Out - User Dashboard
+    {% endif %}
+    {% endblock %}
+
+{% block content %}
+
+
+<div class="app-main__outer">
+    <div class="app-main__inner">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="fa fa-eye icon-gradient bg-mean-fruit">
+                        </i>
+                    </div>
+                    <div>Commendations
+                       
+                    </div>
+                </div>
+                <div class="page-title-actions">
+
+                    <div class="d-inline-block dropdown">
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                            <span class="btn-icon-wrapper pr-2 opacity-7">
+                                <i class="fa fa-business-time fa fa-eye"></i>
+                            </span>
+                            Buttons
+                        </button>
+                        <div tabindex="-1" role="menu" aria-hidden="true"
+                            class="dropdown-menu dropdown-menu-right">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'Self-Commendation' %}">
+                                        <i class="nav-link-icon fa fa-eye"></i>
+                                        <span>
+                                            My Commendations
+                                        </span>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'Start-a-Commendation' %}">
+                                        <i class="nav-link-icon fa fa-plus-circle"></i>
+                                        <span>
+                                            Create Commendation
+                                        </span>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tabs-animation">
+
+
+            <div class="card mb-3">
+                <div class="card-header-tab card-header">
+                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                            class="header-icon fa fa-laptop mr-3 text-muted opacity-6"> </i>All Commendations
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <table style="width: 100%;" id="example"
+                        class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Commendation Coverage</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Commendation Attendant</th>
+                                <th>Description</th>
+                                {% if commendations_section %}
+                                    
+                                    <th>Response</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for commendation in commendations %}
+                                <tr>
+                                    <td>{{ commendation.Commendation_Coverage }}</td>
+                                    <td>{{ commendation.Commendation_Title }}</td>
+                                    <td>{{ commendation.Commendation_Category }}</td>
+                                    <td>{{ commendation.Action_Person }}</td>
+                                    <td>{{ commendation.Expalnation|truncatechars_html:"50"|striptags }}</td>
+                                    {% if commendations_section %}
+                                    
+                                                    
+                                        {% if not request.user.id|FindCommendationResponseTrue:commendation.id  %}
+                                            {% if  commendation.id|FindCommendationResponseDate %}
+                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ commendation.Commendation_Title|slugify  }}{{ commendation.id }}">Response</button></td>
+                                            {% else %}
+                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button></td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Done</button></td>
+                                        {% endif %}
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Commendation Coverage</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Commendation Attendant</th>
+                                <th>Description</th>
+                                {% if commendations_section %}
+                                    <th>Response</th>
+                                {% endif %}
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="app-wrapper-footer">
+        <div class="app-footer">
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

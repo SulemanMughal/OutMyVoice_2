@@ -85,7 +85,7 @@ class Petition(models.Model):
     Expalnation             =       RichTextUploadingField() 
     Image                   =       models.ImageField(blank=True)
     approve                 =       models.BooleanField(blank=True, default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp               =       models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.Petition_Title
@@ -108,3 +108,31 @@ class PetitionResponseFeedback(models.Model):
     
     def __str__(self):
         return "{user}-{petition}-response".format(user=self.user.username, petition = self.petition.Petition_Title)
+    
+# Commendation Model
+class Commendation(models.Model):
+    user                        =       models.ForeignKey(get_user_model(), on_delete= models.CASCADE)
+    Commendation_Coverage       =       models.CharField(max_length=100,choices=COVERAGE_CHOICES)
+    Commendation_Title          =       models.CharField(max_length=100)
+    Commendation_Category       =       models.CharField(max_length=100,choices=CATEGORY_CHOICES)
+    Commendation_Category_Other =       models.CharField(max_length=100, blank=True)
+    Action_Person               =       models.CharField(max_length=100)
+    Action_Person_Other         =       models.CharField(max_length=100, blank=True)
+    Expalnation                 =       RichTextUploadingField() 
+    Image                       =       models.ImageField(blank=True)
+    approve                     =       models.BooleanField(blank=True, default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.Commendation_Title
+
+# Commendation Response Feedback Model
+class CommendationResponseFeedback(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    commendation = models.ForeignKey(Commendation, on_delete=models.CASCADE)
+    Coverage_Admin = models.CharField(max_length=100,choices=COVERAGE_CHOICES )
+    Feedback =  RichTextUploadingField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "{user}-{petition}-response".format(user=self.user.username, petition = self.commendation.Commendation_Title)

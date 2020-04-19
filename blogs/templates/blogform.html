@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
+<div class="container">
+    
+        {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div class="alert alert-danger">
+          There is error in  {{ field.name }} &nbsp;&nbsp;&nbsp; <strong>{{ error|escape }}</strong>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+    <form method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        
+        <div class="card" style=" width: auto;">
+                <div class="shadow p-3 bg-white rounded">
+
+                    <div class="card-header text-center bg-transparent border-0">
+                        <h3>
+                               Blog
+                        </h3>
+
+                    </div>
+
+
+
+                    <div class="card-body">
+                           {% csrf_token %}
+                           {{form.media}}
+
+
+                           <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" name="title"  maxlength="150" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Image</label>
+                            <input type="file" name="image"  maxlength="150" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Video</label>
+                            <input type="text" name="video"  maxlength="150" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea type="text" id="editor1" name="description"  maxlength="150" class="form-control"></textarea>
+                        </div>
+                     <p>
+                        <br>
+                    </p>
+                    <p>
+                        <br>
+                                       
+                  
+                            <input type="submit" class="btn btn-primary" value="Save">
+    
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+      
+       
+
+    </form>
+    <br>
+    <br>
+
+</div>
+<script>
+    CKEDITOR.replace( 'editor1' );
+</script>
+
+

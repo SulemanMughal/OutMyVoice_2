@@ -1,0 +1,148 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+
+{% block title %}Voice It Out | Blog {% if search_section %} Search {% endif %}{% endblock %}
+
+{% block content %}
+
+<!--Page Title-->
+<section class="page-banner">
+    <div class="image-layer" style="background-image:url('{% static 'images/background/banner-image-5.jpg' %}');"></div>
+
+    <div class="banner-inner">
+        <div class="auto-container">
+            <div class="inner-container clearfix">
+                <h1>News Large Image</h1>
+                <div class="page-nav">
+                    <ul class="bread-crumb clearfix">
+                        <li><a href="{% url 'home_page' %}">Home</a></li>
+                        <li class="active">Blog</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix">
+
+            <!--Content Side-->
+            <div class="content-side col-lg-8 col-md-12 col-sm-12">
+                {% if search_section %}
+                    {% if query %}
+                        <div class="sec-title">
+                            <h2>Search Results for "{{ query }}"</h2>
+                        </div>
+                    {% endif %}    
+                {% endif %}    
+                
+                <div class="content-inner">
+                    <div class="blog-posts">
+                        <!--News Block Section-->
+                        {% for blog in blogs %}
+                        <div class="news-block-four">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <figure class="image"><img src="/media/{{ blog.image }}" alt=""></figure>
+                                    <div class="date"><span>{{ blog.created_at|timesince }}</span></div>
+                                    <div class="hover-box">
+                                        <div class="more-link"><a href="{% url 'detail' blog.slug %}">Read More</a></div>
+                                    </div>
+                                </div>
+                                <div class="lower-box">
+                                    <div class="upper-info">
+                                        <h2><a href="{% url 'detail' blog.slug %}">{{ blog.title }}</a></h2>
+                                        <div class="cat-info">
+                                            <a href="#"><span class="fa fa-comment"></span>
+                                                {% with total=blog.blogcomment_set.count %}
+                                                {{ total }} Comment{{ total|default:1|pluralize }}
+                                                {% endwith %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="text">{{ blog.description|striptags|truncatechars:100 }}</div>
+                                    <div class="meta-info clearfix">
+                                        <div class="author-info clearfix">
+                                            <div class="author-icon"><span class="flaticon-user-3"></span></div>
+                                            <div class="author-title">By {{ blog.author.username }}</div>
+                                        </div>
+                                        <div class="share-it">
+                                            <a class="share-btn" href="#"><span class="icon flaticon-share"></span></a>
+                                            <div class="share-list">
+                                                <ul>
+                                                    <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+                                                    <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                                                    <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <!-- End News Block Section -->
+                    </div>
+                    <!--Pagination-->
+                    {% if blogs.has_other_pages %}
+                        <div class="pagination-box text-center">
+                                <ul class="styled-pagination">
+                                {% if blogs.has_previous %}
+                                    <li class="prev"><a href="?page={{ blogs.previous_page_number }}"><span class="icon flaticon-arrows-1"></span> Prev</a></li>
+                                {% endif %}
+                                {% for i in blogs.paginator.page_range %}
+                                    {% if blogs.number == i %}
+                                    <li class="active"><a href="?page={{ i }}" class="active">{{ i }}</a></li>
+                                    {% else %}
+                                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if blogs.has_next %}
+                                    <li class="next"><a href="?page={{ blogs.next_page_number }}">Next <span class="icon flaticon-right-2"></span></a></li>
+                                {% endif %}
+                                </ul>
+                                
+
+                        </div>
+                    {% endif %}
+                    <!-- End Pagination -->
+                </div>
+            </div>
+
+            <!--Sidebar Side-->
+            <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
+                <aside class="sidebar">
+                    <div class="bg-layer">
+                        <div class="image-layer"
+                            style="background-image:url('{% static 'mysite/images/background/sidebar-bg-image.jpg' %}');">
+                        </div>
+                    </div>
+
+                    <div class="sidebar-widget search-box">
+                        <div class="widget-inner">
+                            <div class="sidebar-title">
+                                <h4>Search</h4>
+                            </div>
+                            <form method="GET" action="{% url 'search' %}">
+
+                                <div class="form-group">
+                                    <input type="search" name="query" autocomplete="off" placeholder="Keyword..."
+                                        value="{% if search_section %}{% if query %}{{ query }}{% endif %}{% endif %}">
+                                    <button type="submit"><span class="icon flaticon-magnifying-glass"></span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </aside>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

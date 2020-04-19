@@ -13,14 +13,14 @@
                 <a href="{% url 'Start-a-Petition' %}"><i class="metismenu-icon fa fa-plus-circle"></i>Create Petition</a>
             </li>
             <li class="app-sidebar__heading">Commendations</li>
-            <li>
-                <a href="#"><i class="metismenu-icon fa fa-eye"></i>All Commendations</a>
+            <li {% if commendations_section %} class="mm-active" {% endif %}>
+                <a href="{% url 'all-commendations-url' %}"><i class="metismenu-icon fa fa-eye"></i>All Commendations</a>
             </li>
-            <li>
-                <a href="#"><i class="metismenu-icon fa fa-eye"></i>My Commendations</a>
+            <li {% if my_commendation_view %} class="mm-active" {% endif %}>
+                <a href="{% url 'Self-Commendation' %}"><i class="metismenu-icon fa fa-eye"></i>My Commendations</a>
             </li>
-            <li>
-                <a href="#"><i class="metismenu-icon fa fa-plus-circle"></i>Make Commendation</a>
+            <li {% if create_commendation_section %}class="mm-active" {% endif %}>
+                <a href="{% url 'Start-a-Commendation' %}"><i class="metismenu-icon fa fa-plus-circle"></i>Make Commendation</a>
             </li>
             <li class="app-sidebar__heading">Profile</li>
             <li {% if profile_section %} class="mm-active" {% endif %}>

@@ -69,11 +69,9 @@
                                             </li>
                                             <li class=""><a href="{% url 'Start-a-Petition' %}">Start Petition</a>
                                             </li>
-                                            <li class=""><a href="#">Start Commendation</a>
+                                            <li {% if create_commendation_section %}class="current" {% endif %}><a href="{% url 'Start-a-Commendation' %}">Start Commendation</a>
                                             </li>
-                                            <li class=""><a href="#">Partner</a>
-                                            </li>
-                                            <li class=""><a href="#">Blog</a>
+                                            <li {% if blog_all_section %}class="current"{% endif %}><a href="{% url 'list' %}">Blog</a>
                                             </li>
                                             {% if user.is_authenticated %}
                                                 <li {% if dashboard_section %}class="current" {% endif %}><a href="{% url 'dashboard' %}">Dashboard</a></li>
