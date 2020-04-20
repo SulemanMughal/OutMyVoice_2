@@ -156,6 +156,13 @@
                         <input type="text" class="form-control" value="{{ profile.Coverage_Admin }}" disabled autocomplete="off" />
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="email">Global Admin</label>
+                    <select  class="form-control" id="exampleFormControlSelect2" name="golbal_Admin" disabled>
+                        <option {% if profile.golbal_Admin == "True" %}selected{% endif %} value="True">Yes</option>
+                        <option {% if profile.golbal_Admin == "False" %}selected{% endif %} value="False">No</option>
+                      </select>
+                </div>
                 {% endif %}
 
                 {% endif %}

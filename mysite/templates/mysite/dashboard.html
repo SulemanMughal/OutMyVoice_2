@@ -2,11 +2,14 @@
 {% load static %}
 {% load FindResponseTrue %}
 {% load FindResponseDate %}
+{% load FindResponse %}
 {% block title %}
     {% if my_petition_view %}
         Voice It Out - User Petitions
     {% elif create_petition_section %}
         Voice It Out - Create Petition
+    {% elif global_admin_section_petitions %}
+    Voice It Out - Petition Responses
     {% else %}
         Voice It Out - User Dashboard
     {% endif %}
@@ -24,9 +27,23 @@
                         <i class="fa fa-eye icon-gradient bg-mean-fruit">
                         </i>
                     </div>
-                    <div>Petitions
+                    <div>
+                        {% if global_admin_section_petitions %}
+                            Petition Responses
+
+                            <br>
+                            <span>
+                            Total Submitted Responses: {% with total=petitions.count %}
+                            <button  class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary" >{{ total }} Reponse{{ total|pluralize }}</button>
+                            {% endwith %}
+                            </span>
+
+                        {% else %}
+                            Petitions
+                        {% endif %}
                        
                     </div>
+                    
                 </div>
                 <div class="page-title-actions">
 
@@ -78,55 +95,76 @@
                 <div class="card-body">
                     <table style="width: 100%;" id="example"
                         class="table table-hover table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Petition Coverage</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Petition Attendant</th>
-                                <th>Description</th>
-                                {% if all_petitions_section %}
-                                    
-                                    <th>Response</th>
-                                {% endif %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for petition in petitions %}
+                        {% if global_admin_section_petitions %}
+                            <thead>
                                 <tr>
-                                    <td>{{ petition.Petition_Coverage }}</td>
-                                    <td>{{ petition.Petition_Title }}</td>
-                                    <td>{{ petition.Petition_Category }}</td>
-                                    <td>{{ petition.Action_Person }}</td>
-                                    <td>{{ petition.Expalnation|truncatechars_html:"50"|striptags }}</td>
+                                    <th>Petition User</th>
+                                    <th>Petition Title</th>
+                                    <th>Petition Coverage Admin</th>
+                                    <th>Petition Feedback</th>
+                                    <th>Petition Response</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for petition in petitions %}
+                                    <tr>
+                                        <td>{{ petition.user }}</td>
+                                        <td>
+                                            <button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal_{{ petition.petition.id }}_{{ petition.petition.timestamp|slugify }}_details_petition" title="View Complete Petition" >
+                                                {{ petition.petition }}
+                                            </button>
+                                        </td>
+                                        <td>{{ petition.Coverage_Admin }}</td>
+                                        <td>{{ petition.Feedback|safe|escape|truncatechars_html:"50" }}</td>
+                                        <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal_{{ petition.id }}_{{ petition.timestamp|slugify }}_response" title="View Petition Response" >{{ petition.response }}</button></td>
+                                            
+                                        
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        {% else %}
+                            <thead>
+                                <tr>
+                                    <th>Petition Coverage</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Petition Attendant</th>
+                                    <th>Description</th>
                                     {% if all_petitions_section %}
-                                    
-                                                    
-                                        {% if not request.user.id|FindResponseTrue:petition.id  %}
-                                            {% if  petition.id|FindResponseDate %}
-                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ petition.Petition_Title|slugify  }}{{ petition.id }}">Response</button></td>
-                                            {% else %}
-                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button></td>
-                                            {% endif %}
-                                        {% else %}
-                                            <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Done</button></td>
-                                        {% endif %}
+                                        
+                                        <th>Response</th>
                                     {% endif %}
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Petition Coverage</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Petition Attendant</th>
-                                <th>Description</th>
-                                {% if all_petitions_section %}
-                                    <th>Response</th>
-                                {% endif %}
-                            </tr>
-                        </tfoot>
+                            </thead>
+                            <tbody>
+                                {% for petition in petitions %}
+                                    <tr>
+                                        <td>{{ petition.Petition_Coverage }}</td>
+                                        <td>{{ petition.Petition_Title }}</td>
+                                        <td>{{ petition.Petition_Category }}</td>
+                                        <td>{{ petition.Action_Person }}</td>
+                                        <td>{{ petition.Expalnation|truncatechars_html:"50"|safe }}</td>
+                                        {% if all_petitions_section %}
+                                        
+                                                        
+                                            {% if not request.user.id|FindResponseTrue:petition.id  %}
+                                                {% if  petition.id|FindResponseDate %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ petition.Petition_Title|slugify  }}{{ petition.id }}">Response</button></td>
+                                                {% else %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button></td>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if request.user.id|FindResponse:petition.id == "True" %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Yes</button></td>
+                                                {% else %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >No</button></td>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        {% endif %}
                     </table>
                 </div>
             </div>

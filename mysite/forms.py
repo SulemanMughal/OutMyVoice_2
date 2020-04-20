@@ -111,7 +111,8 @@ class PetitionResponseForm(forms.ModelForm):
     class Meta:
         model = PetitionResponseFeedback
         fields = [
-            'Feedback'
+            'Feedback',
+            'response'
         ]
 
 # Create Commendation Form
@@ -129,5 +130,4 @@ class CommendationResponseFeedbackForm(forms.ModelForm):
         model=CommendationResponseFeedback
         exclude =  [
             'user',
-            'approve'
         ]

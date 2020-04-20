@@ -106,8 +106,8 @@ def logout_User(request):
 def dashboard(request):
     template_name = "mysite/dashboard.html"
     try:
-        profile = UserProfile.objects.get(user = request.user)
-        petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin)
+        profile = UserProfile.objects.get(user = User.objects.get(username= request.user.username))
+        petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin, user = User.objects.get(username= request.user.username))
     except :
         profile = None
         petitions = None
@@ -190,7 +190,15 @@ def profile_user(request):
     else:
         form = EditProfileForm(request.POST, instance = request.user)
         if form.is_valid():
+            # print("*********************************")
+            # print(request.POST)
+            # print("*********************************")
             form.save()
+            # if profile is not None:
+            #     # print(profile)
+            #     profile.golbal_Admin = request.POST['golbal_Admin']
+            #     # print(profile.golbal_Admin)
+            #     profile.save()
             return redirect(reverse("profile"))
     context={
         'form': form,
@@ -213,9 +221,14 @@ def change_password(request):
             form.save()
             update_session_auth_hash(request, form.user)
             return HttpResponseRedirect(reverse('profile'))
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+    except:
+        profile = None
     context={
         'form': form,
-        'change_password_section': True
+        'change_password_section': True,
+        'profile': profile
     }
     return render(request,
                 template_name,
@@ -236,10 +249,15 @@ def petition_start(request):
             # print(new)
             form.save()
             return redirect(reverse("dashboard"))
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+    except:
+        profile = None
 
     context={
         'create_petition_section': True,
         'form':form,
+        'profile': profile
     }
     return render(request,template_name ,context)
 
@@ -248,14 +266,43 @@ def petition_start(request):
 def User_Petitions(request):
     template_name = "mysite/dashboard.html"
     petitions = Petition.objects.filter(user = request.user)
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+    except:
+        profile = None
     context = {
         'petitions': petitions,
+        'profile': profile,
         'my_petition_view': True
     }
     return render(request,
                 template_name,
                 context
             )
+
+
+# Global Admin see all responses
+@login_required
+def globalAdminResponses(request):
+    template_name = "mysite/dashboard.html"
+    try:
+        profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        if profile.golbal_Admin == "True":
+            petitions = PetitionResponseFeedback.objects.all()
+        else:
+            petitions = PetitionResponseFeedback.objects.filter(user=User.objects.get(username=request.user.username))
+    except:
+        profile = None
+
+    context = {
+        'profile': profile,
+        'petitions': petitions,
+        'global_admin_section_petitions' :True
+    }
+    return render(request,
+                  template_name,
+                  context)
+
 
 # Petition Feedback Response View
 @login_required
@@ -272,6 +319,7 @@ def PetitionResponseFeedbackView(request, petition_id):
             )
             if created:
                 feedback_obj.Feedback = request.POST['Feedback']
+                feedback_obj.response = request.POST['response']
                 feedback_obj.save()
                 return redirect("dashboard")
             feedback_obj.save()
@@ -293,9 +341,14 @@ def commendation_start(request):
             new.save()
             form.save()
             return redirect('dashboard')
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+    except:
+        profile = None
     context={
         'form':form,
         'create_commendation_section': True,
+        'profile':profile
     }
     return render(request, template_name,context)
 
@@ -304,9 +357,14 @@ def commendation_start(request):
 def All_Commendations(request):
     template_name="mysite/commendations.html"
     commendations = Commendation.objects.all()
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+    except:
+        profile = None
     context={
         'commendations':commendations,
-        'commendations_section': True
+        'commendations_section': True,
+        'profile':profile
     }
     return render(request,
                 template_name,
@@ -327,6 +385,7 @@ def CommendationResponseFeedbackView(request, commendation_id):
             )
             if created:
                 feedback_obj.Feedback = request.POST['Feedback']
+                feedback_obj.response = request.POST['response']
                 feedback_obj.save()
                 return redirect("all-commendations-url")
             feedback_obj.save()
@@ -339,11 +398,81 @@ def CommendationResponseFeedbackView(request, commendation_id):
 def User_Commendation(request):
     template_name = "mysite/commendations.html"
     commendations = Commendation.objects.filter(user = request.user)
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+    except:
+        profile = None
     context = {
         'commendations': commendations,
-        'my_commendation_view': True
+        'my_commendation_view': True,
+        'profile':profile
     }
     return render(request,
                 template_name,
                 context
             )
+
+@login_required
+def globalAdminResponsesCommendations(request):
+    template_name = "mysite/commendations.html"
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+        if profile.golbal_Admin == "True":
+            commendations = CommendationResponseFeedback.objects.all()
+        else:
+            commendations = CommendationResponseFeedback.objects.filter(user=User.objects.get(username=request.user.username))
+    except:
+        profile = None
+    context = {
+        'commendations': commendations,
+        'my_commendation_view_global': True,
+        'profile':profile
+    }
+    return render(request,
+                template_name,
+                context
+            )
+
+
+# Approved Petiton By Global Admin
+@login_required
+def approved_petition(request, petition_id):
+    if request.method != "POST":
+        return redirect("globalAdminResponses_URL")
+    else:
+        try:
+            profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+            if profile.golbal_Admin == "True":
+                petition = Petition.objects.get(id=petition_id)
+                if request.POST.get("response", None) is None:
+                    petition.approve = False
+                elif "on" in request.POST['response']:
+                    petition.approve = True
+                petition.save()
+                return redirect("globalAdminResponses_URL")
+            else:
+                return redirect("globalAdminResponses_URL")
+        except:
+            return redirect("dashboard")
+        
+# Approved Commendation By Global Admin
+@login_required
+def approved_commendation(request, commendation_id):
+    if request.method != "POST":
+        return redirect("globalAdminResponsesCommendations_URL")
+    else:
+        try:
+            profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+            if profile.golbal_Admin == "True":
+                commendation = Commendation.objects.get(id=commendation_id)
+                # print(request.POST)
+                if request.POST.get("response", None) is None:
+                    commendation.approve = False
+                elif "on" in request.POST['response']:
+                    commendation.approve = True
+                commendation.save()
+                return redirect("globalAdminResponsesCommendations_URL")
+            else:
+                return redirect("globalAdminResponsesCommendations_URL")
+        except:
+            return redirect("dashboard")

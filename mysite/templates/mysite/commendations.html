@@ -2,6 +2,7 @@
 {% load static %}
 {% load FindCommendationResponseTrue %}
 {% load FindCommendationResponseDate %}
+{% load FindCommendationResponse %}
 {% block title %}
     {% if my_petition_view %}
         Voice It Out - User Petitions
@@ -9,6 +10,8 @@
         Voice It Out - Create Petition
     {% elif commendations_section %}
         Voice It Out - User Commendations
+    {% elif my_commendation_view_global %}
+    Voice It Out - Commendation Responses
     {% else %}
         Voice It Out - User Dashboard
     {% endif %}
@@ -27,6 +30,13 @@
                         </i>
                     </div>
                     <div>Commendations
+                        <br>
+                        <span>
+                        Total Submitted Responses: {% with total=commendations.count %}
+                        <button  class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary" >{{ total }} Reponse{{ total|pluralize }}</button>
+                        {% endwith %}
+                        </span>
+
                        
                     </div>
                 </div>
@@ -80,55 +90,79 @@
                 <div class="card-body">
                     <table style="width: 100%;" id="example"
                         class="table table-hover table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Commendation Coverage</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Commendation Attendant</th>
-                                <th>Description</th>
-                                {% if commendations_section %}
-                                    
-                                    <th>Response</th>
-                                {% endif %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for commendation in commendations %}
+                        {% if my_commendation_view_global %}
+                            <thead>
                                 <tr>
-                                    <td>{{ commendation.Commendation_Coverage }}</td>
-                                    <td>{{ commendation.Commendation_Title }}</td>
-                                    <td>{{ commendation.Commendation_Category }}</td>
-                                    <td>{{ commendation.Action_Person }}</td>
-                                    <td>{{ commendation.Expalnation|truncatechars_html:"50"|striptags }}</td>
+                                    <th>Commendation User</th>
+                                    <th>Commendation Title</th>
+                                    <th>Commendation Coverage Admin</th>
+                                    <th>Commendation Feedback</th>
+                                    <th>Commendation Response</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if commendations %}
+                                    {% for commendation in commendations %}
+                                    <tr>
+                                        <td>{{ commendation.user }}</td>
+                                        <td>
+                                            <button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal_{{ commendation.commendation.id }}_{{ commendation.commendation.timestamp|slugify }}_details_Commendation" title="View Complete Commendation" >
+                                                {{ commendation.commendation }}
+                                            </button>
+                                        </td>
+                                        <td>{{ commendation.Coverage_Admin }}</td>
+                                        <td>{{ commendation.Feedback|safe|escape|truncatechars_html:"50" }}</td>
+                                        <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal_{{ commendation.id }}_{{ commendation.timestamp|slugify }}_response" title="View Commendation Response" >{{ commendation.response }}</button></td>
+                                            
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        {% else %}
+                            <thead>
+                                <tr>
+                                    <th>Commendation Coverage</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Commendation Attendant</th>
+                                    <th>Description</th>
                                     {% if commendations_section %}
-                                    
-                                                    
-                                        {% if not request.user.id|FindCommendationResponseTrue:commendation.id  %}
-                                            {% if  commendation.id|FindCommendationResponseDate %}
-                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ commendation.Commendation_Title|slugify  }}{{ commendation.id }}">Response</button></td>
-                                            {% else %}
-                                                <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button></td>
-                                            {% endif %}
-                                        {% else %}
-                                            <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Done</button></td>
-                                        {% endif %}
+                                        
+                                        <th>Response</th>
                                     {% endif %}
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Commendation Coverage</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Commendation Attendant</th>
-                                <th>Description</th>
-                                {% if commendations_section %}
-                                    <th>Response</th>
-                                {% endif %}
-                            </tr>
-                        </tfoot>
+                            </thead>
+                            <tbody>
+                                {% for commendation in commendations %}
+                                    <tr>
+                                        <td>{{ commendation.Commendation_Coverage }}</td>
+                                        <td>{{ commendation.Commendation_Title }}</td>
+                                        <td>{{ commendation.Commendation_Category }}</td>
+                                        <td>{{ commendation.Action_Person }}</td>
+                                        <td>{{ commendation.Expalnation|truncatechars_html:"50"|striptags }}</td>
+                                        {% if commendations_section %}
+                                        
+                                                        
+                                            {% if not request.user.id|FindCommendationResponseTrue:commendation.id  %}
+                                                {% if  commendation.id|FindCommendationResponseDate %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ commendation.Commendation_Title|slugify  }}{{ commendation.id }}">Response</button></td>
+                                                {% else %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button></td>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if request.user.id|FindCommendationResponse:commendation.id == "True"  %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Yes</button></td>
+                                                {% else %}
+                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >No</button></td>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        {% endif %}
+
                     </table>
                 </div>
             </div>

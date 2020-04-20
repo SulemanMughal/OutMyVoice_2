@@ -119,4 +119,17 @@ urlpatterns = [
         name="Self-Commendation"
     ),
 
+    # Global Admin Petitons Responses URL
+    path("view-peition-responses-admin-global", views.globalAdminResponses, name="globalAdminResponses_URL"),
+
+    # Global Admin Commendations Responses URL
+    path("view-peition-commendation-admin-global", views.globalAdminResponsesCommendations, name="globalAdminResponsesCommendations_URL"),
+
+
+    # Approve Petition by Global Admin
+    path("approve-petition/<int:petition_id>", views.approved_petition, name="approved_petition_URL"),
+    
+    # Approve Commendation by Global Admin
+    path("approve-commendation/<int:commendation_id>", views.approved_commendation, name="approved_commendation_URL")
+
 ]

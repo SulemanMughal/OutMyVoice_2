@@ -71,6 +71,16 @@ ACTION_PERSON_CHOICES= (
 )
 
 
+GLOBAL_ADMIN_CHOICES = (
+    ("True", "Yes"),
+    ("False", "No")
+)
+
+PETITION_RESPONSE_CHOICES = (
+    ("True", "Yes"),
+    ("False", "No")
+)
+
 # Create your models here.
 
 # Petition Model
@@ -94,6 +104,7 @@ class Petition(models.Model):
 class  UserProfile(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     Coverage_Admin = models.CharField(max_length=100,choices=COVERAGE_CHOICES )
+    golbal_Admin = models.CharField(max_length = 6, choices = GLOBAL_ADMIN_CHOICES, default="False")
     
     def __str__(self):
         return "{user}-{admin}".format(user=self.user.username, admin = self.Coverage_Admin)
@@ -104,6 +115,7 @@ class PetitionResponseFeedback(models.Model):
     petition = models.ForeignKey(Petition, on_delete=models.CASCADE)
     Coverage_Admin = models.CharField(max_length=100,choices=COVERAGE_CHOICES )
     Feedback =  RichTextUploadingField()
+    response = models.CharField(max_length=6, choices= PETITION_RESPONSE_CHOICES, default = "False")
     timestamp = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -116,7 +128,7 @@ class Commendation(models.Model):
     Commendation_Title          =       models.CharField(max_length=100)
     Commendation_Category       =       models.CharField(max_length=100,choices=CATEGORY_CHOICES)
     Commendation_Category_Other =       models.CharField(max_length=100, blank=True)
-    Action_Person               =       models.CharField(max_length=100)
+    Action_Person               =       models.CharField(max_length=100, choices=ACTION_PERSON_CHOICES)
     Action_Person_Other         =       models.CharField(max_length=100, blank=True)
     Expalnation                 =       RichTextUploadingField() 
     Image                       =       models.ImageField(blank=True)
@@ -132,6 +144,7 @@ class CommendationResponseFeedback(models.Model):
     commendation = models.ForeignKey(Commendation, on_delete=models.CASCADE)
     Coverage_Admin = models.CharField(max_length=100,choices=COVERAGE_CHOICES )
     Feedback =  RichTextUploadingField()
+    response = models.CharField(max_length=6, choices= PETITION_RESPONSE_CHOICES, default = "False")
     timestamp = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
