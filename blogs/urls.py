@@ -23,7 +23,7 @@ urlpatterns = [
     ),
     
     # BLog Post Form View URL
-    url(r'^blog/',
+    url(r'^create-a-blog/',
         views.blogFormView,
         name='blog'
     ),

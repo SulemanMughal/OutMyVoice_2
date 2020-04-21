@@ -140,6 +140,7 @@ def blogFormView(request):
     context={
     #'reply': reply,
     'form':form,
+    'blog_write':True
 
     }
     return render(request,'blogform.html',context)

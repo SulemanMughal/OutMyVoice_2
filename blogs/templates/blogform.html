@@ -1,8 +1,13 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% extends 'mysite/base.html' %}
+{% load static %}
 
-<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+{% block title %}Voice It Out | Write A  Blog {% if search_section %} Search {% endif %}{% endblock %}
 
-<div class="container">
+{% block content %}
+
+
+
+<div class="container mt-5 mb-5">
     
         {% if form.errors %}
         {% for field in form %}
@@ -13,7 +18,7 @@
         {% endfor %}
         {% endfor %}
         {% endif %}
-    <form method="POST" enctype='multipart/form-data'>
+    <form method="POST" enctype='multipart/form-data' action="{% url 'blog' %}">
         {% csrf_token %}
         
         <div class="card" style=" width: auto;">
@@ -72,8 +77,14 @@
     <br>
 
 </div>
+
+
+
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+
 <script>
     CKEDITOR.replace( 'editor1' );
 </script>
 
+{% endblock %}
 
