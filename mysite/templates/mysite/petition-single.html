@@ -1,6 +1,11 @@
 {% extends 'mysite/base.html' %}
 {% load static %}
-{% block title %}{{ blogs.title|truncatechars:20 }}{% endblock %}
+{% block title %}
+
+{{ petition.Petition_Title|truncatechars:20 }}
+
+
+{% endblock %}
 {% block content %}
 
     <!--Page Title-->
@@ -10,19 +15,21 @@
         <div class="banner-inner">
             <div class="auto-container">
                 <div class="inner-container clearfix">
+                    <!-- Petition Coutner Here -->
                     <div class="meta-info clearfix">
                         <a href="#"><span class="fa fa-comment"></span>
-                            {% with total=blogs.blogcomment_set.count %}
+                            {% with total=petition.petition_signer_set.all.count %}
                             {{ total }} Comment{{ total|default:1|pluralize }}
                             {% endwith %}
                         </a>
                     </div>
-                    <h1>{{ blogs.title|linebreaksbr|linebreaks   }}</h1>
+                    <!-- End -->
+                    <h1>{{ petition.Petition_Title   }}</h1>
                     <div class="author-info clearfix">
-                        <div class="author-icon fa-1x" ><span class="flaticon-user-3  fa-2x"></span> By {{ blogs.author.username|capfirst  }}</div>
+                        <div class="author-icon fa-1x" ><span class="flaticon-user-3  fa-2x"></span> By {{ petition.user.username|capfirst  }}</div>
                     </div>
                     <div class="other-info clearfix">
-                        <div class="date"><span>{{ blogs.created_at|timesince }}</span></div>
+                        <div class="date"><span>{{ petition.timestamp|timesince }}</span></div>
                     </div>
                 </div>
             </div>
@@ -39,9 +46,9 @@
                         <div class="single-post">
                             <div class="post-details">
                                 <div class="main-image-box">
-                                    <figure class="image"><img src="/media/{{ blogs.image }}" alt=""></figure>
+                                    <figure class="image"><img src="/media/{{ petition.Image }}" alt=""></figure>
                                 </div>
-                               {{ blogs.description|safe|escape  }}
+                               {{ petition.Expalnation|safe|escape  }}
                             </div>
 
                             <div class="share-post">
@@ -63,64 +70,33 @@
                             <!-- End Post Controls -->
 
                             <div class="comments-area">
+                                
+                                <!-- petitoin_counter_commment_section -->
                                 <div class="group-title">
-                                    {% with total=blogs.blogcomment_set.count %}
+                                    {% with total=petition.petition_signer_set.all.count %}
                                     <h2>Comment{{ total|default:1|pluralize }} <span>- {{ total }}</span></h2>
                                     {% endwith %}
                                     
                                 </div>
-                                {% if blogs.blogcomment_set.all %}
-                                {% for comment in blogs.blogcomment_set.all %}
+                                <!-- End -->
+
+                                {% if petition.petition_signer_set.all %}
+                                {% for comment in petition.petition_signer_set.all %}
+                                    {% if  comment.show_comment %}
                                     <div class="comment-box">
                                         <div class="comment">
                                             <div class="author-thumb">
                                                 <figure class="thumb"><img src="{% static 'mysite/images/resource/author-image-6.jpg' %}" alt=""></figure>
                                             </div> 
                                             <div class="info">
-                                                <span class="name">{{ comment.name|capfirst }}</span>
-                                                <span class="date">{{ comment.post_date|timesince }}</span>
+                                                <span class="name">{{ comment.Name|capfirst }}</span>
+                                                <span class="date">{{ comment.timestamp|timesince }} ago</span>
                                             </div>
-                                            <div class="text">{{  comment.description|safe }}</div>
-                                            {% if comment.blogreply_set.all %}
-                                                
-                                                {% for reply in comment.blogreply_set.all %}
-                                                    <div class="default-form comment-form ml-4 mb-3 mt-4" >
-                                                            <div class="comment">
-                                                                <div class="author-thumb">
-                                                                    <figure class="thumb"><img src="{% static 'mysite/images/resource/author-image-6.jpg' %}" alt=""></figure>
-                                                                </div> 
-                                                                <div class="info">
-                                                                    <span class="name">{{ reply.name|capfirst }}</span>
-                                                                    <span class="date">{{ reply.post_date|timesince }}</span>
-                                                                </div>
-                                                                <div class="text">{{  reply.description|safe }}</div>
-                                                            </div>
-                                                        
-                                                    </div>
-                                                {% endfor %}
-                                                <div class="reply-link mb-2 ml-2" style="cursor: pointer;"><li id="{{ comment }}_reply_{{ comment.post_date }}" data-toggle="#reply_form_{{ comment|slugify }}_reply_{{ comment.post_date|slugify }}" onclick="$($(this).attr('data-toggle')).toggle();">Reply</li></div>
-                                                {% else %}
-                                                <div class="reply-link mb-2" style="cursor: pointer;"><li id="{{ comment }}_reply_{{ comment.post_date }}" data-toggle="#reply_form_{{ comment|slugify }}_reply_{{ comment.post_date|slugify }}" onclick="$($(this).attr('data-toggle')).toggle();">Reply</li></div>
-                                            {% endif %}
-                                            
-                                            <div class="default-form comment-form ml-4" id="reply_form_{{ comment|slugify }}_reply_{{ comment.post_date|slugify }}" style="display: none;">
-                                                    <form method="POST" action="{% url 'reply' comment.id  blogs.slug %}">
-                                                        {% csrf_token %}
-                                                        <div class="row clearfix">
-                                                            <div class="col-md-5 col-sm-5 form-group">
-                                                                <textarea name="description" placeholder="Your Reply" style="width:300px; height:50px; " required=""></textarea>
-                                                            </div>
-                                                            <div class="col-md-5 col-sm-5 form-group">
-                                                                <input type="text" name="name" value="{{ request.user.username }}" autocomplete="off" hidden>
-                                                                <input type="email" name="email" value="{{ request.user.email }}" autocomplete="off" hidden>
-                                                            <button type="submit" class="theme-btn btn-style-one mt-0" style="height:50px;"><span class="btn-title">Submit Now</span></button>
-                                                        </div>
-                                                        </div>
-                                                    </form>
-                                            </div>
+                                            <div class="text">{{  comment.Reason|safe }}</div>
 
                                         </div>
                                     </div>
+                                    {% endif %}
                                 {% endfor %}
 
                                 {% endif %}
@@ -134,20 +110,24 @@
                                 </div>
                                 
                                 <div class="default-form comment-form">
-                                    <form method="post" action="{% url 'detail' blogs.slug %}">
+                                    <form method="post" action="{% url 'LivePetitionSignature_URL' petition.id %}">
                                         {% csrf_token %}
                                         <div class="row clearfix">
 
                                             <div class="col-md-12 col-sm-12 form-group">
-                                                <textarea name="description" placeholder="Your Comments"></textarea>
+                                                <textarea name="Reason" placeholder="Your Comments"></textarea>
                                             </div>
 
                                             <div class="col-md-6 col-sm-12 form-group">
-                                                <input type="text" name="name" placeholder="Name*" required="" autocomplete="off">
+                                                <input type="text" name="Name" placeholder="Name*" required="" autocomplete="off">
                                             </div>
                                             
                                             <div class="col-md-6 col-sm-12 form-group">
-                                                <input type="email" name="email" placeholder="Email *" required="" autocomplete="off">
+                                                <input type="email" name="Email" placeholder="Email *" required="" autocomplete="off">
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 form-group">
+                                                <input type="checkbox" class="custom-control-input" name="show_comment" id="customCheck1">
+                                                <label class="custom-control-label" for="customCheck1">Show Comment</label>
                                             </div>
                     
                                             <div class="col-md-12 col-sm-12 form-group">
@@ -186,22 +166,49 @@
                             </div>
                         </div>
 
-                        {% if request.user.is_authenticated %}
+
                         <div class="sidebar-widget cat-widget">
                             <div class="widget-content">
                                 <div class="sidebar-title">
-                                    <h4>Self Blogs</h4>
+                                    <h4>Petition Coverage</h4>
                                 </div>
                                 <ul class="cat-links">
-                                    <li {% if blog_all_section %} class="current" {% endif %}><a href="{% url 'list' %}">All Blogs</a></li>
-                                    <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'self_blogs_url' %}">My Blogs</a></li>
-                                    {% if blogs.author == request.user %}
-                                        <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'blog_editing' blogs.id %}">Edit Current Blog</a></li>
+                                    
+                                        <li ><a href="#">{{ petition.Petition_Coverage }}</a></li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-widget cat-widget">
+                            <div class="widget-content">
+                                <div class="sidebar-title">
+                                    <h4>Petition Category</h4>
+                                </div>
+                                <ul class="cat-links">
+                                    {% if petition.Petition_Category %}
+                                        <li ><a href="#">{{ petition.Petition_Category }}</a></li>
+                                    {% elif petition.Petition_Category_Other %}
+                                        <li ><a href="#">{{ petition.Petition_Category_Other }}</a></li>
                                     {% endif %}
                                 </ul>
                             </div>
                         </div>
-                        {% endif %}
+                        <div class="sidebar-widget cat-widget">
+                            <div class="widget-content">
+                                <div class="sidebar-title">
+                                    <h4>Petition Action Person</h4>
+                                </div>
+                                <ul class="cat-links">
+                                    {% if petition.Action_Person %}
+                                        <li ><a href="#">{{ petition.Action_Person }}</a></li>
+                                    {% elif petition.Action_Person_Other %}
+                                        <li ><a href="#">{{ petition.Action_Person_Other }}</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        
 
                     </aside>
                 </div>

@@ -10,12 +10,12 @@ from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 
 class Blog(models.Model):
-    author      =       models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    title       =       models.CharField(max_length=1000)
-    slug        =       models.CharField(max_length=1000)
+    author      =       models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
+    title       =       models.CharField(max_length=1000 , blank=False)
+    slug        =       models.CharField(max_length=1000, blank=False)
     image       =       models.ImageField(blank=True)
     video       =       EmbedVideoField(blank=True)
-    description =       RichTextUploadingField()
+    description =       RichTextUploadingField( blank=True)
     created_at  =       models.DateTimeField(auto_now_add=True)
     updated     =       models.DateTimeField(auto_now=True)
     publish     =       models.BooleanField(blank=True,default=False)

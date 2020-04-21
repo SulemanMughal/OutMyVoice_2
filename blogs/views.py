@@ -18,11 +18,9 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
 
 # Blog Post List View
-@login_required
 def BlogList(request):
-    blog = Blog.objects.all()
+    blog = Blog.objects.filter(publish = True)
     paginator = Paginator(blog ,10, allow_empty_first_page=True)
-
     page = request.GET.get('page', 1)
     try:
         blogs = paginator.page(page)
@@ -40,7 +38,6 @@ def BlogList(request):
 
 
 # Blog Post Detail View
-@login_required
 def BlogDetail(request,slug):
     lis   = Blog.objects.all()
     blogs = Blog.objects.get(slug=slug)
@@ -150,6 +147,7 @@ def blogFormView(request):
 # Self Blogs
 @login_required
 def self_Blogs(request):
+    template_name="blog-list-sidebar.html"
     blog = Blog.objects.filter(author=User.objects.get(username=request.user.username))
     paginator = Paginator(blog ,10, allow_empty_first_page=True)
     page = request.GET.get('page', 1)
@@ -162,31 +160,24 @@ def self_Blogs(request):
     context = {
         'blogs':blogs,
         'blog':blog,
-        # 'blog_all_section': True,
         'self_blogs':True,
         'paginator': paginator,
     }
-    return render(request,'blog-list-sidebar.html',context)
+    return render(request,
+                template_name,
+                context
+            )
 
-
-
-
-# Blog  Post Form View
+# Blog Post Form View
 @login_required
 def blogFormViewEditing(request, blog_id):
+    template_name="blogform_edit.html"
     try:
         obj = Blog.objects.get(id=blog_id, author = User.objects.get(username=request.user.username))
         if request.method!='POST':
-            # print(obj)
             form = blogform(instance = obj)
-            # print(form)
         else:
-            print("********************************************")
-            print("********************************************")
-            print(request.POST, request.FILES)
-            print("********************************************")
             form = blogform(request.POST, request.FILES, instance = obj)
-            # print(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
                 return redirect(reverse("detail", args=[obj.slug]))
@@ -195,7 +186,9 @@ def blogFormViewEditing(request, blog_id):
             'form' : form,
             'obj': obj
         }
-        return render(request,'blogform_edit.html',context)
+        return render(request,
+                    template_name,
+                    context
+                )
     except Exception as e:
-        # print(e)
         return redirect("list")

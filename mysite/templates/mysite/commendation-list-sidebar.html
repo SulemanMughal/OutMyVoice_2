@@ -6,7 +6,12 @@
 {% if blog_all_section %}
     Voice It Out | Blog {% if search_section %} Search {% endif %}
 {% elif self_blogs %}
+
 Voice It Out | User Blog {% if search_section %} Search {% endif %}
+
+{% elif liveCommendation_Section  %}
+Voice It Out | Live Commendation
+
 {% else %}
 Voice It Out | Blog {% if search_section %} Search {% endif %}
 {% endif %}
@@ -21,14 +26,7 @@ Voice It Out | Blog {% if search_section %} Search {% endif %}
     <div class="banner-inner">
         <div class="auto-container">
             <div class="inner-container clearfix">
-                <h1>News Large Image</h1>
-                <div class="page-nav">
-                    <ul class="bread-crumb clearfix">
-                        <li><a href="{% url 'home_page' %}">Home</a></li>
-                        <li><a href="{% url 'blog' %}">Write A Blog</a></li>
-                        <li class="active">Blog</li>
-                    </ul>
-                </div>
+                <h1>Live Commendations</h1>
             </div>
         </div>
     </div>
@@ -52,18 +50,14 @@ Voice It Out | Blog {% if search_section %} Search {% endif %}
                 <div class="content-inner">
                     <div class="blog-posts">
                         <!--News Block Section-->
-                        {% for blog in blogs %}
+                        {% for commendation in commendations %}
                         <div class="news-block-four">
                             <div class="inner-box">
                                 <div class="image-box">
-                                    <figure class="image"><img src="/media/{{ blog.image }}" alt=""></figure>
-                                    <div class="date"><span>{{ blog.created_at|timesince }}</span></div>
+                                    <figure class="image"><img src="/media/{{ commendation.Image }}" alt=""></figure>
+                                    <div class="date"><span>{{ commendation.timestamp|timesince }}</span></div>
                                     <div class="hover-box">
-                                        
-                                        {% if self_blogs %}
-                                            <div class="more-link mb-5"><a href="{% url 'blog_editing' blog.id %}">Edit</a></div>
-                                        {% endif %}
-                                        <div class="more-link"><a href="{% url 'detail' blog.slug %}">Read More</a></div>
+                                        <div class="more-link"><a href="{% url 'LiveCommendationsDetails_URL' commendation.id  %}">Read More</a></div>
                                         
                                         
                                         
@@ -72,20 +66,13 @@ Voice It Out | Blog {% if search_section %} Search {% endif %}
                                 </div>
                                 <div class="lower-box">
                                     <div class="upper-info">
-                                        <h2><a href="{% url 'detail' blog.slug %}">{{ blog.title|truncatechars:30 }}</a></h2>
-                                        <div class="cat-info">
-                                            <a href="#"><span class="fa fa-comment"></span>
-                                                {% with total=blog.blogcomment_set.count %}
-                                                {{ total }} Comment{{ total|default:1|pluralize }}
-                                                {% endwith %}
-                                            </a>
-                                        </div>
+                                        <h2><a href="#">{{ commendation.Commendation_Title|truncatechars:30 }}</a></h2>
                                     </div>
-                                    <div class="text">{{ blog.description|striptags|truncatechars:100 }}</div>
+                                    <div class="text">{{ commendation.Expalnation|safe|truncatechars:220 }}</div>
                                     <div class="meta-info clearfix">
                                         <div class="author-info clearfix">
                                             <div class="author-icon"><span class="flaticon-user-3"></span></div>
-                                            <div class="author-title">By {{ blog.author.username }}</div>
+                                            <div class="author-title">By {{ commendation.user.username }}</div>
                                         </div>
                                         <div class="share-it">
                                             <a class="share-btn" href="#"><span class="icon flaticon-share"></span></a>
@@ -105,21 +92,21 @@ Voice It Out | Blog {% if search_section %} Search {% endif %}
                         <!-- End News Block Section -->
                     </div>
                     <!--Pagination-->
-                    {% if blogs.has_other_pages %}
+                    {% if commendation.has_other_pages %}
                         <div class="pagination-box text-center">
                                 <ul class="styled-pagination">
-                                {% if blogs.has_previous %}
-                                    <li class="prev"><a href="?page={{ blogs.previous_page_number }}"><span class="icon flaticon-arrows-1"></span> Prev</a></li>
+                                {% if commendation.has_previous %}
+                                    <li class="prev"><a href="?page={{ commendation.previous_page_number }}"><span class="icon flaticon-arrows-1"></span> Prev</a></li>
                                 {% endif %}
-                                {% for i in blogs.paginator.page_range %}
-                                    {% if blogs.number == i %}
+                                {% for i in commendation.paginator.page_range %}
+                                    {% if commendation.number == i %}
                                     <li class="active"><a href="?page={{ i }}" class="active">{{ i }}</a></li>
                                     {% else %}
                                     <li><a href="?page={{ i }}">{{ i }}</a></li>
                                     {% endif %}
                                 {% endfor %}
-                                {% if blogs.has_next %}
-                                    <li class="next"><a href="?page={{ blogs.next_page_number }}">Next <span class="icon flaticon-right-2"></span></a></li>
+                                {% if commendation.has_next %}
+                                    <li class="next"><a href="?page={{ commendation.next_page_number }}">Next <span class="icon flaticon-right-2"></span></a></li>
                                 {% endif %}
                                 </ul>
                                 
@@ -130,6 +117,9 @@ Voice It Out | Blog {% if search_section %} Search {% endif %}
                 </div>
             </div>
 
+
+
+            
             <!--Sidebar Side-->
             <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
                 <aside class="sidebar">
@@ -154,22 +144,10 @@ Voice It Out | Blog {% if search_section %} Search {% endif %}
                             </form>
                         </div>
                     </div>
-                    {% if request.user.is_authenticated %}
-                    <div class="sidebar-widget cat-widget">
-                        <div class="widget-content">
-                            <div class="sidebar-title">
-                                <h4>Self Blogs</h4>
-                            </div>
-                            <ul class="cat-links">
-                                <li {% if blog_all_section %} class="current" {% endif %}><a href="{% url 'list' %}">All Blogs</a></li>
-                                <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'self_blogs_url' %}">My Blogs</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    {% endif %}
 
                 </aside>
             </div>
+
 
         </div>
     </div>

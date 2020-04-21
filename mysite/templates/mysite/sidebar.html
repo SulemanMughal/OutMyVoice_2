@@ -16,6 +16,9 @@
                     </li>
                 {% endif %}
             {% endif %}
+            <li {% if livePetition_Section %} class="mm-active" {% endif %}>
+                <a href="{% url 'LivePetitions_URL' %}"><i class="metismenu-icon fa fa-eye"></i>Petiton Lives</a>
+            </li>
             <li  {% if create_petition_section %} class="mm-active" {% endif %}>
                 <a href="{% url 'Start-a-Petition' %}"><i class="metismenu-icon fa fa-plus-circle"></i>Create Petition</a>
             </li>
@@ -33,6 +36,10 @@
                     </li>
                 {% endif %}
             {% endif %}
+
+            <li>
+                <a href="{% url 'LiveCommendations_URL' %}"><i class="metismenu-icon fa fa-eye"></i>Commendation Lives</a>
+            </li>
 
             <li {% if create_commendation_section %}class="mm-active" {% endif %}>
                 <a href="{% url 'Start-a-Commendation' %}"><i class="metismenu-icon fa fa-plus-circle"></i>Make Commendation</a>

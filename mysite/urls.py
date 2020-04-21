@@ -149,4 +149,34 @@ urlpatterns = [
     
     # Commendation Details View
     path('view-specific-commendation/<int:commendation_id>/', views.Commendation_Details, name="Commendation_Details"),
+    
+    # Petitions Live View URL (Both Auth and Unauth)
+    path('live-petitions',
+        views.LivePetitions,
+        name="LivePetitions_URL"),
+    
+    # Petitions Live Detail View URL (Both Auth and Unauth)
+    path('live-petitions-deatil-view/<int:petition_id>/',
+        views.LivePetitionsDetailView,
+        name="LivePetitionsDetails_URL"),
+    
+    # Petitions Live Detail View Comment URL (Both Auth and Unauth)
+    path('live-petitions-signature-view/<int:petition_id>/',
+        views.LivePetitionsSignatureView,
+        name="LivePetitionSignature_URL"),
+    
+    # Commendations Live View URL (Both Auth and Unauth)
+    path('live-commendations',
+        views.LiveCommendationsView,
+        name="LiveCommendations_URL"),
+    
+    # Commendations Live Detail View URL (Both Auth and Unauth)
+    path('live-commendation-deatil-view/<int:commendation_id>/',
+        views.LiveCommendationsDetailView,
+        name="LiveCommendationsDetails_URL"),
+    
+    # Commendation Live Detail View Comment URL (Both Auth and Unauth)
+    path('live-commendation-signature-view/<int:commendation_id>/',
+        views.LiveCommendationSignatureView,
+        name="LiveCommendationSignature_URL"),
 ]

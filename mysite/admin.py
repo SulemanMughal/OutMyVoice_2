@@ -7,7 +7,8 @@ from .models import (
     UserProfile,
     PetitionResponseFeedback,
     Commendation,
-    CommendationResponseFeedback
+    CommendationResponseFeedback,
+    Petition_Signer
 )
 
 
@@ -85,3 +86,4 @@ admin.site.register(UserProfile)
 admin.site.register(PetitionResponseFeedback, PetitionResponseFeedbackAdmin)
 admin.site.register(Commendation, CommendationAdmin)
 admin.site.register(CommendationResponseFeedback, CommendationResponseFeedbackAdmin)
+admin.site.register(Petition_Signer)

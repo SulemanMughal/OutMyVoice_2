@@ -4,6 +4,7 @@ from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import (
     HttpResponse,
     HttpResponseRedirect
@@ -40,7 +41,9 @@ from .forms import (
     EditProfileForm,
     Petitionform,
     PetitionResponseForm,
-    Commendationform
+    Commendationform, 
+    PetitionSignerform,
+    CommendationSignerform
 )
 
 # Import APP Tokens
@@ -52,8 +55,12 @@ from .models import (
     Petition,
     PetitionResponseFeedback,
     Commendation,
-    CommendationResponseFeedback
+    CommendationResponseFeedback,
+    Commendation_Signer
 )
+
+# Decorators
+# from .decorators import findUserProfile
 
 # Create your views here.
 
@@ -633,3 +640,165 @@ def SpecificCommendationResponse(request, commendation_id):
         return render(request, template_name, context)
     except Exception as e:
         redirect("all-commendations-url")
+
+# Live Petition View Both(Auth and Unauth)
+# @login_required
+def LivePetitions(request):
+    petitions = Petition.approved_objects.all()
+    profile = None
+    template_name="mysite/petition-list-sidebar.html"
+    if request.user.is_authenticated:
+        # template_name="mysite/live_petitions.html"    
+        try:
+            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        except Exception as e:
+        # print(e)
+            return redirect("dashboard")
+        # context=  {
+        # 'petitions': petitions,
+        # 'profile' : profile,
+        # 'livePetition_Section': True
+        # }
+        # return render(request,
+        #                 template_name,
+        #                 context)
+    paginator = Paginator(petitions ,10, allow_empty_first_page=True)
+    page = request.GET.get('page', 1)
+    try:
+        petitions = paginator.page(page)
+    except PageNotAnInteger:
+        petitions = paginator.page(1)
+    except EmptyPage :
+        petitions = paginator.page(paginator.num_pages)
+    context = {
+        'petitions':petitions,
+        'livePetition_Section': True,
+        'paginator': paginator,
+    }
+    return render(request,template_name,context)
+
+
+
+# Live Petition View (Only Unauth)
+# @login_required
+def LivePetitionsDetailView(request, petition_id):
+    profile = None
+    if request.user.is_authenticated:
+        # template_name="mysite/live_petitions.html"    
+        try:
+            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        except Exception as e:
+        # print(e)
+            return redirect("dashboard")
+    template_name="mysite/petition-single.html"
+    try:
+        petition = Petition.approved_objects.get(id=petition_id)
+        template_name="mysite/petition-single.html"
+        context={
+            'livePetition_Section_detail': True,
+            'petition': petition,
+            'profile' : profile   
+        }
+        return render(request, template_name, context)
+    except Exception as e:
+        # print(e)
+        return redirect("LivePetitions_URL")
+    
+# Petitions Live Detail View Comment URL (Only Unauth)
+def LivePetitionsSignatureView(request, petition_id):
+    if request.method != "POST":
+        return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+    try:
+        petition = Petition.approved_objects.get(id=petition_id)
+        form = PetitionSignerform(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.petition = petition
+            obj.save()
+            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+        else:
+            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+    except:
+        return redirect("LivePetitions_URL")
+    
+# Live Commendations View (Both Auth and Unauth)
+def LiveCommendationsView(request):
+    commendations = Commendation.approved_objects.all()
+    profile = None
+    template_name="mysite/commendation-list-sidebar.html"
+    if request.user.is_authenticated:
+        # template_name="mysite/live_petitions.html"    
+        try:
+            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        except Exception as e:
+        # print(e)
+            return redirect("dashboard")
+        # context=  {
+        # 'petitions': petitions,
+        # 'profile' : profile,
+        # 'livePetition_Section': True
+        # }
+        # return render(request,
+        #                 template_name,
+        #                 context)
+    paginator = Paginator(commendations ,10, allow_empty_first_page=True)
+    page = request.GET.get('page', 1)
+    try:
+        petitions = paginator.page(page)
+    except PageNotAnInteger:
+        commendations = paginator.page(1)
+    except EmptyPage :
+        commendations = paginator.page(paginator.num_pages)
+    context = {
+        'commendations':commendations,
+        'liveCommendation_Section': True,
+        'paginator': paginator,
+    }
+    return render(request,template_name,context)
+
+# Commendation Live Detail View (Both Auth and Unauth)
+def LiveCommendationsDetailView(request,commendation_id):
+    profile = None
+    if request.user.is_authenticated:
+        # template_name="mysite/live_petitions.html"    
+        try:
+            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        except Exception as e:
+        # print(e)
+            return redirect("dashboard")
+    template_name="mysite/commendation-single.html"
+    try:
+        commendation = Commendation.approved_objects.get(id=commendation_id)
+        template_name="mysite/commendation-single.html"
+        context={
+            'liveCommendation_Section_detail': True,
+            'commendation': commendation,
+            'profile' : profile   
+        }
+        return render(request, template_name, context)
+    except Exception as e:
+        # print(e)
+        return redirect("LiveCommendations_URL")
+    
+    
+    
+    
+  
+# Commendation Live Detail View Comment URL (Only Unauth)
+def LiveCommendationSignatureView(request, commendation_id):
+    if request.method != "POST":
+        return redirect(reverse("LiveCommendationsDetails_URL", args=[commendation_id]))
+    try:
+        commendation = Commendation.approved_objects.get(id=commendation_id)
+        form = CommendationSignerform(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.commendation = commendation
+            obj.save()
+            return redirect(reverse("LiveCommendationsDetails_URL", args=[commendation_id]))
+        else:
+            print(form.errors)
+            return redirect(reverse("LiveCommendationsDetails_URL", args=[commendation_id]))
+    except:
+        return redirect("LiveCommendations_URL")
+    

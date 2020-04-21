@@ -20,6 +20,7 @@
     <link rel="icon" href="{% static 'mysite/images/ndm.png' %}" type="image/x-icon">
 
     <title>{% block title %}Voice It Out{% endblock %}</title>
+
 </head>
 
 <body>
@@ -67,13 +68,24 @@
                                         <ul class="navigation clearfix">
                                             <li {% if home_section %} class="current" {% endif %}><a href="{% url 'home_page' %}">Home</a>
                                             </li>
-                                            <li class=""><a href="{% url 'Start-a-Petition' %}">Start Petition</a>
+                                            <li class=" {%  if livePetition_Section or livePetition_Section_detail %} current {% endif %} dropdown"><a href="{% url 'LivePetitions_URL' %}">Petitions</a>
+                                                <ul>
+                                                    <li><a href="{% url 'Start-a-Petition' %}">Create Petition</a></li>
+                                                    <li ><a href="{% url 'LivePetitions_URL' %}">Live Petition</a></li>
+                                                </ul>
                                             </li>
-                                            <li {% if create_commendation_section %}class="current" {% endif %}><a href="{% url 'Start-a-Commendation' %}">Start Commendation</a>
+
+                                            <li class="{% if liveCommendation_Section or liveCommendation_Section_detail %}current{% endif %} dropdown"><a href="#">Commendation</a>
+                                                <ul>
+                                                    <li><a href="{% url 'Start-a-Commendation' %}">Create Commendation</a></li>
+                                                    <li ><a href="{% url 'LiveCommendations_URL' %}">Live Commendation</a></li>
+                                                </ul>
                                             </li>
+
                                             <li {% if blog_all_section or blog_write or blog_detail_section %}class="current"{% endif %}><a href="{% url 'list' %}">Blog</a>
-                                                     
                                             </li>
+
+                                            
                                             {% if user.is_authenticated %}
                                                 <li {% if dashboard_section %}class="current" {% endif %}><a href="{% url 'dashboard' %}">Dashboard</a></li>
                                                 <li><a href="{% url 'logout_user_url' %}">Logout</a></li>

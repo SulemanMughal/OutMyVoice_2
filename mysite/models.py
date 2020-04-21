@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth  import get_user_model
 from ckeditor_uploader.fields import RichTextUploadingField
-
+from .managers import ApprovedManager, showCommentsManager, ApprovedCommendationManager, showCommentsCommendationManager
 
 COVERAGE_CHOICES =  (
     ('Nigeria','Nigeria'),
@@ -97,6 +97,9 @@ class Petition(models.Model):
     approve                 =       models.BooleanField(blank=True, default=False)
     timestamp               =       models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
+    approved_objects = ApprovedManager()
+
     def __str__(self):
         return self.Petition_Title
 
@@ -135,6 +138,9 @@ class Commendation(models.Model):
     approve                     =       models.BooleanField(blank=True, default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
+    approved_objects = ApprovedCommendationManager()
+
     def __str__(self):
         return self.Commendation_Title
 
@@ -149,3 +155,36 @@ class CommendationResponseFeedback(models.Model):
     
     def __str__(self):
         return "{user}-{petition}-response".format(user=self.user.username, petition = self.commendation.Commendation_Title)
+    
+    
+# Petition Live Signature Model  
+class Petition_Signer(models.Model):
+    Name                    =       models.CharField(max_length=100)
+    Email                   =       models.CharField(max_length=100)
+    Reason                  =       models.TextField(blank=True) 
+    show_comment            =       models.BooleanField(blank=True, default=True)
+    petition = models.ForeignKey(Petition, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
+    approved_objects = showCommentsManager()
+
+    def __str__(self):
+        return self.Name
+
+  
+# Petition Live Signature Model  
+class Commendation_Signer(models.Model):
+    Name                    =       models.CharField(max_length=100)
+    Email                   =       models.CharField(max_length=100)
+    Reason                  =       models.TextField(blank=True) 
+    show_comment            =       models.BooleanField(blank=True, default=True)
+    commendation = models.ForeignKey(Commendation, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
+    approved_objects = showCommentsCommendationManager()
+
+    def __str__(self):
+        return self.Name
+

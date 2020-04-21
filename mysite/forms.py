@@ -8,7 +8,9 @@ from .models import (
     Petition,
     PetitionResponseFeedback,
     Commendation,
-    CommendationResponseFeedback
+    CommendationResponseFeedback,
+    Petition_Signer,
+    Commendation_Signer
 )
 from django.contrib.auth.forms import (
     UserCreationForm, 
@@ -130,4 +132,25 @@ class CommendationResponseFeedbackForm(forms.ModelForm):
         model=CommendationResponseFeedback
         exclude =  [
             'user',
+        ]
+        
+# Petition Live Signature Form
+
+class PetitionSignerform(forms.ModelForm):
+    class Meta:
+        model=Petition_Signer
+        fields='__all__'
+        exclude = [
+            'petition'
+        ]
+        
+        
+# Commendation Live Signature Form
+
+class CommendationSignerform(forms.ModelForm):
+    class Meta:
+        model=Commendation_Signer
+        fields='__all__'
+        exclude = [
+            'commendation'
         ]
