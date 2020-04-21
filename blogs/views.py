@@ -69,7 +69,8 @@ def BlogDetail(request,slug):
         # 'relpy' : reply,
         'replies' : replies,
         'form_1' : form_1,
-        'blog_all_section':True
+        # 'blog_all_section':True
+        "blog_detail_section":True
     }
     return render(request,'blog-single.html',context)
 
@@ -144,3 +145,57 @@ def blogFormView(request):
 
     }
     return render(request,'blogform.html',context)
+
+
+# Self Blogs
+@login_required
+def self_Blogs(request):
+    blog = Blog.objects.filter(author=User.objects.get(username=request.user.username))
+    paginator = Paginator(blog ,10, allow_empty_first_page=True)
+    page = request.GET.get('page', 1)
+    try:
+        blogs = paginator.page(page)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+    except EmptyPage :
+        blogs = paginator.page(paginator.num_pages)
+    context = {
+        'blogs':blogs,
+        'blog':blog,
+        # 'blog_all_section': True,
+        'self_blogs':True,
+        'paginator': paginator,
+    }
+    return render(request,'blog-list-sidebar.html',context)
+
+
+
+
+# Blog  Post Form View
+@login_required
+def blogFormViewEditing(request, blog_id):
+    try:
+        obj = Blog.objects.get(id=blog_id, author = User.objects.get(username=request.user.username))
+        if request.method!='POST':
+            # print(obj)
+            form = blogform(instance = obj)
+            # print(form)
+        else:
+            print("********************************************")
+            print("********************************************")
+            print(request.POST, request.FILES)
+            print("********************************************")
+            form = blogform(request.POST, request.FILES, instance = obj)
+            # print(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse("detail", args=[obj.slug]))
+        context={
+            'blog_write':True,
+            'form' : form,
+            'obj': obj
+        }
+        return render(request,'blogform_edit.html',context)
+    except Exception as e:
+        # print(e)
+        return redirect("list")

@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import views
+from django.urls import path
 
 
 urlpatterns = [
@@ -33,5 +34,11 @@ urlpatterns = [
         views.ReplyPage,
         name='reply'
     ),
+    
+    # Self Blogs 
+    url(r'^self-blogs/$', views.self_Blogs, name="self_blogs_url"),
+    
+    # Editing BLog
+    path('edit-blog/<int:blog_id>', views.blogFormViewEditing, name="blog_editing"),
 
 ]

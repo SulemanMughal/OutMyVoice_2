@@ -186,6 +186,21 @@
                             </div>
                         </div>
 
+                        <div class="sidebar-widget cat-widget">
+                            <div class="widget-content">
+                                <div class="sidebar-title">
+                                    <h4>Self Blogs</h4>
+                                </div>
+                                <ul class="cat-links">
+                                    <li {% if blog_all_section %} class="current" {% endif %}><a href="{% url 'list' %}">All Blogs</a></li>
+                                    <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'self_blogs_url' %}">My Blogs</a></li>
+                                    {% if blogs.author == request.user %}
+                                        <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'blog_editing' blogs.id %}">Edit Current Blog</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+
                     </aside>
                 </div>
                 

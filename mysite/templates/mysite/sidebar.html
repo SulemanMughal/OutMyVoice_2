@@ -41,6 +41,9 @@
             <li {% if profile_section %} class="mm-active" {% endif %}>
                 <a href="{% url  'profile' %}"><i class="metismenu-icon fa fa-user"></i>View Profile</a>
             </li>
+            <li {% if profile_section %} class="mm-active" {% endif %}>
+                <a href="{% url  'list' %}"><i class="metismenu-icon fa fa-eye"></i>Blogs</a>
+            </li>
             <li {% if change_password_section %} class="mm-active" {% endif %}>
                 <a href="{% url 'change_password' %}"><i class="metismenu-icon fa fa-key"></i>Change Password</a>
             </li>

@@ -71,7 +71,8 @@
                                             </li>
                                             <li {% if create_commendation_section %}class="current" {% endif %}><a href="{% url 'Start-a-Commendation' %}">Start Commendation</a>
                                             </li>
-                                            <li {% if blog_all_section or blog_write %}class="current"{% endif %}><a href="{% url 'list' %}">Blog</a>
+                                            <li {% if blog_all_section or blog_write or blog_detail_section %}class="current"{% endif %}><a href="{% url 'list' %}">Blog</a>
+                                                     
                                             </li>
                                             {% if user.is_authenticated %}
                                                 <li {% if dashboard_section %}class="current" {% endif %}><a href="{% url 'dashboard' %}">Dashboard</a></li>

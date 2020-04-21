@@ -6,7 +6,6 @@
 {% block content %}
 
 
-
 <div class="container mt-5 mb-5">
     
         {% if form.errors %}
@@ -18,7 +17,7 @@
         {% endfor %}
         {% endfor %}
         {% endif %}
-    <form method="POST" enctype='multipart/form-data' action="{% url 'blog' %}">
+    <form method="POST" enctype='multipart/form-data' action="{% url 'blog_editing' obj.id %}">
         {% csrf_token %}
         
         <div class="card" style=" width: auto;">
@@ -35,26 +34,18 @@
 
                     <div class="card-body">
                            {% csrf_token %}
-                           {{form.media}}
+                            {{ form.media }}
 
 
-                           <div class="form-group">
-                            <label>Title</label>
-                            <input type="text" name="title"  maxlength="150" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label>Image</label>
-                            <input type="file" name="image"  maxlength="150" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Video</label>
-                            <input type="text" name="video"  maxlength="150" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea type="text" id="editor1" name="description"  maxlength="150" class="form-control"></textarea>
-                        </div>
-                     
+                            {% for field in form %}
+                            <div class="form-group">
+                                <label>{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                            
+                            {% endfor %}
+
+                           
                                        
                   
                             <input type="submit" class="btn btn-primary" value="Save">
@@ -78,8 +69,20 @@
 
 <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 
+<script src="{% static 'mysite/js/jquery.js' %}"></script>
 <script>
     CKEDITOR.replace( 'editor1' );
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('[name="title"]').addClass("form-control");
+        $('[name="image"]').addClass("form-control");
+        $('[name="video"]').addClass("form-control");
+        $('[name="description"]').addClass("form-control");
+        // $('[name="image-clear"]').addClass("form-control");
+        $(".form-group").children("a").addClass("form-control");
+    });
 </script>
 
 {% endblock %}

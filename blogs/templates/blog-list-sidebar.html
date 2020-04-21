@@ -1,7 +1,16 @@
 {% extends 'mysite/base.html' %}
 {% load static %}
 
-{% block title %}Voice It Out | Blog {% if search_section %} Search {% endif %}{% endblock %}
+{% block title %}
+
+{% if blog_all_section %}
+    Voice It Out | Blog {% if search_section %} Search {% endif %}
+{% elif self_blogs %}
+Voice It Out | User Blog {% if search_section %} Search {% endif %}
+{% else %}
+Voice It Out | Blog {% if search_section %} Search {% endif %}
+{% endif %}
+    {% endblock %}
 
 {% block content %}
 
@@ -50,12 +59,20 @@
                                     <figure class="image"><img src="/media/{{ blog.image }}" alt=""></figure>
                                     <div class="date"><span>{{ blog.created_at|timesince }}</span></div>
                                     <div class="hover-box">
+                                        
+                                        {% if self_blogs %}
+                                            <div class="more-link mb-5"><a href="{% url 'blog_editing' blog.id %}">Edit</a></div>
+                                        {% endif %}
                                         <div class="more-link"><a href="{% url 'detail' blog.slug %}">Read More</a></div>
+                                        
+                                        
+                                        
+                                        
                                     </div>
                                 </div>
                                 <div class="lower-box">
                                     <div class="upper-info">
-                                        <h2><a href="{% url 'detail' blog.slug %}">{{ blog.title }}</a></h2>
+                                        <h2><a href="{% url 'detail' blog.slug %}">{{ blog.title|truncatechars:30 }}</a></h2>
                                         <div class="cat-info">
                                             <a href="#"><span class="fa fa-comment"></span>
                                                 {% with total=blog.blogcomment_set.count %}
@@ -137,7 +154,17 @@
                             </form>
                         </div>
                     </div>
-
+                    <div class="sidebar-widget cat-widget">
+                        <div class="widget-content">
+                            <div class="sidebar-title">
+                                <h4>Self Blogs</h4>
+                            </div>
+                            <ul class="cat-links">
+                                <li {% if blog_all_section %} class="current" {% endif %}><a href="{% url 'list' %}">All Blogs</a></li>
+                                <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'self_blogs_url' %}">My Blogs</a></li>
+                            </ul>
+                        </div>
+                    </div>
 
                 </aside>
             </div>
