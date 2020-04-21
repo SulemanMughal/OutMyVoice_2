@@ -2,9 +2,11 @@
 {% load FindCommendationResponseTrue %}
 {% load FindCommendationResponseDate %}
 {% load FindCommendationResponse %}
+{% load FindCommendationResponseTrueID %}
 {% load FindResponseTrue %}
 {% load FindResponseDate %}
 {% load FindResponse %}
+{% load FindResponseTrueID %}
 <!doctype html>
 <html lang="en">
 
@@ -72,9 +74,74 @@
                         <!-- End Modal Section -->
                     {% endif %}    
                 {% endif %}
+
             {% endfor %}
         {% endif %}
     {% endif %}
+
+    {% if all_petitions_section  %}
+        {% if petitions %}
+            {% if responses %}
+                {% for petition in responses %}
+                                <!-- Modal -->
+            <div class="modal fade" id="exampleModal_{{ petition.id }}_{{ petition.timestamp|slugify }}_response" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ petition.petition.Petition_Title }}
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            {{ petition.timestamp|timesince }}
+                          </small>
+                    </h5>
+                    
+                    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                   
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="email">User</label>
+                            <div>
+                                <input type="text" class="form-control" value="{{ petition.user }}" disabled autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Coverage Admin</label>
+                            <div>
+                                <input type="text" class="form-control" value="{{ petition.Coverage_Admin }}" disabled autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Feedback</label>
+                            <div>
+                                <textarea class="form-control" disabled autocomplete="off" style="resize: none;">{{ petition.Feedback|safe }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Response</label>
+                            <div>
+                                <input type="text" class="form-control" value="{{ petition.response }}" disabled autocomplete="off" />
+                            </div>
+                        </div>
+                    
+                    
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
 
 
     {% if commendations_section %}
@@ -122,7 +189,7 @@
 
 <!-- Modal For Petitions Responses on Global Admin -->
 
-    {% if global_admin_section_petitions %}
+    {% if global_admin_section_petitions  or petition_detail_section or specific_petition_view  %}
         {% for petition in petitions %}
             <!-- Modal -->
             <div class="modal fade" id="exampleModal_{{ petition.id }}_{{ petition.timestamp|slugify }}_response" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -179,104 +246,108 @@
                 </div>
             </div>
         {% endfor %}
-
-        {% for petition in petitions %}
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal_{{ petition.petition.id }}_{{ petition.petition.timestamp|slugify }}_details_petition" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ petition.petition.Petition_Title }}
-                    <small id="passwordHelpBlock" class="form-text text-muted">
-                        {{ petition.petition.timestamp|timesince }}
-                      </small>
-                </h5>
-                
-                
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-               
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="email">User</label>
-                        <div>
-                            <input type="text" class="form-control" value="{{ petition.petition.user }}" disabled autocomplete="off" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Coverage Admin</label>
-                        <div>
-                            <input type="text" class="form-control" value="{{ petition.petition.Petition_Coverage }}" disabled autocomplete="off" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Petition Category</label>
-                        <div>
-                            <input type="text" class="form-control" value="{{ petition.petition.Petition_Category }}" disabled autocomplete="off" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Petition Category Other (if any)</label>
-                        <div>
-                            <input type="text" class="form-control" value="{{ petition.petition.Petition_Category_Other }}" disabled autocomplete="off" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Petition Action Person</label>
-                        <div>
-                            <input type="text" class="form-control" value="{{ petition.petition.Action_Person }}" disabled autocomplete="off" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Petition Action Person Other (if any)</label>
-                        <div>
-                            <input type="text" class="form-control" value="{{ petition.petition.Action_Person_Other }}" disabled autocomplete="off" />
-                        </div>
-                    </div>
-                
-                
-
-                    <div class="form-group">
-                        <label for="email">Petition Exaplanation</label>
-                        <div>
-                            <textarea  class="form-control"  disabled autocomplete="off" style="resize: none;" rows="5">{{ petition.petition.Expalnation|safe|escape|striptags   }}</textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Petition Image</label>
-                        <div>
-                            <img src="/media/{{ petition.petition.Image}}" alt="..." class="img-thumbnail">
-                        </div>
-                    </div>
-                
-                    <form action="{% url 'approved_petition_URL' petition.petition.id  %}" method="POST">
-
-                        {% csrf_token %}
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheckDisabled{{ petition.petition.id }}_{{ petition.petition.timestamp|slugify }}" name="response"  {% if petition.petition.approve %}checked{% endif %}>
-                            <label class="custom-control-label" for="customCheckDisabled{{ petition.petition.id }}_{{ petition.petition.timestamp|slugify }}">Approve</label>
-                          </div>
-            
-                          <button type="button" class="btn btn-secondary mt-2" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary mt-2" value="submit">Save Changes</button>
-            
-                        </form>
-
-                </div>
-                
-            </div>
-            </div>
-        </div>
-    {% endfor %}
     {% endif %}
+
+
+    {% if specific_petition_view %}
+    {% if obj %}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal_{{ obj.id }}_{{ obj.timestamp|slugify }}_details_petition" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{ obj.Petition_Title }}
+                <small id="passwordHelpBlock" class="form-text text-muted">
+                    {{ obj.timestamp|timesince }}
+                  </small>
+            </h5>
+            
+            
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+           
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="email">User</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.user }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Coverage Admin</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Petition_Coverage }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Petition Category</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Petition_Category }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Petition Category Other (if any)</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Petition_Category_Other }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Petition Action Person</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ iobj.Action_Person }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Petition Action Person Other (if any)</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Action_Person_Other }}" disabled autocomplete="off" />
+                    </div>
+                </div>
+            
+            
+
+                <div class="form-group">
+                    <label for="email">Petition Exaplanation</label>
+                    <div>
+                        <textarea  class="form-control"  disabled autocomplete="off" style="resize: none;" rows="5">{{ obj.Expalnation|safe|escape|striptags   }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Petition Image</label>
+                    <div>
+                        <img src="/media/{{ obj.Image}}" alt="..." class="img-thumbnail">
+                    </div>
+                </div>
+            
+                <form action="{% url 'approved_petition_URL' obj.id  %}" method="POST">
+
+                    {% csrf_token %}
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheckDisabled{{ obj.id }}_{{ obj.timestamp|slugify }}" name="response"  {% if obj.approve %}checked{% endif %}>
+                        <label class="custom-control-label" for="customCheckDisabled{{ obj.id }}_{{ obj.timestamp|slugify }}">Approve</label>
+                      </div>
+        
+                      <button type="button" class="btn btn-secondary mt-2" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary mt-2" value="submit">Save Changes</button>
+        
+                    </form>
+
+            </div>
+            
+        </div>
+        </div>
+    </div>
+{% endif %}
+{% endif %}
+
 
 <!-- End   Modal For Petitions Responses on Global Admin -->
 
@@ -284,7 +355,7 @@
 
 
 <!-- Modal For Commendation Response View -->
-{% if my_commendation_view_global %}
+{% if my_commendation_view_global or specific_commendation_view %}
 {% for commendation in commendations %}
         <!-- Modal -->
         <div class="modal fade" id="exampleModal_{{ commendation.id }}_{{ commendation.timestamp|slugify }}_response" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -343,19 +414,23 @@
             </div>
         </div>
 {% endfor %}
+{% endif %}
 
-{% for commendation in commendations %}
+
+
+
+{% if specific_commendation_view %}
+{% if obj %}
 <!-- Modal -->
-<div class="modal fade" id="exampleModal_{{ commendation.commendation.id }}_{{ commendation.commendation.timestamp|slugify }}_details_Commendation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal_{{ obj.id }}_{{ obj.timestamp|slugify }}_details_Commendation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ commendation.commendation.Commendation_Title }}
+        <h5 class="modal-title" id="exampleModalLabel">{{ obj.Commendation_Title }}
             <small id="passwordHelpBlock" class="form-text text-muted">
-                {{ commendation.commendation.timestamp|timesince }}
+                {{ obj.timestamp|timesince }}
               </small>
         </h5>
-        
         
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -366,42 +441,42 @@
             <div class="form-group">
                 <label for="email">User</label>
                 <div>
-                    <input type="text" class="form-control" value="{{ commendation.commendation.user }}" disabled autocomplete="off" />
+                    <input type="text" class="form-control" value="{{ obj.user }}" disabled autocomplete="off" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Coverage Admin</label>
                 <div>
-                    <input type="text" class="form-control" value="{{ commendation.commendation.Commendation_Coverage }}" disabled autocomplete="off" />
+                    <input type="text" class="form-control" value="{{ obj.Commendation_Coverage }}" disabled autocomplete="off" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Commendation Category</label>
                 <div>
-                    <input type="text" class="form-control" value="{{ commendation.commendation.Commendation_Category }}" disabled autocomplete="off" />
+                    <input type="text" class="form-control" value="{{ obj.Commendation_Category }}" disabled autocomplete="off" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Commendation Category Other (if any)</label>
                 <div>
-                    <input type="text" class="form-control" value="{{ commendation.commendation.Commendation_Category_Other }}" disabled autocomplete="off" />
+                    <input type="text" class="form-control" value="{{ obj.Commendation_Category_Other }}" disabled autocomplete="off" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Commendation Action Person</label>
                 <div>
-                    <input type="text" class="form-control" value="{{ commendation.commendation.Action_Person }}" disabled autocomplete="off" />
+                    <input type="text" class="form-control" value="{{ obj.Action_Person }}" disabled autocomplete="off" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Commendation Action Person Other (if any)</label>
                 <div>
-                    <input type="text" class="form-control" value="{{ commendation.commendation.Action_Person_Other }}" disabled autocomplete="off" />
+                    <input type="text" class="form-control" value="{{ obj.Action_Person_Other }}" disabled autocomplete="off" />
                 </div>
             </div>
         
@@ -410,23 +485,23 @@
             <div class="form-group">
                 <label for="email">Commendation Exaplanation</label>
                 <div>
-                    <textarea  class="form-control"  disabled autocomplete="off" style="resize: none;" rows="5">{{ commendation.commendation.Expalnation|safe|escape|striptags   }}</textarea>
+                    <textarea  class="form-control"  disabled autocomplete="off" style="resize: none;" rows="5">{{ obj.Expalnation|safe|escape|striptags   }}</textarea>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="email">Commendation Image</label>
                 <div>
-                    <img src="/media/{{ commendation.commendation.Image}}" alt="..." class="img-thumbnail">
+                    <img src="/media/{{ obj.Image}}" alt="..." class="img-thumbnail">
                 </div>
             </div>
         
-            <form action="{% url 'approved_commendation_URL' commendation.commendation.id  %}" method="POST">
+            <form action="{% url 'approved_commendation_URL' obj.id  %}" method="POST">
 
             {% csrf_token %}
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheckDisabled{{ commendation.commendation.id }}_{{ commendation.commendation.timestamp|slugify }}" name="response"  {% if commendation.commendation.approve %}checked{% endif %}>
-                <label class="custom-control-label" for="customCheckDisabled{{ commendation.commendation.id }}_{{ commendation.commendation.timestamp|slugify }}">Approve</label>
+                <input type="checkbox" class="custom-control-input" id="customCheckDisabled{{ obj.id }}_{{ obj.timestamp|slugify }}" name="response"  {% if obj.approve %}checked{% endif %}>
+                <label class="custom-control-label" for="customCheckDisabled{{ obj.id }}_{{ obj.timestamp|slugify }}">Approve</label>
               </div>
 
               <button type="button" class="btn btn-secondary mt-2" data-dismiss="modal">Close</button>
@@ -438,8 +513,13 @@
     </div>
     </div>
 </div>
-{% endfor %}
 {% endif %}
+{% endif %}
+
+
+
+
+
 <!-- End Modal For Commendation Response View -->
 
 

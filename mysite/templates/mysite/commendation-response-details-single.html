@@ -1,0 +1,187 @@
+{% extends 'mysite/dashboard_base.html' %}
+{% load static %}
+{% block title %}
+    {{ commendation_response.commendation.Commendation_Title }}'s Response 
+{% endblock %}
+{% block content %}
+<style>
+    /* HIDE RADIO */
+    [type=radio] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* IMAGE STYLES */
+    [type=radio]+img {
+        cursor: pointer;
+    }
+
+    /* CHECKED STYLES */
+    [type=radio]:checked+.states {
+
+        background-color: #5bd9af;
+        padding-top: 8px;
+        padding-left: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+        padding-right: 5px;
+    }
+
+    .state {
+        max-width: 74px;
+    }
+
+    #show_more {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-size: 13px;
+        border: 1px solid transparent;
+        transition: 0.4s all;
+        background-color: #5bd9af;
+        border-radius: 3px;
+        padding: .538em 1.077em;
+        font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+        font-weight: 600;
+        color: white;
+    }
+
+    #show_more:hover,
+    #show_more:focus {
+        background-color: white;
+        border-color: grey;
+        color: black;
+    }
+
+    .states_margin {
+        margin-right: 5px;
+    }
+
+    .center-block {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<div class="app-main__outer">
+    <div class="app-main__inner">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="fa fa-eye icon-gradient bg-mean-fruit">
+                        </i>
+                    </div>
+                    <div>{{ commendation_response.commendation.Commendation_Title }}'s Response
+                        <div class="page-title-subheading">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+        <div class="card-body">
+                
+
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ commendation_response.user.username }}" name="username" autocomplete="off" disabled/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname">Response Commenadtion Title</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ commendation_response.commendation.Commendation_Title }}" name="Petition_Title" autocomplete="off" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">Response Commenadtion Coverage</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ commendation_response.Coverage_Admin }}" name="Petition_Coverage" autocomplete="off" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Response Commenadtion Explanation</label>
+                    <div>
+                        <textarea type="text" class="form-control"  name="Expalnation" disabled autocomplete="off" >{{ commendation_response.Feedback|safe|striptags  }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Response Commenadtion</label>
+                    <div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1" name="approve" disabled {% if commendation_response.response == "True" %}checked{% endif %}>
+                            <label class="custom-control-label" for="customCheck1" disabled>Response</label>
+                          </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Response Commenadtion Timestamp</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ commendation_response.timestamp|timesince }}" name="timestamp" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+
+
+                
+
+        </div>
+    </div>
+    <div class="app-wrapper-footer">
+        <div class="app-footer">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="{% static 'mysite/js/jquery.min.js' %}"></script>
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script>
+
+        $("#show_more").click(function () {
+
+            $("#show_more_states").slideDown();
+            $("#show_more").hide();
+
+        });
+
+        $(".category").change(function () {
+            if ($(this).val() == "Others") {
+                $("#other_cat").show();
+            }
+            else {
+                $("#other_cat").hide();
+            }
+        });
+
+        $(".action").change(function () {
+            if ($(this).val() == "Others") {
+                $("#action_person").show();
+            }
+            else {
+                $("#action_person").hide();
+            }
+        });
+
+
+
+    </script>
+    <script>
+        CKEDITOR.replace('editor1');
+    </script>
+
+{% endblock %}

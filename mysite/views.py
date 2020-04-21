@@ -108,6 +108,14 @@ def dashboard(request):
     try:
         profile = UserProfile.objects.get(user = User.objects.get(username= request.user.username))
         petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin, user = User.objects.get(username= request.user.username))
+        responses = []
+        # print("***********************************************")
+        for i in petitions:
+            j = i.petitionresponsefeedback_set.filter(petition__id = i.id, user=User.objects.get(username=request.user.username))
+            if len(j) != 0:
+                responses.append(j)
+        # print(responses)
+        # print("***********************************************")
     except :
         profile = None
         petitions = None
@@ -115,7 +123,8 @@ def dashboard(request):
         'dashboard_section':True,
         'all_petitions_section': True,
         'profile': profile,
-        'petitions' : petitions
+        'petitions' : petitions,
+        'responses': responses
     }
     return render(request, 
                 template_name,
@@ -377,6 +386,7 @@ def CommendationResponseFeedbackView(request, commendation_id):
         return redirect(reverse("all-commendations-url"))
     else:
         try:
+            # print(request.POST)
             commendation = Commendation.objects.get(id = commendation_id)
             feedback_obj, created =  CommendationResponseFeedback.objects.get_or_create(
                 user = request.user,
@@ -386,6 +396,7 @@ def CommendationResponseFeedbackView(request, commendation_id):
             if created:
                 feedback_obj.Feedback = request.POST['Feedback']
                 feedback_obj.response = request.POST['response']
+                print(request.POST)
                 feedback_obj.save()
                 return redirect("all-commendations-url")
             feedback_obj.save()
@@ -449,7 +460,8 @@ def approved_petition(request, petition_id):
                 elif "on" in request.POST['response']:
                     petition.approve = True
                 petition.save()
-                return redirect("globalAdminResponses_URL")
+                # return redirect("globalAdminResponses_URL")
+                return redirect(reverse("SpecificViewPetition_URL", args=[petition_id]))
             else:
                 return redirect("globalAdminResponses_URL")
         except:
@@ -471,8 +483,153 @@ def approved_commendation(request, commendation_id):
                 elif "on" in request.POST['response']:
                     commendation.approve = True
                 commendation.save()
-                return redirect("globalAdminResponsesCommendations_URL")
+                return redirect(reverse("SpecificViewCommendation_URL", args=[commendation_id]))
             else:
                 return redirect("globalAdminResponsesCommendations_URL")
         except:
             return redirect("dashboard")
+        
+# Specific Peition View Responses
+@login_required
+def SpecificViewPetition(request, petition_id):
+    template_name = "mysite/dashboard.html"
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+        if profile.golbal_Admin == "True":
+            obj = Petition.objects.get(id=petition_id)
+            # print("*********************************************************")
+            # print(obj)
+            # print("*********************************************************")
+            if obj.Petition_Coverage == profile.Coverage_Admin:
+                petitions = obj.petitionresponsefeedback_set.all()
+                # print("*********************************************************")
+                # print(obj)
+                # print("*********************************************************")
+                context = {
+                    'petitions': petitions,
+                    'profile': profile,
+                    'specific_petition_view': True,
+                    'title' : obj.Petition_Title,
+                    'obj' : obj
+                }
+                # print(context)
+                return render(request,
+                            template_name,
+                            context
+                )
+            else:
+                return redirect("globalAdminResponses_URL")
+        else:
+            return redirect("globalAdminResponses_URL")
+    except:
+        return redirect("globalAdminResponses_URL")
+    
+    
+# Specific Commendation Responses View
+@login_required
+def SpecificViewCommendation(request, commendation_id):
+    template_name = "mysite/commendations.html"
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+        if profile.golbal_Admin == "True":
+            obj = Commendation.objects.get(id=commendation_id)
+            # print("*********************************************************")
+            # print(obj)
+            # print("*********************************************************")
+            if obj.Commendation_Coverage == profile.Coverage_Admin:
+                commendations = obj.commendationresponsefeedback_set.all()
+                # print("*********************************************************")
+                # print(obj)
+                # print("*********************************************************")
+                context = {
+                    'commendations': commendations,
+                    'profile': profile,
+                    'specific_commendation_view': True,
+                    'title' : obj.Commendation_Title,
+                    'obj' : obj
+                }
+                # print(context)
+                return render(request,
+                            template_name,
+                            context
+                )
+            else:
+                return redirect("globalAdminResponsesCommendations_URL")
+        else:
+            return redirect("globalAdminResponsesCommendations_URL")
+    except:
+        return redirect("globalAdminResponsesCommendations_URL")
+    
+# Specific Petition Details
+@login_required
+def Petition_Details(request, petition_id):
+    template_name="mysite/petition_details.html"
+    try:
+        profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        obj = Petition.objects.get(id=petition_id)
+        # petitions = PetitionResponseFeedback.objects.filter(user = User.objects.get(username=request.user.username))
+        context={
+            'profile' : profile,
+            'obj' : obj,
+            'petition_detail_section' : True,
+            # 'petitions': petitions
+        }
+        # print("**********************************")
+        # print(context)
+        # print("**********************************")
+        return render(request,
+                      template_name,
+                      context)
+    except Exception as e:
+        # print(e)
+        return redirect("dashboard")
+    
+# See Specific Petition Response 
+@login_required
+def SpecificPetitonResponse(request, petition_id ):
+    template_name="mysite/petition_response_single.html"
+    try:
+        profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        petition_response = PetitionResponseFeedback.objects.get(id=petition_id, user=request.user)
+        context={
+            'profile':profile,
+            'petition_response': petition_response,
+            'view_specific_petiton_response_only': True
+        }
+        return render(request, template_name, context)
+    except Exception as e:
+        redirect("dashboard")
+        
+# Commenadtion Details
+@login_required
+def Commendation_Details(request, commendation_id):
+    template_name="mysite/commendation-details-single.html"
+    try:
+        profile=UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        obj = Commendation.objects.get(id=commendation_id)
+        context={
+            'profile':profile,
+            'obj' : obj,
+            'specific_commendation_details':True
+        }
+        return render(request, template_name, context)
+    
+    except Exception as e:
+        print(e)
+        return redirect("all-commendations-url")
+    
+# Single Commendation Response Details
+@login_required
+def SpecificCommendationResponse(request, commendation_id):
+    template_name="mysite/commendation-response-details-single.html"
+    try:
+        profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        commendation_response = CommendationResponseFeedback.objects.get(id=commendation_id, user=request.user)
+        context={
+            'profile':profile,
+            'commendation_response': commendation_response,
+            'view_specific_commendation_response_only': True
+        }
+        return render(request, template_name, context)
+    except Exception as e:
+        redirect("all-commendations-url")

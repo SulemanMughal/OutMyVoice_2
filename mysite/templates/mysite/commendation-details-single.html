@@ -1,0 +1,231 @@
+{% extends 'mysite/dashboard_base.html' %}
+{% load static %}
+{% block title %}
+    Commedation Details
+
+
+
+    {% endblock %}
+
+{% block content %}
+<style>
+    /* HIDE RADIO */
+    [type=radio] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* IMAGE STYLES */
+    [type=radio]+img {
+        cursor: pointer;
+    }
+
+    /* CHECKED STYLES */
+    [type=radio]:checked+.states {
+
+        background-color: #5bd9af;
+        padding-top: 8px;
+        padding-left: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+        padding-right: 5px;
+    }
+
+    .state {
+        max-width: 74px;
+    }
+
+    #show_more {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-size: 13px;
+        border: 1px solid transparent;
+        transition: 0.4s all;
+        background-color: #5bd9af;
+        border-radius: 3px;
+        padding: .538em 1.077em;
+        font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+        font-weight: 600;
+        color: white;
+    }
+
+    #show_more:hover,
+    #show_more:focus {
+        background-color: white;
+        border-color: grey;
+        color: black;
+    }
+
+    .states_margin {
+        margin-right: 5px;
+    }
+
+    .center-block {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<div class="app-main__outer">
+    <div class="app-main__inner">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="fa fa-eye icon-gradient bg-mean-fruit">
+                        </i>
+                    </div>
+                    <div>{{ obj.Commendation_Title }}'s Commendation
+                        <div class="page-title-subheading">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+        <div class="card-body">
+                
+
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.user.username }}" name="username" autocomplete="off" disabled/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname">Commendation Title</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Commendation_Title }}" name="Petition_Title" autocomplete="off" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">Commendation Coverage</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Commendation_Coverage }}" name="Petition_Coverage" autocomplete="off" disabled />
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">Commendation Category</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Commendation_Category }}" name="Petition_Category" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">Commendation Category Other (if any)</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Commendation_Category_Other }}" name="Petition_Category_Other" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">Commendation Action Person</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Action_Person }}" name="Action_Person" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Commendation Action Person Other (if any)</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.Action_Person_Other }}" name="Action_Person_Other" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Commendation Explanation</label>
+                    <div>
+                        <textarea type="text" class="form-control"  name="Expalnation" disabled autocomplete="off" >{{ obj.Expalnation|safe|striptags  }}</textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">Commendation Image</label>
+                    <div>
+                        <img src="/media/{{ obj.Image }}" alt="..." class="img-thumbnail" disabled name="Image">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">Commendation Approve</label>
+                    <div>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1" name="approve" disabled {% if obj.approve %}checked{% endif %}>
+                            <label class="custom-control-label" for="customCheck1" disabled>Approved</label>
+                          </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Commendation Timestamp</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ obj.timestamp|timesince }}" name="timestamp" disabled autocomplete="off" />
+                    </div>
+                </div>
+
+
+
+                
+
+        </div>
+    </div>
+    <div class="app-wrapper-footer">
+        <div class="app-footer">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script src="{% static 'mysite/js/jquery.min.js' %}"></script>
+    <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+    <script>
+
+        $("#show_more").click(function () {
+
+            $("#show_more_states").slideDown();
+            $("#show_more").hide();
+
+        });
+
+        $(".category").change(function () {
+            if ($(this).val() == "Others") {
+                $("#other_cat").show();
+            }
+            else {
+                $("#other_cat").hide();
+            }
+        });
+
+        $(".action").change(function () {
+            if ($(this).val() == "Others") {
+                $("#action_person").show();
+            }
+            else {
+                $("#action_person").hide();
+            }
+        });
+
+
+
+    </script>
+    <script>
+        CKEDITOR.replace('editor1');
+    </script>
+
+{% endblock %}

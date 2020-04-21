@@ -3,6 +3,7 @@
 {% load FindCommendationResponseTrue %}
 {% load FindCommendationResponseDate %}
 {% load FindCommendationResponse %}
+{% load FindCommendationResponseTrueID %}
 {% block title %}
     {% if my_petition_view %}
         Voice It Out - User Petitions
@@ -12,6 +13,8 @@
         Voice It Out - User Commendations
     {% elif my_commendation_view_global %}
     Voice It Out - Commendation Responses
+    {%  elif specific_commendation_view %}
+        {{ title }}
     {% else %}
         Voice It Out - User Dashboard
     {% endif %}
@@ -29,15 +32,28 @@
                         <i class="fa fa-eye icon-gradient bg-mean-fruit">
                         </i>
                     </div>
-                    <div>Commendations
-                        <br>
-                        <span>
-                        Total Submitted Responses: {% with total=commendations.count %}
-                        <button  class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary" >{{ total }} Reponse{{ total|pluralize }}</button>
-                        {% endwith %}
-                        </span>
+                    <div>
+                        
+                        {% if my_commendation_view_global %}
+                            Commendation Responses
 
-                       
+                            <br>
+                            <span>
+                            Total Submitted Responses: {% with total=commendations.count %}
+                            <button  class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary" >{{ total }} Reponse{{ total|pluralize }}</button>
+                            {% endwith %}
+                            </span>
+                            {% else %}
+
+                                Commendations
+                            {% endif %}
+
+                        {% if specific_commendation_view %}
+                            {{ title  }}'s Response
+                            
+                        <br>
+                        <button  class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary" >{{ commendations.count }} Reponse{{ commendations.count|pluralize }}</button>
+                       {% endif %}
                     </div>
                 </div>
                 <div class="page-title-actions">
@@ -90,7 +106,7 @@
                 <div class="card-body">
                     <table style="width: 100%;" id="example"
                         class="table table-hover table-striped table-bordered">
-                        {% if my_commendation_view_global %}
+                        {% if my_commendation_view_global or specific_commendation_view %}
                             <thead>
                                 <tr>
                                     <th>Commendation User</th>
@@ -106,9 +122,9 @@
                                     <tr>
                                         <td>{{ commendation.user }}</td>
                                         <td>
-                                            <button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal_{{ commendation.commendation.id }}_{{ commendation.commendation.timestamp|slugify }}_details_Commendation" title="View Complete Commendation" >
-                                                {{ commendation.commendation }}
-                                            </button>
+                                            <a  href="{% url 'SpecificViewCommendation_URL' commendation.commendation.id  %}" class="btn-pill btn-shadow btn-shine btn btn-focus"  title="View Complete Commendation"  {% if specific_commendation_view %}data-toggle="modal" data-target="#exampleModal_{{ obj.id }}_{{ obj.timestamp|slugify }}_details_Commendation" {% endif %}>
+                                                {{  commendation.commendation.Commendation_Title }}
+                                            </a>
                                         </td>
                                         <td>{{ commendation.Coverage_Admin }}</td>
                                         <td>{{ commendation.Feedback|safe|escape|truncatechars_html:"50" }}</td>
@@ -137,7 +153,12 @@
                                 {% for commendation in commendations %}
                                     <tr>
                                         <td>{{ commendation.Commendation_Coverage }}</td>
-                                        <td>{{ commendation.Commendation_Title }}</td>
+                                        <td>
+                                            <a  href="{% url 'Commendation_Details' commendation.id  %}" class="btn-pill btn-shadow btn-shine btn btn-focus"  title="View  Commendation Details"  >
+                                                {{  commendation.Commendation_Title }}
+                                            </a>
+                                        </td>
+                                        
                                         <td>{{ commendation.Commendation_Category }}</td>
                                         <td>{{ commendation.Action_Person }}</td>
                                         <td>{{ commendation.Expalnation|truncatechars_html:"50"|striptags }}</td>
@@ -152,9 +173,17 @@
                                                 {% endif %}
                                             {% else %}
                                                 {% if request.user.id|FindCommendationResponse:commendation.id == "True"  %}
-                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Yes</button></td>
+                                                    {% if request.user.id|FindCommendationResponseTrueID:commendation.id %}
+                                                        <td><a  href="{% url 'ViewSpecificCommendationResponse_URL' request.user.id|FindCommendationResponseTrueID:commendation.id %}" class="btn-pill btn-shadow btn-shine btn btn-focus" >Yes</a></td>
+                                                    {% else %}
+                                                        <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Yes</button></td>    
+                                                    {% endif %}
                                                 {% else %}
-                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >No</button></td>
+                                                    {% if request.user.id|FindCommendationResponseTrueID:commendation.id %}
+                                                        <td><a  href="{% url 'ViewSpecificCommendationResponse_URL' request.user.id|FindCommendationResponseTrueID:commendation.id %}" class="btn-pill btn-shadow btn-shine btn btn-focus" >No</a></td>
+                                                    {% else %}
+                                                        <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >No</button></td>    
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endif %}
                                         {% endif %}

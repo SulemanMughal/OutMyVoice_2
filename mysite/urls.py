@@ -123,13 +123,30 @@ urlpatterns = [
     path("view-peition-responses-admin-global", views.globalAdminResponses, name="globalAdminResponses_URL"),
 
     # Global Admin Commendations Responses URL
-    path("view-peition-commendation-admin-global", views.globalAdminResponsesCommendations, name="globalAdminResponsesCommendations_URL"),
+    path("view-commendation-responses-admin-global", views.globalAdminResponsesCommendations, name="globalAdminResponsesCommendations_URL"),
 
 
     # Approve Petition by Global Admin
     path("approve-petition/<int:petition_id>", views.approved_petition, name="approved_petition_URL"),
     
     # Approve Commendation by Global Admin
-    path("approve-commendation/<int:commendation_id>", views.approved_commendation, name="approved_commendation_URL")
+    path("approve-commendation/<int:commendation_id>", views.approved_commendation, name="approved_commendation_URL"),
+    
+    # Specific Petition Responses View
+    path("view-specific-petition-responses/<int:petition_id>", views.SpecificViewPetition, name="SpecificViewPetition_URL"),
+    
+    # Specific Commendation Responses View
+    path("view-specific-Commendation-responses/<int:commendation_id>", views.SpecificViewCommendation, name="SpecificViewCommendation_URL"),
 
+    # Petition Details View
+    path('view-specific-peition/<int:petition_id>/', views.Petition_Details, name="Petition_Details"),
+
+    # See Specific Petition Response View URL
+    path("specific-petition-response/<int:petition_id>/", views.SpecificPetitonResponse, name="ViewSpecificPetitionResponse_URL"),
+    
+    # See Specific Commendation Response View URL
+    path("specific-commendation-response/<int:commendation_id>/", views.SpecificCommendationResponse, name="ViewSpecificCommendationResponse_URL"),
+    
+    # Commendation Details View
+    path('view-specific-commendation/<int:commendation_id>/', views.Commendation_Details, name="Commendation_Details"),
 ]
