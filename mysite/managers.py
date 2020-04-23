@@ -19,3 +19,4 @@ class ApprovedCommendationManager(models.Manager):
 class showCommentsCommendationManager(models.Manager):
     def get_queryset(self):
         return super(showCommentsCommendationManager, self).get_queryset().filter(show_comment = True)
+

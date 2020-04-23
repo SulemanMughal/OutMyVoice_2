@@ -140,6 +140,10 @@ class Commendation(models.Model):
 
     objects = models.Manager()
     approved_objects = ApprovedCommendationManager()
+    
+    # Extra Method
+    def get_CommendationSigner_objects(self):
+        return self.commendation_signer_set.all().filter(show_comment=True)
 
     def __str__(self):
         return self.Commendation_Title

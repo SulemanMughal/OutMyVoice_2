@@ -4,35 +4,45 @@ from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from django.core.paginator import (
+    Paginator, 
+    EmptyPage, 
+    PageNotAnInteger
+)
+
 from django.http import (
     HttpResponse,
     HttpResponseRedirect
 )
+
 from django.contrib.auth.forms import (
     UserChangeForm, 
     PasswordChangeForm
 )
+
 from django.shortcuts import (
     render, 
     redirect,
     reverse
 )
+
 from django.contrib.auth import (
     authenticate, 
     login,
     logout,
     update_session_auth_hash
 )
+
 from django.utils.http import (
     urlsafe_base64_encode, 
     urlsafe_base64_decode
 )
+
 from django.utils.encoding import (
     force_bytes, 
     force_text
 )
-
 
 # Import APP Forms
 from .forms import (
@@ -59,12 +69,12 @@ from .models import (
     Commendation_Signer
 )
 
-# Decorators
-# from .decorators import findUserProfile
+# User App Decorators
+from .decorators import simple_decorator
 
 # Create your views here.
 
-# Home View
+# Home View 
 def home(request):
     template_name = "mysite/index.html"
     context={
@@ -75,7 +85,7 @@ def home(request):
                 context
             )
 
-# User Login View    
+# Login View    
 def login_User(request):
     template_name="mysite/login.html"
     if request.method!= 'POST':
@@ -103,12 +113,12 @@ def login_User(request):
                 context
             )
 
-# Logout User View
+# Logout View
 def logout_User(request):
     logout(request)
     return redirect('home_page')
 
-# User Dashboard View
+# Dashboard View
 @login_required()
 def dashboard(request):
     template_name = "mysite/dashboard.html"
@@ -116,13 +126,10 @@ def dashboard(request):
         profile = UserProfile.objects.get(user = User.objects.get(username= request.user.username))
         petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin, user = User.objects.get(username= request.user.username))
         responses = []
-        # print("***********************************************")
         for i in petitions:
             j = i.petitionresponsefeedback_set.filter(petition__id = i.id, user=User.objects.get(username=request.user.username))
             if len(j) != 0:
                 responses.append(j)
-        # print(responses)
-        # print("***********************************************")
     except :
         profile = None
         petitions = None
@@ -138,7 +145,7 @@ def dashboard(request):
                 context
             )
     
-# User Registration View
+# Registration View
 def register_user(request):
     template_name= "mysite/register.html"
     message_template_name = "mysite/acc_active_email.html"
