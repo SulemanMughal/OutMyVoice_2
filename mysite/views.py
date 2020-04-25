@@ -556,7 +556,7 @@ def SpecificViewPetition(request, petition_id):
 # Specific Petition Details
 @login_required
 def Petition_Details(request, petition_id):
-    template_name="mysite/petition_details.html"
+    template_name="mysite/petition_details (2).html"
     profile = findUserProfile(request)
     try:
         obj = Petition.objects.get(id=petition_id)
@@ -603,8 +603,9 @@ def SpecificPetitonResponse(request, petition_id ):
 # Live Petition View Both(Auth and Unauth)
 def LivePetitions(request):
     petitions = Petition.approved_objects.all()
+    counter = petitions.all().count()
     profile = None
-    template_name="mysite/petition-list-sidebar.html"
+    template_name="mysite/petitions.html"
     if request.user.is_authenticated:
         # template_name="mysite/live_petitions.html"    
         try:
@@ -620,18 +621,27 @@ def LivePetitions(request):
         # return render(request,
         #                 template_name,
         #                 context)
-    paginator = Paginator(petitions ,10, allow_empty_first_page=True)
-    page = request.GET.get('page', 1)
-    try:
-        petitions = paginator.page(page)
-    except PageNotAnInteger:
-        petitions = paginator.page(1)
-    except EmptyPage :
-        petitions = paginator.page(paginator.num_pages)
+    # paginator = Paginator(petitions ,10, allow_empty_first_page=True)
+    # page = request.GET.get('page', 1)
+    # try:
+    #     petitions = paginator.page(page)
+    # except PageNotAnInteger:
+    #     petitions = paginator.page(1)
+    # except EmptyPage :
+    #     petitions = paginator.page(paginator.num_pages)
+    if counter > 10:
+        petitions_1 = petitions[:10]
+        petitions_2 = petitions[10:]
+    else:
+        petitions_1 = []
+        petitions_2 = []
     context = {
         'petitions':petitions,
         'livePetition_Section': True,
-        'paginator': paginator,
+        'counter' : counter,
+        # 'paginator': paginator,
+        # petitions_1 :'petitions_1',
+        # petitions_2 :'petitions_2'
     }
     return render(request,template_name,context)
 
@@ -720,7 +730,7 @@ def LivePetitionsDetailView(request, petition_id):
 # Petitions Live Detail View Comment URL (Only Unauth)
 def LivePetitionsSignatureView(request, petition_id):
     if request.method != "POST":
-        return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+        return redirect(reverse("Petition_Details", args=[petition_id]))
     try:
         petition = Petition.approved_objects.get(id=petition_id)
         form = PetitionSignerform(request.POST)
@@ -728,11 +738,11 @@ def LivePetitionsSignatureView(request, petition_id):
             obj = form.save(commit=False)
             obj.petition = petition
             obj.save()
-            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+            return redirect(reverse("Petition_Details", args=[petition_id]))
         else:
-            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+            return redirect(reverse("Petition_Details", args=[petition_id]))
     except:
-        return redirect("LivePetitions_URL")
+        return redirect("Petition_Details")
 
 
 # **************************************** PETITION SECTION ****************************************
