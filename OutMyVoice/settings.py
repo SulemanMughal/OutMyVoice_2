@@ -154,7 +154,7 @@ LOGOUT_URL = reverse_lazy('logout_user_url')
 
 #------------------------------------------------------------------------
 #Email Setting...
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'futuresoftcode@gmail.com'

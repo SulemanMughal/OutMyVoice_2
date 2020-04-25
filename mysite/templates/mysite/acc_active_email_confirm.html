@@ -1,8 +1,31 @@
 {% extends "mysite/base.html" %}
 {% load static %}
 {% block title %}Email Verification{% endblock %}
-{% block content %}  
-      <div class="alert alert-info shadow">
-        <strong><h5>Email Verification</h5></strong><p>Please confirm your email address to complete the registration. </p>
-      </div>
+{% block content %}
+<link href="{% static 'mysite/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'mysite/css/common.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+<link href="{% static 'mysite/css/theme-02.css' %}" rel="stylesheet">
+<div class="forny-container">
+    <div class="forny-inner">
+        <div class="forny-form" style="width:30rem;">
+            <div class="mb-6 text-center forny-logo">
+                <a href="/"><img src="{% static 'mysite/images/voice1.png' %}"></a>
+            </div>
+            <div class="text-center">
+                <h4>Email Verification</h4>
+            </div>
+            <p class="card-text">
+              Please confirm your email address to complete the registration.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'mysite/js/jquery.min.js' %}"></script>
+<script src="{% static 'mysite/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'mysite/js/main.js' %}"></script>
+<script src="{% static 'mysite/js/demo.js' %}"></script>
+
 {% endblock content %}

@@ -91,7 +91,16 @@
         <div class="card-body">
                 
 
-
+            {% if messages  %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
                 <div class="form-group">
                     <label for="username">Username</label>
                     <div>
@@ -177,6 +186,27 @@
                     </div>
                 </div>
 
+                    {% if profile.golbal_Admin == "True" %}
+
+                    <div class="form-group">
+
+                        <div>
+                            <a type="button" class="btn btn-primary" href="{% url 'SpecificViewPetition_URL' obj.id %}">View All Petition Responses</a>
+                            {% if not obj.approve %}
+                            
+                            
+                               
+                                <a type="submit" class="btn btn-primary" href="{% url 'approve-that-petition' obj.id %}">Approve & Live Petition</a>
+                          
+                            {% endif %}
+                        </div>
+                        
+                        
+                            
+
+                        
+                    </div>
+                    {% endif %}
 
 
                 

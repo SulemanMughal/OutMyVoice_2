@@ -24,7 +24,6 @@
 </head>
 
 <body>
-
     <div class="page-wrapper">
         <!-- Preloader -->
         <div class="preloader">
@@ -104,19 +103,28 @@
                                             <li class=" {%  if livePetition_Section or livePetition_Section_detail %} current {% endif %} dropdown"><a href="{% url 'LivePetitions_URL' %}">Petitions</a>
                                                 <ul>
                                                     <li><a href="{% url 'Start-a-Petition' %}">Create Petition</a></li>
-                                                    <li ><a href="{% url 'LivePetitions_URL' %}">Live Petition</a></li>
+                                                    <li ><a href="{% url 'LivePetitions_URL' %}">View Petition</a></li>
+                                                    <li ><a href="{% url 'Self-Petitions' %}">My Petition</a></li>
                                                 </ul>
                                             </li>
 
                                             <li class="{% if liveCommendation_Section or liveCommendation_Section_detail %}current{% endif %} dropdown"><a href="#">Commendation</a>
                                                 <ul>
                                                     <li><a href="{% url 'Start-a-Commendation' %}">Create Commendation</a></li>
-                                                    <li ><a href="{% url 'LiveCommendations_URL' %}">Live Commendation</a></li>
+                                                    <li ><a href="{% url 'LiveCommendations_URL' %}">View Commendation</a></li>
+                                                    <li ><a href="{% url 'Self-Commendation' %}">My Commendation</a></li>
                                                 </ul>
                                             </li>
 
+                                            
+                                            <li ><a href="#">Partners</a>
+                                            </li>
+
+
                                             <li {% if blog_all_section or blog_write or blog_detail_section %}class="current"{% endif %}><a href="{% url 'list' %}">Blog</a>
                                             </li>
+
+                                            
 
                                             
                                             {% if user.is_authenticated %}

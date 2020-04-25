@@ -327,18 +327,17 @@
                     </div>
                 </div>
             
-                <form action="{% url 'approved_petition_URL' obj.id  %}" method="POST">
-
-                    {% csrf_token %}
+                
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheckDisabled{{ obj.id }}_{{ obj.timestamp|slugify }}" name="response"  {% if obj.approve %}checked{% endif %}>
+                        <input type="checkbox" class="custom-control-input" id="customCheckDisabled{{ obj.id }}_{{ obj.timestamp|slugify }}" name="response" disabled  {% if obj.approve %}checked{% endif %}>
                         <label class="custom-control-label" for="customCheckDisabled{{ obj.id }}_{{ obj.timestamp|slugify }}">Approve</label>
                       </div>
         
                       <button type="button" class="btn btn-secondary mt-2" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary mt-2" value="submit">Save Changes</button>
-        
-                    </form>
+                      {% if not obj.approve %}
+                      <a type="button" class="btn btn-primary mt-2" href="{% url  'approve-that-petition' obj.id  %}">Approved</a>
+                      {% endif %}
+                     
 
             </div>
             

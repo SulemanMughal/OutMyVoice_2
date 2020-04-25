@@ -68,11 +68,16 @@ urlpatterns = [
         name='password_reset_complete'
     ),
     
+    # ------------------------------------PROFILE URL(s)---------------------------------------
+    
     # Profile View URL
     url(r'^profile/$', 
         views.profile_user, 
         name= "profile"
     ),
+    
+    
+    # **************************************PROFILE URL(s)***************************************
     
     # User Change Password View URL
     url(r'^change_password/$', 
@@ -129,6 +134,8 @@ urlpatterns = [
     # Approve Petition by Global Admin
     path("approve-petition/<int:petition_id>", views.approved_petition, name="approved_petition_URL"),
     
+    path("approve/<int:petition_id>/", views.approved, name="approve-that-petition"),
+    
     # Approve Commendation by Global Admin
     path("approve-commendation/<int:commendation_id>", views.approved_commendation, name="approved_commendation_URL"),
     
@@ -154,6 +161,10 @@ urlpatterns = [
     path('live-petitions',
         views.LivePetitions,
         name="LivePetitions_URL"),
+    
+    path('live-search-petitions',
+        views.searchPetition,
+        name="LivePetitionsSearch_URL"),
     
     # Petitions Live Detail View URL (Both Auth and Unauth)
     path('live-petitions-deatil-view/<int:petition_id>/',

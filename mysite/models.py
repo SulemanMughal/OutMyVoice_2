@@ -41,7 +41,8 @@ COVERAGE_CHOICES =  (
     ('Taraba','Taraba'),
     ('Yobe','Yobe'),
     ('Zamfara','Zamfara'),
-    ('National Coverage', 'National Coverage')
+    ('National Coverage', 'National Coverage'),
+    ('None', 'None')
 )
 
 CATEGORY_CHOICES = (
@@ -73,7 +74,8 @@ ACTION_PERSON_CHOICES= (
 
 GLOBAL_ADMIN_CHOICES = (
     ("True", "Yes"),
-    ("False", "No")
+    ("False", "No"),
+    ('None', 'None')
 )
 
 PETITION_RESPONSE_CHOICES = (
@@ -87,6 +89,7 @@ PETITION_RESPONSE_CHOICES = (
 class Petition(models.Model):
     user                    =       models.ForeignKey(get_user_model(), on_delete= models.CASCADE)
     Petition_Coverage       =       models.CharField(max_length=100,choices=COVERAGE_CHOICES)
+    # Petition_Coverage -> Select the Coverage admin to which it will be send
     Petition_Title          =       models.CharField(max_length=100)
     Petition_Category       =       models.CharField(max_length=100,choices=CATEGORY_CHOICES)
     Petition_Category_Other =       models.CharField(max_length=100, blank=True)
@@ -106,8 +109,8 @@ class Petition(models.Model):
 # User Profile Model
 class  UserProfile(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    Coverage_Admin = models.CharField(max_length=100,choices=COVERAGE_CHOICES )
-    golbal_Admin = models.CharField(max_length = 6, choices = GLOBAL_ADMIN_CHOICES, default="False")
+    Coverage_Admin = models.CharField(max_length=100,choices=COVERAGE_CHOICES, default = 'None' )
+    golbal_Admin = models.CharField(max_length = 6, choices = GLOBAL_ADMIN_CHOICES, default="None")
     
     def __str__(self):
         return "{user}-{admin}".format(user=self.user.username, admin = self.Coverage_Admin)

@@ -45,9 +45,9 @@ class registerForm(forms.ModelForm):
     email = forms.EmailField(label = 'Email Address', 
                             widget = forms.TextInput()
                         )
-    username = forms.CharField(label="Username", 
-                            widget=forms.TextInput()
-                        )
+    # username = forms.CharField(label="Username", 
+    #                         widget=forms.TextInput()
+    #                     )
     class Meta:
         model = User
         fields = [
@@ -55,17 +55,17 @@ class registerForm(forms.ModelForm):
             'last_name',
         ]
 
-    # Clean Methof for username
-    def clean_username(self):
-        username_data = self.cleaned_data.get("username")
-        if username_data is None:
-            raise ValidationError("Username is required")
-        else:
-            try:
-                User.objects.get(username = username_data)
-                raise ValidationError(username_data + "\tAlready Exists.")
-            except User.DoesNotExist:
-                return username_data
+    # # Clean Methof for username
+    # def clean_username(self):
+    #     username_data = self.cleaned_data.get("username")
+    #     if username_data is None:
+    #         raise ValidationError("Username is required")
+    #     else:
+    #         try:
+    #             User.objects.get(username = username_data)
+    #             raise ValidationError(username_data + "\tAlready Exists.")
+    #         except User.DoesNotExist:
+    #             return username_data
     
     # Clean Method for email
     def clean_email(self):
@@ -95,7 +95,6 @@ class EditProfileForm(UserChangeForm):
     class Meta:
         model = User
         fields = [
-            'username',
             'first_name',
             'last_name',
             'password',

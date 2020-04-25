@@ -72,7 +72,30 @@ from .models import (
 # User App Decorators
 from .decorators import simple_decorator
 
-# Create your views here.
+# Helper Functions
+@login_required
+def findUserProfile(request):
+    try:
+        return UserProfile.objects.get(
+            user = User.objects.get(
+                email = request.user.email
+                )
+            )
+    except UserProfile.DoesNotExist:
+        if request.user.is_superuser:
+            profile = UserProfile.objects.create(
+                user = User.objects.get(
+                    email = request.user.email
+                    ),
+                golbal_Admin = "True"
+                )
+            return profile
+        else:
+            return None
+
+
+
+# -----------------------------------------USER SECTION---------------------------------------
 
 # Home View 
 def home(request):
@@ -118,71 +141,54 @@ def logout_User(request):
     logout(request)
     return redirect('home_page')
 
-# Dashboard View
-@login_required()
-def dashboard(request):
-    template_name = "mysite/dashboard.html"
-    try:
-        profile = UserProfile.objects.get(user = User.objects.get(username= request.user.username))
-        petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin, user = User.objects.get(username= request.user.username))
-        responses = []
-        for i in petitions:
-            j = i.petitionresponsefeedback_set.filter(petition__id = i.id, user=User.objects.get(username=request.user.username))
-            if len(j) != 0:
-                responses.append(j)
-    except :
-        profile = None
-        petitions = None
-    context={
-        'dashboard_section':True,
-        'all_petitions_section': True,
-        'profile': profile,
-        'petitions' : petitions,
-        'responses': responses
-    }
-    return render(request, 
-                template_name,
-                context
-            )
-    
 # Registration View
 def register_user(request):
-    template_name= "mysite/register.html"
-    message_template_name = "mysite/acc_active_email.html"
-    active_email_confirm_template_name = "mysite/acc_active_email_confirm.html"
-    if request.method!='POST':
-        form = registerForm()
-    else:
-        form = registerForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.set_password(form.cleaned_data['password2'])
-            user.email = form.cleaned_data['email']
-            user.username = form.cleaned_data['username']
-            user.save()
-            current_site = get_current_site(request)
-            message = render_to_string(message_template_name, {
-                'user':user, 'domain':current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
-            mail_subject = 'Activate your account.'
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
-            context={
-                'reigster_section' : True
-            }
-            return render(request, 
-                        active_email_confirm_template_name,
-                        context
-                    )
-    context={
-        'form' : form,
-        'reigster_section': True
-    }
-    return render(request, template_name, context)
+    try:
+        template_name= "mysite/register.html"
+        message_template_name = "mysite/acc_active_email.html"
+        active_email_confirm_template_name = "mysite/acc_active_email_confirm.html"
+        if request.method!='POST':
+            form = registerForm()
+        else:
+            form = registerForm(request.POST)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.is_active = False
+                user.set_password(form.cleaned_data['password2'])
+                user.email = form.cleaned_data['email']
+                user.username = form.cleaned_data['email'].split("@")[0]
+                user.save()
+                UserProfile.objects.create(user = user)
+                current_site = get_current_site(request)
+                message = render_to_string(message_template_name, {
+                    'user':user, 'domain':current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+                mail_subject = 'Activate your account.'
+                to_email = form.cleaned_data.get('email')
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+                context={
+                    'reigster_section' : True
+                }
+                return render(request, 
+                            active_email_confirm_template_name,
+                            context
+                        )
+        context={
+            'form' : form,
+            'reigster_section': True
+        }
+        return render(request, template_name, context)
+    except Exception as e:
+        # print(e)
+        messages.success(request, str(e))
+        context={
+            'form' : form,
+            'reigster_section': True
+        }
+        return render(request, template_name, context)
 
 # Register Account Email Confirmation View
 def activate(request, uidb64, token):
@@ -204,24 +210,21 @@ def activate(request, uidb64, token):
 @login_required
 def profile_user(request):
     template_name = "mysite/profile.html"
-    try:
-        profile = UserProfile.objects.get(user=request.user)
-    except:
-        profile = None
+    profile = findUserProfile(request)
     if request.method!='POST':
         form = EditProfileForm(instance = request.user)
     else:
         form = EditProfileForm(request.POST, instance = request.user)
         if form.is_valid():
-            # print("*********************************")
-            # print(request.POST)
-            # print("*********************************")
-            form.save()
-            # if profile is not None:
-            #     # print(profile)
-            #     profile.golbal_Admin = request.POST['golbal_Admin']
-            #     # print(profile.golbal_Admin)
-            #     profile.save()
+            try:
+                form.save()
+                messages.success(request, "Profile has been updated successfully.")
+                return redirect(reverse("profile"))
+            except Exception as e:
+                messages.success(request, str(e))
+                return redirect(reverse("profile"))
+        else:
+            messages.success(request, str(form.errors))
             return redirect(reverse("profile"))
     context={
         'form': form,
@@ -258,6 +261,53 @@ def change_password(request):
                 context
             )
 
+
+# *******************************************USER SECTION****************************************
+
+
+
+
+# --------------------------------------- PETITION SECTION --------------------------------------
+# Dashboard View
+@login_required()
+def dashboard(request):
+    template_name = "mysite/dashboard.html"
+    responses = []      #Variable used to store petition responses
+    try:
+        profile = findUserProfile(request)  #Find Profile of a user
+        if request.user.is_superuser:
+            petitions = Petition.objects.all()      #Find Results for a superuser
+        else:
+            petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin)     #Find Results for a specific coverage admin
+        
+        # Find petition responses
+        for i in petitions:
+            j = i.petitionresponsefeedback_set.filter(
+                    petition__id = i.id, 
+                    user=User.objects.get(
+                        username=request.user.username
+                    )
+                )
+            if len(j) != 0:
+                responses.append(j)
+    except :
+        profile = None
+        petitions = None
+    context={
+        'dashboard_section':True,
+        'all_petitions_section': True,
+        'profile': profile,
+        'petitions' : petitions,
+        'responses': responses
+    }
+    return render(request, 
+                template_name,
+                context
+            )
+
+
+
+
 # Create Petition View
 @login_required
 def petition_start(request):
@@ -265,13 +315,41 @@ def petition_start(request):
     form=Petitionform()
     if request.method == 'POST':
         form=Petitionform(request.POST,request.FILES)
+        # print(request.POST)
         if form.is_valid():
-            new = form.save(commit=False)
-            new.user=request.user
-            new.save()
-            # print(new)
-            form.save()
-            return redirect(reverse("dashboard"))
+            try:
+                new = form.save(commit=False)
+                new.user=request.user
+                new.save()
+                form.save()
+                # --------------------------------------------------------------
+                # Email Settings
+                current_site = get_current_site(request)
+                message = '''“Thank you for submitting your petition. 
+                                Your submission is under review for appropriate action, 
+                                we may contact you for clarifications, if necessary. 
+                                You will be notified once your petition is made available for public viewing 
+                                and signing. Together, we will build our Nation”'''
+                message += "\n\n\nFollowing is the link for the petition review\n\n\n"
+                mail_subject = 'VoiceItOut Team.'
+                build_link =  str(request.scheme) + str("://") + str( current_site.domain) + str(reverse("Petition_Details", args = [new.id]))
+                message += str(build_link)
+                to_email = []
+                for i in UserProfile.objects.filter(Coverage_Admin = new.Petition_Coverage):
+                    to_email.append(str(i.user.email))
+                print(to_email)
+                email = EmailMessage(mail_subject, message, to=[to_email])
+                email.send()
+                # ---------------------------------------------------------------
+                messages.success(request, "Email has been send to all Coverage Admin")
+                return redirect(reverse("Start-a-Petition"))
+            except Exception as e:
+                messages.success(request, str(e))
+                return redirect(reverse("Start-a-Petition"))
+        else:
+            # print(form.errors)
+            messages.success(request, str(form.errors))
+            return redirect(reverse("Start-a-Petition"))
     try:
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
     except:
@@ -283,6 +361,11 @@ def petition_start(request):
         'profile': profile
     }
     return render(request,template_name ,context)
+
+
+
+
+
 
 # User (Itself) View Petitions View
 @login_required
@@ -302,6 +385,39 @@ def User_Petitions(request):
                 template_name,
                 context
             )
+
+
+
+
+
+# Petition Feedback Response View
+@login_required
+def PetitionResponseFeedbackView(request, petition_id):
+    if request.method == "GET":
+        return redirect(reverse("dashboard"))
+    else:
+        try:
+            petition = Petition.objects.get(id = petition_id)
+            feedback_obj, created =  PetitionResponseFeedback.objects.get_or_create(
+                user = request.user,
+                petition = petition,
+                Coverage_Admin = UserProfile.objects.get(user=request.user).Coverage_Admin,
+            )
+            if created:
+                feedback_obj.Feedback = request.POST['Feedback']
+                feedback_obj.response = request.POST['response']
+                feedback_obj.save()
+                return redirect("dashboard")
+            feedback_obj.save()
+            return redirect("dashboard")
+        except:
+            return redirect(reverse("dashboard"))
+
+
+
+
+
+
 
 
 # Global Admin see all responses
@@ -327,28 +443,344 @@ def globalAdminResponses(request):
                   context)
 
 
-# Petition Feedback Response View
+
+
+
+
+
+
+# Approved Petiton By Global Admin
 @login_required
-def PetitionResponseFeedbackView(request, petition_id):
-    if request.method == "GET":
-        return redirect(reverse("dashboard"))
+def approved_petition(request, petition_id):
+    if request.method != "POST":
+        return redirect("globalAdminResponses_URL")
     else:
         try:
-            petition = Petition.objects.get(id = petition_id)
-            feedback_obj, created =  PetitionResponseFeedback.objects.get_or_create(
-                user = request.user,
-                petition = petition,
-                Coverage_Admin = UserProfile.objects.get(user=request.user).Coverage_Admin,
-            )
-            if created:
-                feedback_obj.Feedback = request.POST['Feedback']
-                feedback_obj.response = request.POST['response']
-                feedback_obj.save()
-                return redirect("dashboard")
-            feedback_obj.save()
-            return redirect("dashboard")
+            profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+            if profile.golbal_Admin == "True":
+                petition = Petition.objects.get(id=petition_id)
+                if request.POST.get("response", None) is None:
+                    petition.approve = False
+                elif "on" in request.POST['response']:
+                    petition.approve = True
+                    petition.save()
+                    # return redirect("globalAdminResponses_URL")
+                    # Email settings --------------------------------------------------------
+                    current_site = get_current_site(request)
+                    message = '''“Petition has now go on live.”'''
+                    message += "\n\n\nFollowing is the link for the petition review\n\n\n"
+                    mail_subject = 'VoiceItOut Team.'
+                    build_link =  str(request.scheme) + str("://") + str( current_site.domain) + str(reverse("LivePetitionsDetails_URL", args = [petition.id]))
+                    message += str(build_link)
+                    to_email = []
+                    for i in UserProfile.objects.filter(Coverage_Admin = new.Petition_Coverage):
+                        to_email.append(str(i.user.email))
+                    to_email.append(petition.user.email)
+                    email = EmailMessage(mail_subject, message, to=[to_email])
+                    email.send()
+                # ---------------------------------------------------------------------
+                return redirect(reverse("SpecificViewPetition_URL", args=[petition_id]))
+            else:
+                return redirect("globalAdminResponses_URL")
         except:
-            return redirect(reverse("dashboard"))
+            return redirect("dashboard")
+
+
+@login_required
+def approved(request, petition_id):
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+        if profile.golbal_Admin == "True":
+            petition = Petition.objects.get(id=petition_id)
+            petition.approve = True
+            petition.save()
+            messages.success(request, "Petition has been approved")
+            current_site = get_current_site(request)
+            message = '''“Petition has now go on live.”'''
+            message += "\n\n\nFollowing is the link for the petition review\n\n\n"
+            mail_subject = 'VoiceItOut Team.'
+            build_link =  str(request.scheme) + str("://") + str( current_site.domain) + str(reverse("LivePetitionsDetails_URL", args = [petition.id]))
+            message += str(build_link)
+            to_email = []
+            for i in UserProfile.objects.filter(Coverage_Admin = petition.Petition_Coverage):
+                to_email.append(str(i.user.email))
+            to_email.append(petition.user.email)
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            return redirect(reverse("Petition_Details",args = [petition_id]))
+        else:
+            messages.success(request, "You don't have the right to approve it.")
+            return redirect(reverse("Petition_Details",args = [petition_id]))
+    except:
+        messages.success(request, "Invalid Request")
+        return redirect("dashboard")
+
+
+
+
+
+
+
+
+        
+# Specific Peition View Responses
+@login_required
+def SpecificViewPetition(request, petition_id):
+    template_name = "mysite/dashboard.html"
+    profile  =findUserProfile(request)
+    try:
+        obj = Petition.objects.get(id=petition_id)
+        petitions = obj.petitionresponsefeedback_set.all()
+        context = {
+            'petitions': petitions,
+            'profile': profile,
+            'specific_petition_view': True,
+            'title' : obj.Petition_Title,
+            'obj' : obj
+        }
+        # print(context)
+        return render(request,
+                    template_name,
+                    context
+        )
+    except:
+        messages.success(request, "Invalid Request")
+        return redirect("dashboard")
+
+
+
+
+
+
+
+# Specific Petition Details
+@login_required
+def Petition_Details(request, petition_id):
+    template_name="mysite/petition_details.html"
+    profile = findUserProfile(request)
+    try:
+        obj = Petition.objects.get(id=petition_id)
+        context={
+            'profile' : profile,
+            'obj' : obj,
+            'petition_detail_section' : True,
+        }
+        return render(request,
+                        template_name,
+                        context)
+    except:
+        messages.success(request, "Invalid Request")
+        return redirect("dashboard")
+
+
+
+
+
+
+
+# See Specific Petition Response 
+@login_required
+def SpecificPetitonResponse(request, petition_id ):
+    template_name="mysite/petition_response_single.html"
+    try:
+        profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        petition_response = PetitionResponseFeedback.objects.get(id=petition_id, user=request.user)
+        context={
+            'profile':profile,
+            'petition_response': petition_response,
+            'view_specific_petiton_response_only': True
+        }
+        return render(request, template_name, context)
+    except Exception as e:
+        redirect("dashboard")
+
+
+
+
+
+
+
+# Live Petition View Both(Auth and Unauth)
+def LivePetitions(request):
+    petitions = Petition.approved_objects.all()
+    profile = None
+    template_name="mysite/petition-list-sidebar.html"
+    if request.user.is_authenticated:
+        # template_name="mysite/live_petitions.html"    
+        try:
+            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        except Exception as e:
+        # print(e)
+            return redirect("dashboard")
+        # context=  {
+        # 'petitions': petitions,
+        # 'profile' : profile,
+        # 'livePetition_Section': True
+        # }
+        # return render(request,
+        #                 template_name,
+        #                 context)
+    paginator = Paginator(petitions ,10, allow_empty_first_page=True)
+    page = request.GET.get('page', 1)
+    try:
+        petitions = paginator.page(page)
+    except PageNotAnInteger:
+        petitions = paginator.page(1)
+    except EmptyPage :
+        petitions = paginator.page(paginator.num_pages)
+    context = {
+        'petitions':petitions,
+        'livePetition_Section': True,
+        'paginator': paginator,
+    }
+    return render(request,template_name,context)
+
+from django.db.models import Q
+@login_required
+def searchPetition(request):
+    query=request.GET.get('query',None)
+    petitions = Petition.approved_objects.all()
+    if query is not None:
+        petitions=petitions.filter(
+        Q(Petition_Title__icontains=query)|
+        Q(Petition_Category__icontains=query)|
+        Q(Expalnation__icontains=query)|
+        Q(id__iexact=query)
+        )
+    profile = None
+    template_name="mysite/petition-list-sidebar.html"
+    if request.user.is_authenticated:
+        # template_name="mysite/live_petitions.html"    
+        try:
+            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        except Exception as e:
+        # print(e)
+            return redirect("dashboard")
+        # context=  {
+        # 'petitions': petitions,
+        # 'profile' : profile,
+        # 'livePetition_Section': True
+        # }
+        # return render(request,
+        #                 template_name,
+        #                 context)
+    paginator = Paginator(petitions ,10, allow_empty_first_page=True)
+    page = request.GET.get('page', 1)
+    try:
+        petitions = paginator.page(page)
+    except PageNotAnInteger:
+        petitions = paginator.page(1)
+    except EmptyPage :
+        petitions = paginator.page(paginator.num_pages)
+    context = {
+        'petitions':petitions,
+        'livePetition_Section': True,
+        'paginator': paginator,
+        'search_section': True,
+        'query' : query,
+    }
+    return render(request,template_name,context)
+
+
+
+
+
+
+
+# Live Petition View (Only Unauth)
+def LivePetitionsDetailView(request, petition_id):
+    profile = None
+    if request.user.is_authenticated:
+        # template_name="mysite/live_petitions.html"    
+        try:
+            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        except Exception as e:
+        # print(e)
+            return redirect("dashboard")
+    template_name="mysite/petition-single.html"
+    try:
+        petition = Petition.approved_objects.get(id=petition_id)
+        template_name="mysite/petition-single.html"
+        context={
+            'livePetition_Section_detail': True,
+            'petition': petition,
+            'profile' : profile   
+        }
+        return render(request, template_name, context)
+    except Exception as e:
+        # print(e)
+        return redirect("LivePetitions_URL")
+ 
+ 
+ 
+ 
+ 
+ 
+    
+# Petitions Live Detail View Comment URL (Only Unauth)
+def LivePetitionsSignatureView(request, petition_id):
+    if request.method != "POST":
+        return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+    try:
+        petition = Petition.approved_objects.get(id=petition_id)
+        form = PetitionSignerform(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.petition = petition
+            obj.save()
+            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+        else:
+            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+    except:
+        return redirect("LivePetitions_URL")
+
+
+# **************************************** PETITION SECTION ****************************************
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Create Commendation View
 @login_required
@@ -375,6 +807,16 @@ def commendation_start(request):
     }
     return render(request, template_name,context)
 
+
+
+
+
+
+
+
+
+
+
 # User All Commendations View
 @login_required
 def All_Commendations(request):
@@ -392,6 +834,13 @@ def All_Commendations(request):
     return render(request,
                 template_name,
                 context)
+
+
+
+
+
+
+
     
 # User Commendation Feedback Response View
 @login_required
@@ -417,6 +866,13 @@ def CommendationResponseFeedbackView(request, commendation_id):
             return redirect("all-commendations-url")
         except:
             return redirect("all-commendations-url")
+
+
+
+
+
+
+
         
 # User (Itself) Commendation View
 @login_required
@@ -436,6 +892,11 @@ def User_Commendation(request):
                 template_name,
                 context
             )
+
+
+
+
+
 
 @login_required
 def globalAdminResponsesCommendations(request):
@@ -459,27 +920,15 @@ def globalAdminResponsesCommendations(request):
             )
 
 
-# Approved Petiton By Global Admin
-@login_required
-def approved_petition(request, petition_id):
-    if request.method != "POST":
-        return redirect("globalAdminResponses_URL")
-    else:
-        try:
-            profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
-            if profile.golbal_Admin == "True":
-                petition = Petition.objects.get(id=petition_id)
-                if request.POST.get("response", None) is None:
-                    petition.approve = False
-                elif "on" in request.POST['response']:
-                    petition.approve = True
-                petition.save()
-                # return redirect("globalAdminResponses_URL")
-                return redirect(reverse("SpecificViewPetition_URL", args=[petition_id]))
-            else:
-                return redirect("globalAdminResponses_URL")
-        except:
-            return redirect("dashboard")
+
+
+
+
+
+
+
+
+
         
 # Approved Commendation By Global Admin
 @login_required
@@ -503,40 +952,11 @@ def approved_commendation(request, commendation_id):
         except:
             return redirect("dashboard")
         
-# Specific Peition View Responses
-@login_required
-def SpecificViewPetition(request, petition_id):
-    template_name = "mysite/dashboard.html"
-    try:
-        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
-        if profile.golbal_Admin == "True":
-            obj = Petition.objects.get(id=petition_id)
-            # print("*********************************************************")
-            # print(obj)
-            # print("*********************************************************")
-            if obj.Petition_Coverage == profile.Coverage_Admin:
-                petitions = obj.petitionresponsefeedback_set.all()
-                # print("*********************************************************")
-                # print(obj)
-                # print("*********************************************************")
-                context = {
-                    'petitions': petitions,
-                    'profile': profile,
-                    'specific_petition_view': True,
-                    'title' : obj.Petition_Title,
-                    'obj' : obj
-                }
-                # print(context)
-                return render(request,
-                            template_name,
-                            context
-                )
-            else:
-                return redirect("globalAdminResponses_URL")
-        else:
-            return redirect("globalAdminResponses_URL")
-    except:
-        return redirect("globalAdminResponses_URL")
+        
+        
+        
+        
+        
     
     
 # Specific Commendation Responses View
@@ -574,45 +994,7 @@ def SpecificViewCommendation(request, commendation_id):
     except:
         return redirect("globalAdminResponsesCommendations_URL")
     
-# Specific Petition Details
-@login_required
-def Petition_Details(request, petition_id):
-    template_name="mysite/petition_details.html"
-    try:
-        profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
-        obj = Petition.objects.get(id=petition_id)
-        # petitions = PetitionResponseFeedback.objects.filter(user = User.objects.get(username=request.user.username))
-        context={
-            'profile' : profile,
-            'obj' : obj,
-            'petition_detail_section' : True,
-            # 'petitions': petitions
-        }
-        # print("**********************************")
-        # print(context)
-        # print("**********************************")
-        return render(request,
-                      template_name,
-                      context)
-    except Exception as e:
-        # print(e)
-        return redirect("dashboard")
     
-# See Specific Petition Response 
-@login_required
-def SpecificPetitonResponse(request, petition_id ):
-    template_name="mysite/petition_response_single.html"
-    try:
-        profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
-        petition_response = PetitionResponseFeedback.objects.get(id=petition_id, user=request.user)
-        context={
-            'profile':profile,
-            'petition_response': petition_response,
-            'view_specific_petiton_response_only': True
-        }
-        return render(request, template_name, context)
-    except Exception as e:
-        redirect("dashboard")
         
 # Commenadtion Details
 @login_required
@@ -648,85 +1030,6 @@ def SpecificCommendationResponse(request, commendation_id):
     except Exception as e:
         redirect("all-commendations-url")
 
-# Live Petition View Both(Auth and Unauth)
-# @login_required
-def LivePetitions(request):
-    petitions = Petition.approved_objects.all()
-    profile = None
-    template_name="mysite/petition-list-sidebar.html"
-    if request.user.is_authenticated:
-        # template_name="mysite/live_petitions.html"    
-        try:
-            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
-        except Exception as e:
-        # print(e)
-            return redirect("dashboard")
-        # context=  {
-        # 'petitions': petitions,
-        # 'profile' : profile,
-        # 'livePetition_Section': True
-        # }
-        # return render(request,
-        #                 template_name,
-        #                 context)
-    paginator = Paginator(petitions ,10, allow_empty_first_page=True)
-    page = request.GET.get('page', 1)
-    try:
-        petitions = paginator.page(page)
-    except PageNotAnInteger:
-        petitions = paginator.page(1)
-    except EmptyPage :
-        petitions = paginator.page(paginator.num_pages)
-    context = {
-        'petitions':petitions,
-        'livePetition_Section': True,
-        'paginator': paginator,
-    }
-    return render(request,template_name,context)
-
-
-
-# Live Petition View (Only Unauth)
-# @login_required
-def LivePetitionsDetailView(request, petition_id):
-    profile = None
-    if request.user.is_authenticated:
-        # template_name="mysite/live_petitions.html"    
-        try:
-            profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
-        except Exception as e:
-        # print(e)
-            return redirect("dashboard")
-    template_name="mysite/petition-single.html"
-    try:
-        petition = Petition.approved_objects.get(id=petition_id)
-        template_name="mysite/petition-single.html"
-        context={
-            'livePetition_Section_detail': True,
-            'petition': petition,
-            'profile' : profile   
-        }
-        return render(request, template_name, context)
-    except Exception as e:
-        # print(e)
-        return redirect("LivePetitions_URL")
-    
-# Petitions Live Detail View Comment URL (Only Unauth)
-def LivePetitionsSignatureView(request, petition_id):
-    if request.method != "POST":
-        return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
-    try:
-        petition = Petition.approved_objects.get(id=petition_id)
-        form = PetitionSignerform(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.petition = petition
-            obj.save()
-            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
-        else:
-            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
-    except:
-        return redirect("LivePetitions_URL")
     
 # Live Commendations View (Both Auth and Unauth)
 def LiveCommendationsView(request):
