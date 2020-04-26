@@ -1,0 +1,155 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+
+{% block title %}Our Teams{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <div class="image-layer" style="background-image:url({% static '/images/background/banner-image-5.jpg' %});"></div>
+
+    <div class="banner-inner">
+        <div class="auto-container">
+            <div class="inner-container clearfix">
+                <h1>Our Team</h1>
+                <div class="page-nav">
+                    <ul class="bread-crumb clearfix">
+                        <li><a href="{% url 'home_page' %}">Home</a></li>
+                        <li class="active">Our Team</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--News Section-->
+<section class="news-section">
+    <div class="auto-container">
+        <div class="sec-title with-separator">
+            <h2>Global Team</h2>
+            <div class="separator"><span class="cir c-1"></span><span class="cir c-2"></span><span class="cir c-3"></span></div>
+        </div>
+
+        <div class="carousel-box">
+            <div class="news-carousel owl-theme owl-carousel">
+                <!--News Block-->
+                {% if global_team %}
+                    {% for obj in global_team %}
+                        <div class="news-block">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <figure class="image"><img src="{% static 'mysite/images/team.jpg' %}" alt=""></figure>
+                                    <div class="hover-box">
+                                        <div class="link zoom-link">
+                                            <a href="{% static 'mysite/images/team.jpg' %}" class="lightbox-image"><span class="icon flaticon-zoom-in"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lower-box">
+                                    <div class="upper-info">
+                                        <h4>Carl Craston</h4>
+                                        <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar nisl enim, eget dignissim felis posuere in. Ut suscipit et mi facilisis posuere. Nulla iaculis placerat dui in rutrum. Nulla…</p>
+                                        <div class="cat-info"><a href="#" class="link"><span class="fab fa-twitter"></span></a><a href="#" class="link"><span class="fab fa-facebook-f"></span></a><a href="#" class="link"><span class="fab fa-linkedin"></span></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="news-section">
+    <div class="auto-container">
+        <div class="sec-title with-separator">
+            <h2>Coverage Team</h2>
+            <div class="separator"><span class="cir c-1"></span><span class="cir c-2"></span><span class="cir c-3"></span></div>
+        </div>
+        <div class="mb-2">
+            
+
+          
+            <div class="field-inner">
+                <select name="coverage_area" id="cars"  class="custom-select-box" onchange="this.form.submit();">
+                    <option value="">Please Select Coverage Area</option>
+                    <option value="">Abuja</option>
+                    <option value="">Abia</option>
+                    <option value="">Adamawa</option>
+                    <option value="">Akwa Ibom</option>
+                    <option value="">Anambra</option>
+                    <option value="">Bauchi</option>
+                    <option value="">Bayelsa</option>
+                    <option value="">Benue</option>
+                    <option value="">Borno</option>
+                    <option value="">Cross River</option>
+                    <option value="">Delta</option>
+                    <option value="">Ebonyi</option>
+                    <option value="">Enugu</option>
+                    <option value="">Edo</option>
+                    <option value="">Ekiti</option>
+                    <option value="">Gombe</option>
+                    <option value="">Imo</option>
+                    <option value="">Jigawa</option>
+                    <option value="">Kaduna</option>
+                    <option value="">Kano</option>
+                    <option value="">Katsina</option>
+                    <option value="">Kebbi</option>
+                    <option value="">Kogi</option>
+                    <option value="">Kwara</option>
+                    <option value="">Lagos</option>
+                    <option value="">Nasarawa</option>
+                    <option value="">Niger</option>
+                    <option value="">Ogun</option>
+                    <option value="">Ondo</option>
+                    <option value="">Osun</option>
+                    <option value="">Oyo</option>
+                    <option value="">Plateau</option>
+                    <option value="">Rivers</option>
+                    <option value="">Sokoto</option>
+                    <option value="">Taraba</option>
+                    <option value="">Yobe</option>
+                    <option value="">Zamfara</option>
+                </select>
+            </div>
+            
+        </div>
+        <div class="carousel-box">
+            <div class="news-carousel owl-theme owl-carousel">
+         
+                {% if coverage_team %}
+                {% for obj in coverage_team %}
+                <div class="news-block">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <figure class="image"><img src="{% static 'mysite/images/team.jpg' %}" alt=""></figure>
+                            <div class="hover-box">
+                                <div class="link zoom-link">
+                                    <a href="{% static 'mysite/images/team.jpg' %}" class="lightbox-image"><span class="icon flaticon-zoom-in"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lower-box">
+                            <div class="upper-info">
+                                <h4>Carl Craston</h4>
+                                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pulvinar nisl enim, eget dignissim felis posuere in. Ut suscipit et mi facilisis posuere. Nulla iaculis placerat dui in rutrum. Nulla…</p>
+                                <div class="cat-info"><a href="#" class="link"><span class="fab fa-twitter"></span></a><a href="#" class="link"><span class="fab fa-facebook-f"></span></a><a href="#" class="link"><span class="fab fa-linkedin"></span></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+                {% endif %}
+         
+
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

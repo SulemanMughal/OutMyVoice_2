@@ -1,0 +1,46 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <div class="image-layer" style="background-image:url({% static 'images/background/banner-image-5.jpg' %});"></div>
+
+    <div class="banner-inner">
+        <div class="auto-container">
+            <div class="inner-container clearfix">
+                <h1>About Us</h1>
+                <div class="page-nav">
+                    <ul class="bread-crumb clearfix">
+                        <li><a href="{% url  'home_page' %}">Home</a></li>
+                        <li class="active">About Us</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix">
+            <div class="content-side col-lg-12 col-md-12 col-sm-12">
+                <div class="content-inner">
+                    <div class="service-details">
+                        <h2>About Us</h2>
+                        <div class="text-block text-justify">
+                            <p>VoiceItOut.org is one of the projects of the Nigerian Diaspora Foundation (NDF) , a non-governmental and non-political global coalition of Nigerians from all walks of life with unrivaled determination to rebuild Nigeria and create a new home. VoiceItOut is a petition-based platform that gives voice to the voiceless and enhances the capability of the learned to participate actively in the nation building process. Without doubt, a good number of the enlightened Nigerians both within and outside the country with good skills and knowledge to make a real change in Nigeria political, social and economic landscape have been docile to participating in political activities.</p>
+                            <p>With the support of global advocate groups, legal experts, Nigerian professionals, as well as international organizations such as the United Nations and the International Court of Justice, the Nigeria Diaspora Foundation, through the VoiceItOut platform, will ensure that the genuine rights of the people are protected.</p>
+                            <p>The VoiceItOut team is made of Nigerians across the globe that want a better nation. A nation free of corruption, a nation where quality education good healthcare system, functioning transport system in a safe and secure environment free of ethnic and religious hindrances, a society where hard work is compensated, and law breakers are made to face appropriate punishment. We can only this achieve through a collaborative effort and determination to create a new home. It is possible to create a New and prosperous Nigeria where each region is empowered to excel.</p>
+                            <p>It is our belief that only Nigerians can genuinely build Nigeria We therefore implored to support NDF projects and activities through your contributions and donations. Your suggestions, opinions and ideas toward the task of building our Nation are most welcome.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

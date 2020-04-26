@@ -147,6 +147,7 @@ urlpatterns = [
 
     # Petition Details View
     path('view-specific-peition/<int:petition_id>/', views.Petition_Details, name="Petition_Details"),
+    
 
     # See Specific Petition Response View URL
     path("specific-petition-response/<int:petition_id>/", views.SpecificPetitonResponse, name="ViewSpecificPetitionResponse_URL"),
@@ -190,4 +191,58 @@ urlpatterns = [
     path('live-commendation-signature-view/<int:commendation_id>/',
         views.LiveCommendationSignatureView,
         name="LiveCommendationSignature_URL"),
+    
+    
+    
+    # ------------------------------------ Web Specific Pages --------------------------------------
+    
+    # ****************************************************************
+    # About Us
+    # ****************************************************************
+    path('about-us', 
+        views.About,
+        name="About"),
+
+
+    # ****************************************************************
+    # Our Teams
+    # ****************************************************************
+    path('our-team',
+        views.Team,
+        name="team"),
+    
+    
+    # ****************************************************************
+    # Get Help
+    # ****************************************************************
+    path('Get-Help', views.Help, name="Help"),
+    
+    
+    # ****************************************************************
+    # FAQ
+    # ****************************************************************
+    path('FAQs', views.FAQ, name="FAQ"),
+    
+    # ****************************************************************
+    # Privacy Policy
+    # ****************************************************************
+    path('Privacy-Policy', views.Policy, name="Policy"),
+    
+    # ****************************************************************
+    # Terms & Conditions
+    # ****************************************************************
+    path('Terms-&-Conditions', views.Terms, name="Term"),
+
+    # ****************************************************************
+    # Contact Us
+    # ****************************************************************
+    path('Contact-Us', views.Contact, name="Contact"),
+    
+    # ****************************************************************
+    # Partner 
+    # ****************************************************************
+    path('partner', views.Partner, name="Partner"),
+    
+    
+    # ************************************* Web Specific Pages **************************************
 ]

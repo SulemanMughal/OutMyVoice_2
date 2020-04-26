@@ -13,7 +13,7 @@
             <div class="auto-container">
                 <div class="inner-container clearfix">
                     <div class="cat-info clearfix">
-                        <a href="{% url 'Petition_Details' obj.id %}">{{ obj.Petition_Category }}</a>
+                        <a href="{% url 'LivePetitionsDetails_URL' obj.id %}">{{ obj.Petition_Category }}</a>
                     </div>
                     <h1>{{ obj.Petition_Title }}</h1>
                 </div>
@@ -38,7 +38,7 @@
                                             <h4>Date & Time</h4>
                                             <ul>
                                                 <li>{{ obj.timestamp|date:"F d,Y" }}</li>
-                                                <li>{{ obj.timestamp|date:"l" }} G at {{ obj.timestamp|date:"G:i" }}</li>
+                                                <li>{{ obj.timestamp|date:"l" }} at {{ obj.timestamp|date:"G:i" }}</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -98,7 +98,7 @@
                                             <p style="font-size: smaller;">
                                                 
                                                 {% for comment in obj.petition_signer_set.all %}
-                                                    {{ comment }} signed {{ comment.timestamp|timesince }} ago
+                                                    <span class="font-weight-bold">{{ comment }}</span> signed {{ comment.timestamp|timesince }} ago
                                                     <br>
                                                 {% endfor %}
                                             </p>

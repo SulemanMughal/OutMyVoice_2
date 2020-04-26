@@ -4,7 +4,7 @@ from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
-
+from django.conf import settings
 from django.core.paginator import (
     Paginator, 
     EmptyPage, 
@@ -697,23 +697,21 @@ def searchPetition(request):
 
 
 
-# Live Petition View (Only Unauth)
+# Live Petition View (Both Auth and Unauth)
 def LivePetitionsDetailView(request, petition_id):
     profile = None
-    if request.user.is_authenticated:
-        # template_name="mysite/live_petitions.html"    
+    if request.user.is_authenticated:  
         try:
             profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
         except Exception as e:
-        # print(e)
             return redirect("dashboard")
-    template_name="mysite/petition-single.html"
+    template_name="mysite/petition_details (2).html"
     try:
-        petition = Petition.approved_objects.get(id=petition_id)
-        template_name="mysite/petition-single.html"
+        obj = Petition.approved_objects.get(id=petition_id)
+        template_name="mysite/petition_details (2).html"
         context={
             'livePetition_Section_detail': True,
-            'petition': petition,
+            'obj': obj,
             'profile' : profile   
         }
         return render(request, template_name, context)
@@ -738,11 +736,12 @@ def LivePetitionsSignatureView(request, petition_id):
             obj = form.save(commit=False)
             obj.petition = petition
             obj.save()
-            return redirect(reverse("Petition_Details", args=[petition_id]))
+            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
         else:
-            return redirect(reverse("Petition_Details", args=[petition_id]))
-    except:
-        return redirect("Petition_Details")
+            return redirect(reverse("LivePetitionsDetails_URL", args=[petition_id]))
+    except Exception as e:
+        # print(e)
+        return redirect("LivePetitions_URL")
 
 
 # **************************************** PETITION SECTION ****************************************
@@ -1122,3 +1121,90 @@ def LiveCommendationSignatureView(request, commendation_id):
     except:
         return redirect("LiveCommendations_URL")
     
+
+
+# ----------------------------------- WEB SPECIFIC PAGES --------------------------------------
+
+# ****************************************************************
+# About Us
+# ****************************************************************
+def About(request):
+    template_name = "web_pages/about.html"
+    return render(request,
+                template_name)
+
+
+# ****************************************************************
+# Our Teams
+# ****************************************************************
+def Team(request):
+    print(request)
+    template_name = "web_pages/teams.html"
+    global_team = UserProfile.objects.filter(golbal_Admin = 'True')
+    coverage_team  = UserProfile.objects.all().exclude(golbal_Admin = 'True')
+    context = {
+        'global_team' : global_team,
+        'coverage_team':coverage_team
+    }
+    return render(request, template_name, context = context or {})
+
+
+# ****************************************************************
+# Get Help
+# ****************************************************************
+def Help(request):
+    if request.method == "POST":
+        current_site = get_current_site(request)
+        mail_subject = 'VoiceItOut Team.'
+        message = f"“Ask for a Help”\nIssue Specified : {request.POST['issue']}\nProblem Details:{request.POST['message']}\nRequest User Contact Number : {request.POST['phone']}\nRequest User Email : {request.POST['email']}"
+        email = EmailMessage(mail_subject, message, to=[settings.EMAIL_HOST_USER])
+        email.send()
+    template_name = "web_pages/help.html"
+    return render(request, template_name, context =  {})
+
+
+# ****************************************************************
+# FAQ
+# ****************************************************************
+def FAQ(request):
+    template_name="web_pages/faqs.html"
+    return render(request, template_name, context = {})
+
+# ****************************************************************
+# Privacy Policy
+# ****************************************************************
+def Policy(request):
+    template_name="web_pages/privacy.html"
+    return render(request, template_name, context = {})
+
+# ****************************************************************
+# Terms & Conditions
+# ****************************************************************
+def Terms(request):
+    template_name="web_pages/terms.html"
+    return render(request, template_name, context = {})
+
+
+# ****************************************************************
+# Contact Us
+# ****************************************************************
+def Contact(request):
+    if request.method == "POST":
+        current_site = get_current_site(request)
+        mail_subject = 'VoiceItOut Team.'
+        message = f"Subject : “{request.POST['subject']}”\nName:{request.POST['username']}\nMessage:{request.POST['message']}\nEmail : {request.POST['email']}"
+        email = EmailMessage(mail_subject, message, to=[settings.EMAIL_HOST_USER])
+        email.send()
+    template_name="web_pages/contact.html"
+    return render(request, template_name, context = {})
+
+# ****************************************************************
+# Partner
+# ****************************************************************
+def Partner(request):
+    template_name="web_pages/partner.html"
+    context = {
+        'partner_section': True
+    }
+    return render(request, template_name, context = context)
+# ************************************ WEB SPECIFIC PAGES ***************************************

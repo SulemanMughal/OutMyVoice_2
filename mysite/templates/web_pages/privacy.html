@@ -1,0 +1,76 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <div class="image-layer" style="background-image:url({% static '/images/background/banner-image-5.jpg' %});"></div>
+
+    <div class="banner-inner">
+        <div class="auto-container">
+            <div class="inner-container clearfix">
+                <h1>Privacy Policy</h1>
+                <div class="page-nav">
+                    <ul class="bread-crumb clearfix">
+                        <li><a href="{% url 'home_page' %}">Home</a></li>
+                        <li class="active">Privacy Policy</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix">
+            <div class="content-side col-lg-12 col-md-12 col-sm-12">
+                <div class="content-inner">
+                    <div class="service-details">
+                        <h2>Privacy Policy</h2>
+                        <div class="text-block text-justify">
+                            <p>VoiceItOut.org takes the issue of protecting your privacy online seriously. VoiceItOut is one of the projects of the Nigerian Diaspora Foundation (NDF), a non-governmental and non-political global coalition of Nigerians from all walks of life with determination to rebuilding our nation, Nigeria. VoiceItOut gives voice to the voiceless and ensure that the issues of good governance, rule of law and accountability is entrenched in every facets of our life. This privacy policy describes how VoiceItOut.org and its parent organization, the NDF.ng collect and use the personal information you provide on both websites.</p>
+                            <p>VoiceItOut asks for personal information, such as your name, email address, date of birth, street address, state, country and phone number. Your personal information is used to set up your VoiceItOut account and to allow you to use many VoiceItOut member services. Members may also supply additional information as such as your education level, occupation and industry. Kindly note that VoiceItOut does not knowingly collect information from children under 14; if VoiceItOut discovers that a child under 14 is registered, we will take appropriate step to remove the child’s information from our record. VoiceItOut reserve the right to collect publicly available data about you, either obtained directly by us or through a 3rd party. However, in all cases your privacy will be protected.</p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="service-details">
+                        <h2>How information may be used</h2>
+                        <div class="text-block text-justify">
+                            <p>VoiceItOut′s goal in collecting personal and demographic information is to provide our registered members with the personalized web experience possible and to provide our advertisers with an efficient means to reach the right audience. VoiceItOut employs a third-party service provider to display advertising on our Web site. It is also pertinent to note that our third-party partner may use technologies such as cookies to gather information about your activities on this site and other sites in order to provide you advertising based upon your browsing activities and interests. VoiceItOut will keep your email address information confidential.</p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="service-details">
+                        <h2>Email Privacy</h2>
+                        <div class="text-block text-justify">
+                            <p>The NDF.ng and VoiceItOut.org do not provide, sell, or rent email addresses to anyone outside the organization.</p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="service-details">
+                        <h2>External Link</h2>
+                        <div class="text-block text-justify">
+                            <p>This includes links to external websites and any links that do not fall under our domain VoiceItOut.org as our subsidiaries are not covered by this privacy policy document. These links do not fall under the https://www.ndf.ng or VoiceItout.org domain, and we are not responsible for the privacy practices or the content of external websites. Your use of any linked website is solely at your own risk.</p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="service-details">
+                        <h2>Modification</h2>
+                        <div class="text-block text-justify">
+                            <p>We may amend this privacy policy from time to time; please review it periodically. We maintain the option to modify this privacy at any time by electronic notice posted on our website. Your continued use of our website after the date that such notices are posted will be deemed to be your agreement to the changed terms.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

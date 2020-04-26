@@ -1,0 +1,48 @@
+{% extends 'mysite/base.html' %}
+{% load static %}
+
+{% block title %}Partner{% endblock %}
+
+{% block content %}
+
+<section class="page-banner">
+    <div class="image-layer" style="background-image:url({% static '/images/background/banner-image-5.jpg' %});"></div>
+
+    <div class="banner-inner">
+        <div class="auto-container">
+            <div class="inner-container clearfix">
+                <h1>Partners</h1>
+                <div class="page-nav">
+                    <ul class="bread-crumb clearfix">
+                        <li><a href="{% url 'Partner' %}">Home</a></li>
+                        <li class="active">Partners</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix">
+            <div class="content-side col-lg-12 col-md-12 col-sm-12">
+                <div class="content-inner">
+                    <div class="service-details">
+                        <h2>Partners</h2>
+                        <div class="text-block text-justify">
+                            <p>This platform is being supported and funded by the Nigerian Diaspora Foundation (NDF), non-governmental and non-political organization. NDF is a global coalition of all Nigerians with a mission to re build and create a better place for us and generations to come. You are encouraged to join NDF and make to contributions. There is no place like home! We are rich in culture and our value system is strong. Nigerians are one of the most resilient people in the world. If we begin to make our leaders accountable and enthrone good governance, rule of law, accountability, we will get our promise land.</p>
+                            <p>NDF needs your contributions to execute our various developmental goals and effectively deploy solutions for the betterment of our people. Please contribute! If you need clarifications and want to know more, please visit <a href="https://www.ndf.ng">https://www.ndf.ng</a>.</p>
+                            <p>IF YOU HAVE THE ZEAL AND THE LEADERSHIP ACUMEN TO SERVE AS A UNIT LEADER, CITY CO-ORIDNATOR OR ANY OTHER AVAILABLE POSITIONS IN YOUR LOCALITY, PLEASE REGISTER ON WWW.NDF.NG AND MAKE YOUR INTEREST KNOW. ENOUGH OF COMPLAIN, SPREAD THE GOOD NEWS, NIGERIA SHALL GET TO HER PROMISE LAND.</p>
+                            <p>Together, we shall make Nigeria Great.</p>
+                            <p>To donate, please</p>
+                        </div>
+                        <button class="btn btn-success">Continue</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -45,19 +45,19 @@
                             <div class="event-block-two col-md-6 col-sm-12 ">
                                 <div class="inner-box">
                                     <div class="image-box">
-                                        <figure class="image"><a href="{% url 'Petition_Details' obj.id %}"><img src="/media/{{ obj.Image }}" alt=""></a></figure>
+                                        <figure class="image"><a href="{% url 'LivePetitionsDetails_URL' obj.id %}"><img src="/media/{{ obj.Image }}" alt=""></a></figure>
                                     </div>
                                     <div class="lower-box">
                                         <div class="content-box">
                                             <div class="date-box"><div class="date"><span class="day">{{ obj.timestamp|date:"d" }}</span><span class="month">{{ obj.timestamp|date:"F" }}</span><span class="year">{{ obj.timestamp|date:"Y" }}</span></div></div>
                                             <div class="content">
-                                                <div class="cat-info"><a href="{% url 'Petition_Details' obj.id %}">{{ obj.Petition_Category }}</a></div>
+                                                <div class="cat-info"><a href="{% url 'LivePetitionsDetails_URL' obj.id %}">{{ obj.Petition_Category }}</a></div>
                                                 <h3><a href="#">{{ obj.Petition_Title }}</a></h3>
                                                 <p style="font-size: small;">The Petition was Submitted to: {{ obj.Action_Person }}</p>
                                                 <p style="font-size: small;">Submitted by: {{ obj.user.username }}</p>
                                                 <p style="font-size: small; text-align:justify;">{{ obj.Expalnation|safe|truncatechars_html:50 }}</p>
                                                 <p style="text-align: right; font-size:smaller;">Supported by: {{ obj.petition_signer_set.all.count }} Person</p>
-                                                <div class="read-more"><a href="{% url 'Petition_Details' obj.id %}">Read More</a></div>
+                                                <div class="read-more"><a href="{% url 'LivePetitionsDetails_URL' obj.id %}">Read More</a></div>
                                             </div>
                                         </div>
                                     </div>
@@ -67,19 +67,19 @@
                         <div class="event-block-two col-md-6 load-more-item col-sm-12 ">
                             <div class="inner-box">
                                 <div class="image-box">
-                                    <figure class="image"><a href="{% url 'Petition_Details' obj.id %}"><img src="/media/{{ obj.Image }}" alt=""></a></figure>
+                                    <figure class="image"><a href="{% url 'LivePetitionsDetails_URL' obj.id %}"><img src="/media/{{ obj.Image }}" alt=""></a></figure>
                                 </div>
                                 <div class="lower-box">
                                     <div class="content-box">
                                         <div class="date-box"><div class="date"><span class="day">{{ obj.timestamp|date:"d" }}</span><span class="month">{{ obj.timestamp|date:"F" }}</span><span class="year">{{ obj.timestamp|date:"Y" }}</span></div></div>
                                         <div class="content">
                                             <div class="cat-info"><a href="#">{{ obj.Petition_Category }}</a></div>
-                                            <h3><a href="{% url 'Petition_Details' obj.id %}">{{ obj.Petition_Title }}</a></h3>
+                                            <h3><a href="{% url 'LivePetitionsDetails_URL' obj.id %}">{{ obj.Petition_Title }}</a></h3>
                                             <p style="font-size: small;">The Petition was Submitted to: {{ obj.Action_Person }}</p>
                                             <p style="font-size: small;">Submitted by: {{ obj.user.username }}</p>
                                             <p style="font-size: small; text-align:justify;">{{ obj.Expalnation|safe|truncatechars_html:50 }}</p>
                                             <p style="text-align: right; font-size:smaller;">Supported by: {{ obj.petition_signer_set.all.count }} Person</p>
-                                            <div class="read-more"><a href="{% url 'Petition_Details' obj.id %}">Read More</a></div>
+                                            <div class="read-more"><a href="{% url 'LivePetitionsDetails_URL' obj.id %}">Read More</a></div>
                                         </div>
                                     </div>
                                 </div>
