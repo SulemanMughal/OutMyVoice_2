@@ -37,37 +37,7 @@
                 <!-- Header Top -->
 
 
-                <div class="header-top header-top-one">
-                    <div class="auto-container">
-                        <div class="inner clearfix">
-                            <div class="top-left clearfix">
-                                <div class="welcome-text"><a href="https://ndf.ng"><span class="flag"></span> NDF Sponsored Project <span class="arrow flaticon-right-arrow-angle"></span></a></div>
-                                <div class="email"><a href="https://ndf.ng"><span class="icon fa fa-envelope"></span>info@ndf.ng</a></div>
-                            </div>
-        
-                            <div class="mid-text"><span>Visiting London?</span> Find events, residents and more.</div>
-            
-                            <div class="top-right clearfix">
-                                <div class="phone"><a href="tel:+1-773-715-3644"><span class="icon fa fa-phone-alt"></span>call on: +1-773-715-3644</a></div>
-                                <!-- <div class="hours">
-                                    <div class="hours-btn">Open Today: 09 to 18 <span class="arrow flaticon-down-arrow"></span></div>
-                                    <div class="hours-dropdown">
-                                        <ul>
-                                            <li><a href="#">Monday: 09 to 18</a></li>
-                                            <li><a href="#">Tuesday: 09 to 18</a></li>
-                                            <li><a href="#">Wednesday: 09 to 18</a></li>
-                                            <li><a href="#">Thursday: 09 to 18</a></li>
-                                            <li><a href="#">Friday: 09 to 18</a></li>
-                                            <li><a href="#">Saturday: 10 to 15</a></li>
-                                            <li><a href="#">Sunday: Off</a></li>
-                                        </ul>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+               
                 <!-- End Header Top -->
 
                 <!-- Header Upper -->
@@ -131,8 +101,13 @@
                                                 <li {% if dashboard_section %}class="current" {% endif %}><a href="{% url 'dashboard' %}">Dashboard</a></li>
                                                 <li><a href="{% url 'logout_user_url' %}">Logout</a></li>
                                             {% else %}
-                                                <li {% if login_section %} class="current" {% endif %}><a href="{% url 'login_user_url' %}">Sig In</a></li>
-                                                <li {% if reigster_section %} class="current" {% endif %}><a href="{% url 'register' %}">Sign Up</a></li>
+                                            {% if reigster_section %}
+                                                <li><a href="{% url 'login_user_url' %}">Sig In</a></li>
+                                            {% elif login_section  %}
+                                                <li ><a href="{% url 'register' %}">Sig Up</a></li>
+                                            {% else %}
+                                                <li><a href="{% url 'login_user_url' %}">Sig In</a></li>
+                                                {% endif %}
                                             {% endif %}
                                         </ul>
                                     </div>

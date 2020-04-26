@@ -1138,7 +1138,6 @@ def About(request):
 # Our Teams
 # ****************************************************************
 def Team(request):
-    print(request)
     template_name = "web_pages/teams.html"
     global_team = UserProfile.objects.filter(golbal_Admin = 'True')
     coverage_team  = UserProfile.objects.all().exclude(golbal_Admin = 'True')

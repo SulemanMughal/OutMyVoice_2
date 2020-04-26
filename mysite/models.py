@@ -111,6 +111,7 @@ class  UserProfile(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     Coverage_Admin = models.CharField(max_length=100,choices=COVERAGE_CHOICES, default = 'None' )
     golbal_Admin = models.CharField(max_length = 6, choices = GLOBAL_ADMIN_CHOICES, default="None")
+    aggreeTerms                 =       models.BooleanField(blank=True, default=True)
     
     def __str__(self):
         return "{user}-{admin}".format(user=self.user.username, admin = self.Coverage_Admin)

@@ -38,8 +38,12 @@
                         <div class="news-block">
                             <div class="inner-box">
                                 <div class="image-box">
-                                    <figure class="image"><img src="{% static 'mysite/images/team.jpg' %}" alt=""></figure>
-                                    <div class="hover-box">
+                                    {% if obj.Image %}
+                                        <figure class="image"><img src="/media/{{ obj.Image }}" alt=""></figure>
+                                    {% else %}
+                                        <figure class="image"><img src="{% static 'mysite/images/team.jpg' %}" alt=""></figure>
+                                    {% endif %}
+                                        <div class="hover-box">
                                         <div class="link zoom-link">
                                             <a href="{% static 'mysite/images/team.jpg' %}" class="lightbox-image"><span class="icon flaticon-zoom-in"></span></a>
                                         </div>
@@ -126,7 +130,11 @@
                 <div class="news-block">
                     <div class="inner-box">
                         <div class="image-box">
+                            {% if obj.Image %}
+                            <figure class="image"><img src="/media/{{ obj.Image }}" alt=""></figure>
+                        {% else %}
                             <figure class="image"><img src="{% static 'mysite/images/team.jpg' %}" alt=""></figure>
+                        {% endif %}
                             <div class="hover-box">
                                 <div class="link zoom-link">
                                     <a href="{% static 'mysite/images/team.jpg' %}" class="lightbox-image"><span class="icon flaticon-zoom-in"></span></a>

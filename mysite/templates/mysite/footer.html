@@ -1,7 +1,7 @@
 {% load static %}
 
 <footer class="main-footer">
-
+            
     <!--Widgets Section-->
     <div class="widgets-section">
         <div class="auto-container">
@@ -10,38 +10,79 @@
                 <div class="column col-lg-3 col-md-6 col-sm-12">
                     <div class="footer-widget links-widget">
                         <div class="widget-title">
-                            <h4>Details</h4>
+                            <h4>Quick Links</h4>
                         </div>
                         <div class="widget-content">
                             <ul class="links linka">
                                 <li><a href="{% url 'About' %}">About Us</a></li>
+                                <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                                <li><a href="{% url 'Start-a-Petition' %}">Create Petition</a></li>
+                                <li><a href="{% url 'Start-a-Commendation' %}">Create Commendation</a></li>
+                                <li><a href="{% url 'list' %}">Blog</a></li>
+                            </ul>
+                        </div>  
+                    </div>
+                </div>
+                <!--Column-->
+                <div class="column col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-widget links-widget">
+                        <div class="widget-title">
+                            <h4>Information</h4>
+                        </div>
+                        <div class="widget-content">
+                            <ul class="links linka">
                                 <li><a href="{% url 'team' %}">Our Team</a></li>
                                 <li><a href="{% url 'Help' %}">Get Help</a></li>
                                 <li><a href="{% url 'FAQ' %}">FAQ</a></li>
-                                <li><a href="{% url 'Policy' %}">Privacy Policy</a></li>
+                                <li><a href="{% url  'Policy' %}">Privacy Policy</a></li>
                                 <li><a href="{% url 'Term' %}">Terms & Conditions</a></li>
-                                <li><a href="{% url 'Contact' %}">Contact Us</a></li>
                             </ul>
+                        </div>  
+                    </div>
+                </div>
+                <!--Column-->
+                <div class="column col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-widget num-widget">
+                        <div class="widget-title">
+                            <h4>Follow</h4>
+                        </div>
+                        <div class="widget-content">
+                            <ul class="num-links linka">
+                                <li><a href="#">Facebook</a></li>
+                                <li><a href="#">Twitter</a></li>
+                                <li><a href="#">Instagram</a></li>
+                                <li><a href="#">Whatsapp</a></li>
+                                <li><a href="#">Youtube</a></li>
+                            </ul>
+                        </div>  
+                    </div>
+                </div>
+                <!--Column-->
+                <div class="column col-lg-3 col-md-6 col-sm-12">
+                    <div class="footer-widget about-widget">
+                        <div class="logo">
+                            <a href="#"><img src="{% static 'mysite/images/ndm.png' %}" style="width: 30%;" alt=""></a>
+                        </div>
+                        <div class="address">
+                            <h5>The Executive Director, <br />
+                                Nigerian Diaspora Foundation (NDF)</h5>
+                            <div class="text">8745 West Higgins Road, Suite 110 <br>Chicago IL 60631</div>
+                            
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
+    
     <!-- Footer Bottom -->
     <div class="footer-bottom">
         <div class="auto-container">
             <div class="inner">
                 <div class="copyright">Copyrights <a href="#">&copy; 2020 voiceitout.</a> All rights reserved.</div>
-                <ul class="social-links clearfix linka">
-                    <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
-                    <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                    <li><a href="#"><span class="fab fa-instagram"></span></a></li>
-                </ul>
+                
             </div>
         </div>
     </div>
-
+    
 </footer>

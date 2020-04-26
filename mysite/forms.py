@@ -36,15 +36,18 @@ class registerForm(forms.ModelForm):
                             widget = forms.PasswordInput(),
                             strip=False,
                             help_text=password_validation.password_validators_help_text_html(),
+                            error_messages = {'required': "Password is requireed to create an account."}
                         )
     password2 = forms.CharField(label = 'Repeat Password', 
                             widget = forms.PasswordInput(),
                             strip=False,
                             help_text="Both Passwords should be same.",
+                            required = False
                         )
     email = forms.EmailField(label = 'Email Address', 
                             widget = forms.TextInput()
                         )
+    agreeTerms = forms.BooleanField(label = "Aggree Terms and Conditions", error_messages = {'required': "To get register yourself, you should agree upon Terms & Conditions."})
     # username = forms.CharField(label="Username", 
     #                         widget=forms.TextInput()
     #                     )
@@ -84,10 +87,14 @@ class registerForm(forms.ModelForm):
     # Clean Method For Password
     def clean_password2(self):
         cd = self.cleaned_data
-        if self.cleaned_data.get('password') != cd['password2']:
-            raise forms.ValidationError("Passwords don't match.")
-        return cd['password2']
+        self.cleaned_data['password2'] = cd['password']
+        return cd['password']
 
+
+    def clean_agreeTerms(self):
+        if self.cleaned_data.get("agreeTerms") is None or self.cleaned_data.get("agreeTerms") is False:
+            raise   forms.ValidationError("To get register yourself, you should agree upon Terms & Conditions.")
+        return self.cleaned_data.get("agreeTerms")
     
 # User Edit Profile Form
 class EditProfileForm(UserChangeForm):
