@@ -276,7 +276,7 @@ def dashboard(request):
     try:
         profile = findUserProfile(request)  #Find Profile of a user
         if request.user.is_superuser:
-            petitions = Petition.objects.all()      #Find Results for a superuser
+            petitions = Petition.objects.all().order_by('-timestamp')      #Find Results for a superuser
         else:
             petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin)     #Find Results for a specific coverage admin
         
@@ -337,12 +337,14 @@ def petition_start(request):
                 to_email = []
                 for i in UserProfile.objects.filter(Coverage_Admin = new.Petition_Coverage):
                     to_email.append(str(i.user.email))
-                print(to_email)
+                # print(to_email)
+                if not request.user.email in to_email:
+                    to_email.append(request.user.email)
                 email = EmailMessage(mail_subject, message, to=[to_email])
                 email.send()
                 # ---------------------------------------------------------------
                 messages.success(request, "Email has been send to all Coverage Admin")
-                return redirect(reverse("Start-a-Petition"))
+                return redirect("dashboard")
             except Exception as e:
                 messages.success(request, str(e))
                 return redirect(reverse("Start-a-Petition"))

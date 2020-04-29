@@ -62,6 +62,10 @@
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 {% include 'mysite/head.html' %}
 <body>
+
+
+
+  
 <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
     {% include 'mysite/header.html' %}
 
@@ -191,6 +195,12 @@
                                                                 <em>4</em><span>Submit</span>
                                                             </a>
                                                         </li>
+                                                        <li style="display: none;">
+                                                            <a href="#step-5">
+                                                                <em>4</em><span>Submit</span>
+                                                            </a>
+                                                        </li>
+                                                       
                                                     </ul>
             
                                                     <div class="form-wizard-content">
@@ -200,7 +210,7 @@
                                                                 <div class="row">
                                                                     <div class="d-flex align-items-center img custom-control custom-radio custom-control-inline">
                                                                         <label>
-                                                                        <input type="radio" name="Petition_Coverage" value="National Coverage" checked>
+                                                                        <input type="radio" name="Petition_Coverage" value="National Coverage" checked >
                                                                         <div class="states">
                                                                             <img style="max-width:74px;" class="img-fluid rounded center-block" src="{% static 'mysite/images/states/nigeria.jpg' %}">
                                                                             <p style="text-align: center;font-size:12px;font-weight: bold;">Nigeria <br />
@@ -735,21 +745,39 @@
                                                             </div>
                                                         </div>
                                                         <div id="step-4">
+                                                            <div id="accordion" class="accordion-wrapper mb-3">
+                                                                <div data-parent="#accordion" id="collapseOne" aria-labelledby="headingOne" class="collapse show">
+                                                            <div class="no-results">
+                                                                
+                                                                    <div class="swal2-icon swal2-success swal2-animate-success-icon">
+                                                                        <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+                                                                        <span class="swal2-success-line-tip"></span>
+                                                                        <span class="swal2-success-line-long"></span>
+                                                                        <div class="swal2-success-ring"></div>
+                                                                        <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+                                                                        <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+                                                                    </div>
+                                                                    <div class="results-subtitle mt-4">Finished!</div>
+                                                                    <div class="results-title">Click on previous to crosscheck everything filled in the form. Once you are satisfied with it, click on submit to post the petition</div>
+                                                                    <div class="mt-3 mb-3"></div>
+                                                                    <div class="text-center">
+                                                                        <a type="button" class="btn-shadow btn-wide btn btn-success btn-lg" href="#step-5">Submit</a>
+                                                                    </div>
+                                                                
+                                                               
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <div id="step-5">
                                                             
                                                             <div class="no-results">
-                                                                <div class="swal2-icon swal2-success swal2-animate-success-icon">
-                                                                    <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
-                                                                    <span class="swal2-success-line-tip"></span>
-                                                                    <span class="swal2-success-line-long"></span>
-                                                                    <div class="swal2-success-ring"></div>
-                                                                    <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
-                                                                    <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
-                                                                </div>
-                                                                <div class="results-subtitle mt-4">Finished!</div>
-                                                                <div class="results-title">Click on previous to crosscheck everything filled in the form. Once you are satisfied with it, click on submit to post the petition</div>
+                                                                
+                                                                
+                                                                <div class="results-title">Thanks for petition, our Team will review your submission, and get back to you for further clarifications, if  required. When approved,  your petition will be visible for global viewing,  endorsement and sharing. Together, we will build our Nation</div>
                                                                 <div class="mt-3 mb-3"></div>
                                                                 <div class="text-center">
-                                                                    <button type="submit" class="btn-shadow btn-wide btn btn-success btn-lg">Submit</button>
+                                                                    <button type="submit" class="btn-shadow btn-wide btn btn-success btn-lg">Continue</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -819,6 +847,11 @@
     <script>
         CKEDITOR.replace( 'editor1' );
     </script>
+
+
+
+
+
 </body>
 
 <!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 29 Mar 2020 03:50:24 GMT -->
