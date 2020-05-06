@@ -82,597 +82,256 @@
                 <!--Tab-->
                 <div class="tab active-tab" id="tab-1">
                     <div class="row clearfix">
+                        {% if obj_account_1 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_account_1 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Complaint about road parking?<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How property tax is evaluated?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How can i get property tax bill online?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">London borough of culture<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-
+                        {% endif %}
+                        {% if obj_account_2 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_account_2 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Report an investment scam<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Make a complaint about specific incidents<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Invite the mayor to an event<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Finding for cultural project<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
-                <!--Tab-->
+             
                 <div class="tab" id="tab-2">
                     <div class="row clearfix">
+                        {% if obj_petition_1 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_petition_1 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Complaint about road parking?<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How property tax is evaluated?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How can i get property tax bill online?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">London borough of culture<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-
+                        {% endif %}
+                        {% if obj_petition_1 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_petition_1 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Report an investment scam<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Make a complaint about specific incidents<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Invite the mayor to an event<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Finding for cultural project<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
-                <!--Tab-->
                 <div class="tab" id="tab-3">
                     <div class="row clearfix">
+                        {% if obj_c_1 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_c_1 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Complaint about road parking?<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How property tax is evaluated?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How can i get property tax bill online?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">London borough of culture<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-
+                        {% endif %}
+                        {% if obj_c_2 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_c_2 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Report an investment scam<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Make a complaint about specific incidents<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Invite the mayor to an event<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Finding for cultural project<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
-                <!--Tab-->
+
                 <div class="tab" id="tab-4">
                     <div class="row clearfix">
+                        {% if obj_d_1 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_d_1 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Complaint about road parking?<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How property tax is evaluated?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How can i get property tax bill online?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">London borough of culture<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-
+                        {% endif %}
+                        {% if obj_d_2 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_d_2 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Report an investment scam<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Make a complaint about specific incidents<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Invite the mayor to an event<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Finding for cultural project<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
-                <!--Tab-->
+
                 <div class="tab" id="tab-5">
                     <div class="row clearfix">
+                        {% if obj_b_1 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_b_1 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Complaint about road parking?<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How property tax is evaluated?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How can i get property tax bill online?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">London borough of culture<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-
+                        {% endif %}
+                        {% if obj_b_2 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_b_2 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Report an investment scam<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Make a complaint about specific incidents<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Invite the mayor to an event<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Finding for cultural project<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
-                <!--Tab-->
+
                 <div class="tab" id="tab-6">
                     <div class="row clearfix">
+                        {% if obj_o_1 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_o_1 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Complaint about road parking?<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How property tax is evaluated?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">How can i get property tax bill online?<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">London borough of culture<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-
+                        {% endif %}
+                        {% if obj_o_2 %}
                         <div class="tab-col col-lg-6 col-md-12 col-sm-12">
                             <div class="inner">
                                 <div class="accordion-box">
-                                    <!--Block-->
+                                    {% for i in obj_o_2 %}
                                     <div class="accordion block">
-                                        <div class="acc-btn">Report an investment scam<div class="icon flaticon-cross"></div></div>
+                                        <div class="acc-btn">{{ i.questions }} ?<div class="icon flaticon-cross"></div></div>
                                         <div class="acc-content">
                                             <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
+                                                <div class="text">{{ i.answers }}</div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Make a complaint about specific incidents<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Invite the mayor to an event<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Block-->
-                                    <div class="accordion block">
-                                        <div class="acc-btn">Finding for cultural project<div class="icon flaticon-cross"></div></div>
-                                        <div class="acc-content">
-                                            <div class="content">
-                                                <div class="text">Pleasure and praising pain was born and i will give you a complete account of the system actual teachings.</div>
-                                            </div>
-                                        </div>
-                                    </div> 
-
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
 
                     </div>
                 </div>
+
+
             </div>
         </div>
 

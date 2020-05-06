@@ -17,7 +17,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
 from mysite.models import *
-
+from django.contrib import messages
 
 
 
@@ -26,7 +26,19 @@ from mysite.models import *
 
 # Blog Post List View
 def BlogList(request):
-    blog = Blog.objects.filter(publish = True)
+    if request.user.is_authenticated:
+        try:
+            profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+            if request.user.is_superuser or profile.golbal_Admin == "True":
+                blog = Blog.objects.all()
+            else:
+                blog = Blog.objects.filter(publish = True)
+        except :
+            profile = None
+            blog = Blog.objects.filter(publish = True)
+    else:
+        profile = None
+        blog = Blog.objects.filter(publish = True)
     paginator = Paginator(blog ,10, allow_empty_first_page=True)
     page = request.GET.get('page', 1)
     try:
@@ -35,13 +47,6 @@ def BlogList(request):
         blogs = paginator.page(1)
     except EmptyPage :
         blogs = paginator.page(paginator.num_pages)
-    if request.user.is_authenticated:
-        try:
-            profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
-        except :
-            profile = None
-    else:
-        profile = None
     context = {
         'blogs':blogs,
         'blog':blog,
@@ -54,38 +59,53 @@ def BlogList(request):
 
 # Blog Post Detail View
 def BlogDetail(request,slug):
-    lis   = Blog.objects.all()
-    blogs = Blog.objects.get(slug=slug)
-    comments= BlogComment.objects.filter(blog=blogs)
-    # reply = BlogReply.objects.filter(comment = comments)    
-    # print(reply)
-    replies = BlogReply.objects.all()
-    # print(comments)
-    form = Comment()
-    form_1 = Reply()
-    if request.method =='POST':
-         form=Comment(request.POST or None)
-         if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.blog=blogs
-            new_comment.save()
-            form.save()
-            return HttpResponseRedirect(reverse('detail', args=[slug]))
-             
- 
-    context = {
+    try:
+        blogs = Blog.objects.get(slug = slug)
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+            except:
+                profile  = None
+            if request.user.is_superuser or profile.golbal_Admin == "True" or  blogs.author ==  User.objects.get(username = request.user.username) :
+                blogs = Blog.objects.get(slug=slug)
+            else:
+                return redirect(reverse("list"))
+        else:
+            if blogs.publish is not True:
+                messages.success(request, "Invalid Request")
+                return redirect(reverse("list"))        
+        comments= BlogComment.objects.filter(blog=blogs)
+        # reply = BlogReply.objects.filter(comment = comments)    
+        # print(reply)
+        replies = BlogReply.objects.all()
+        # print(comments)
+        form = Comment()
+        form_1 = Reply()
+        if request.method =='POST':
+            form=Comment(request.POST or None)
+            if form.is_valid():
+                new_comment = form.save(commit=False)
+                new_comment.blog=blogs
+                new_comment.save()
+                form.save()
+                return HttpResponseRedirect(reverse('detail', args=[slug]))
+        context = {
         'blogs':blogs,
         'comments':comments,
-        'list':lis,
+        'list':None,
         'form':form,
         # 'relpy' : reply,
         'replies' : replies,
         'form_1' : form_1,
         # 'blog_all_section':True
-        "blog_detail_section":True
-    }
-    return render(request,'blog-single.html',context)
-
+        "blog_detail_section":True,
+        'profile': profile
+        }
+        return render(request,'blog-single.html',context)
+    except:
+        messages.success(request, "Invalid Request")
+        return redirect(reverse("list"))
+    
 # Blog Search View
 def search(request):
     query=request.GET.get('query',None)
@@ -248,9 +268,11 @@ def AssignBlog(request):
                     form.save()
                     current_site = get_current_site(request)
                     mail_subject = 'VoiceItOut Team.'
-                    message = f"A blog has been assigned to {form.user.user} -- {form.author.email} from Global Admin {request.user.usernam}"
+                    message = f"A blog has been assigned to '{new.author.email}' from Global Admin '{request.user.email}'"
                     message += "\nYou can check and edit the details of the blog by following the below link:\n"
                     build_link = str(request.scheme) + "://" + str(get_current_site(request).domain) + str(reverse("blog_editing", args=[new.id]))
+                    message += "\n"
+                    message += str(build_link)
                     email = EmailMessage(mail_subject, message, to=[new.author.email, request.user.email])
                     email.send()
                     return redirect('list')
@@ -263,5 +285,64 @@ def AssignBlog(request):
             return render(request, template_name, context)
         else:
             return redirect("list")
-    except:
+    except Exception as e:
+        print(e)
         return redirect("list")
+    
+# ****************************************************************
+# Approve a blog by global admin
+# ****************************************************************
+@login_required
+def Approve(request, blog_id):
+    if request.method != "GET":
+        messages.success(request, "Invalid Request")
+        return redirect(reverse("list"))        
+    try:
+        blog = Blog.objects.get(id=blog_id)
+        blog.publish = True
+        blog.save()
+        current_site = get_current_site(request)
+        mail_subject = 'VoiceItOut Team.'
+        message = f"Your blog has been approved and ready to publish  from Global Admin {request.user.username}"
+        message += "\nYou can check  the details of the blog by following the below link:\n"
+        build_link = str(request.scheme) + "://" + str(get_current_site(request).domain) + str(reverse("detail", args=[blog_id]))
+        message += "\n" + str(build_link)
+        email = EmailMessage(mail_subject, message, to=[blog.author.email, request.user.email])
+        email.send()
+        messages.success(request, "Blog has been approved")
+        return redirect(reverse("detail", args=[
+            blog_id
+        ]))
+    except:
+        messages.success(request, "Invalid Request")
+        return redirect(reverse("list"))
+    
+    
+    
+# ****************************************************************
+# Disapprove a blog by global admin
+# ****************************************************************
+@login_required
+def Disapprove(request, blog_id):
+    if request.method != "GET":
+        messages.success(request, "Invalid Request")
+        return redirect(reverse("list"))        
+    try:
+        blog = Blog.objects.get(id=blog_id)
+        blog.publish = False
+        blog.save()
+        current_site = get_current_site(request)
+        mail_subject = 'VoiceItOut Team.'
+        message = f"Your blog has been disapproved   from Global Admin {request.user.username}"
+        message += "\nYou can check the details of the blog by following the below link:\n"
+        build_link = str(request.scheme) + "://" + str(get_current_site(request).domain) + str(reverse("detail", args=[blog_id]))
+        message += "\n" + str(build_link)
+        email = EmailMessage(mail_subject, message, to=[blog.author.email, request.user.email])
+        email.send()
+        messages.success(request, "Blog has been dis-approved")
+        return redirect(reverse("detail", args=[
+            blog_id
+        ]))
+    except:
+        messages.success(request, "Invalid Request")
+        return redirect(reverse("list"))

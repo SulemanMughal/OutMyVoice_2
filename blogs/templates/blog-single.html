@@ -176,7 +176,7 @@
                 <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
                     <aside class="sidebar">
                         <div class="bg-layer">
-                            <div class="image-layer" style="background-image:url(images/background/sidebar-bg-image.jpg);"></div>
+                            <div class="image-layer" style="background-image:url({% static 'mysite/images/background/sidebar-bg-image.jpg' %});"></div>
                         </div>
 
                         <div class="sidebar-widget search-box">
@@ -202,6 +202,20 @@
                                 <ul class="cat-links">
                                     <li {% if blog_all_section %} class="current" {% endif %}><a href="{% url 'list' %}">All Blogs</a></li>
                                     <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'self_blogs_url' %}">My Blogs</a></li>
+                                    {% if profile.golbal_Admin == "True" %}
+
+                                        <li ><a href="{% url 'Assign' %}">Assign A Bog</a></li>
+                                        {% if blogs.publish is True %}
+                                            <li class="text-success current"><a href="#" class="text-success">Approved</a></li>
+                                            <li ><a href="{% url 'Disapprove' blogs.id %}" class="text-danger">Disapprove Current Blog</a></li>
+                                        {% elif  blogs.publish is  False %}
+                                            <li ><a href="{% url 'Approve' blogs.id %}" class="text-success">Approve Current Blog</a></li>
+                                            <li class="text-danger current"><a href="#" class="text-danger">Disapproved</a></li>
+                                        {% else %}
+                                            <li ><a href="{% url 'Approve' blogs.id %}" class="text-success">Approve Current Blog</a></li>
+                                            <li ><a href="{% url 'Disapprove' blogs.id %}" class="text-danger">Disapprove Current Blog</a></li>
+                                        {% endif %}
+                                    {% endif %}
                                     {% if blogs.author == request.user %}
                                         <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'blog_editing' blogs.id %}">Edit Current Blog</a></li>
                                     {% endif %}

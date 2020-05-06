@@ -12,7 +12,8 @@ from .models import (
     Commendation,
     CommendationResponseFeedback,
     Petition_Signer,
-    Commendation_Signer
+    Commendation_Signer,
+    AskedQuestions
 )
 from django.contrib.auth.forms import (
     UserCreationForm, 
@@ -164,3 +165,8 @@ class CommendationSignerform(forms.ModelForm):
         exclude = [
             'commendation'
         ]
+        
+class AskedQuestionsForm(forms.ModelForm):
+    class Meta:
+        model = AskedQuestions
+        fields = '__all__'

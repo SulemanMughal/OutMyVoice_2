@@ -19,7 +19,7 @@ class Blog(models.Model):
     description =       RichTextUploadingField( blank=True)
     created_at  =       models.DateTimeField(auto_now_add=True)
     updated     =       models.DateTimeField(auto_now=True)
-    publish     =       models.BooleanField(blank=True,default=False)
+    publish     =       models.BooleanField(blank=True,default=None, null=True)
     class Meta:
         ordering = ["-created_at"]
 

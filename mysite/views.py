@@ -53,7 +53,8 @@ from .forms import (
     PetitionResponseForm,
     Commendationform, 
     PetitionSignerform,
-    CommendationSignerform
+    CommendationSignerform,
+    AskedQuestionsForm
 )
 
 # Import APP Tokens
@@ -126,7 +127,7 @@ def login_User(request):
                 login(request, 
                     user
                 )
-                if len(valuenext) == 0 or valuenext is not None:
+                if len(valuenext) != 0 and valuenext is not None:
                     return redirect(valuenext)   
                 else: 
                     return redirect('dashboard')
@@ -283,10 +284,14 @@ def dashboard(request):
     responses = []      #Variable used to store petition responses
     try:
         profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
-        if profile.golbal_Admin == "True":
+        if request.user.is_superuser:
             petitions = Petition.objects.all().order_by("-timestamp")
-        elif profile.Coverage_Admin is not None:
+        elif profile.golbal_Admin == "True":
+            petitions = Petition.objects.all().order_by("-timestamp")
+        elif profile.Coverage_Admin != "None":
             petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin)     #Find Results for a specific coverage admin
+        else:
+            return redirect(reverse("Self-Petitions"))
         # Find petition responses
         for i in petitions:
             j = i.petitionresponsefeedback_set.filter(
@@ -386,7 +391,6 @@ def User_Petitions(request):
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
     except:
         profile = None
-    # print(petitions)
     context = {
         'petitions': petitions,
         'profile': profile,
@@ -541,7 +545,12 @@ def SpecificViewPetition(request, petition_id):
     profile  =findUserProfile(request)
     try:
         obj = Petition.objects.get(id=petition_id)
+        
         petitions = obj.petitionresponsefeedback_set.all()
+        if len(petitions) == 0 :
+            messages.success(request, f"Your petition has been under review. You can view your petition details under column labeled 'Petition Approval Button'")
+            return redirect(reverse("Petition_No_response", args=[obj.id]))
+        # print(petitions)
         context = {
             'petitions': petitions,
             'profile': profile,
@@ -554,7 +563,8 @@ def SpecificViewPetition(request, petition_id):
                     template_name,
                     context
         )
-    except:
+    except Exception as e:
+        print(e)
         messages.success(request, "Invalid Request")
         return redirect("dashboard")
 
@@ -815,7 +825,28 @@ def commendation_start(request):
             new.user=request.user
             new.save()
             form.save()
-            return redirect('dashboard')
+            # Email Settings
+            current_site = get_current_site(request)
+            message = '''“Thank you for submitting your commendation. 
+                            Your submission is under review for appropriate action, 
+                            we may contact you for clarifications, if necessary. 
+                            You will be notified once your commendation is made available for public viewing 
+                            and signing. Together, we will build our Nation”'''
+            message += "\n\n\nFollowing is the link for the commendation review\n\n\n"
+            mail_subject = 'VoiceItOut Team.'
+            build_link =  str(request.scheme) + str("://") + str( current_site.domain) + str(reverse("Commendation_Details", args = [new.id]))
+            message += str(build_link)
+            to_email = []
+            for i in UserProfile.objects.filter(Coverage_Admin = new.Commendation_Coverage):
+                to_email.append(str(i.user.email))
+            # print(to_email)
+            if not request.user.email in to_email:
+                to_email.append(request.user.email)
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            # ---------------------------------------------------------------
+            messages.success(request, "Email has been send to all Coverage Admin")
+            return redirect('all-commendations-url')
     try:
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
     except:
@@ -840,8 +871,10 @@ def All_Commendations(request):
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
         if profile.golbal_Admin == "True":
             commendations = Commendation.objects.all().order_by("-timestamp")
-        elif profile.Coverage_Admin is not None:
+        elif profile.Coverage_Admin != "None":
             commendations = Commendation.objects.filter(Commendation_Coverage = profile.Coverage_Admin).order_by("-timestamp")
+        else:
+            return redirect(reverse("Self-Commendation"))
         for i in commendations:
             j = i.commendationresponsefeedback_set.filter(
                     commendation__id = i.id, 
@@ -1005,9 +1038,8 @@ def SpecificViewCommendation(request, commendation_id):
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
         obj = Commendation.objects.get(id=commendation_id)
         commendations = obj.commendationresponsefeedback_set.all()
-        # print("*********************************************************")
-        # print(obj)
-        # print("*********************************************************")
+        if len(commendations) == 0 :
+            return redirect(reverse("Commendation_Details", args= [commendation_id]))
         context = {
             'commendations': commendations,
             'profile': profile,
@@ -1181,8 +1213,37 @@ def Help(request):
 # ****************************************************************
 def FAQ(request):
     template_name="web_pages/faqs.html"
+    A = AskedQuestions.accountCategory.all()
+    obj_account_1 = A[:int(A.count()/2)]
+    obj_account_2 = A[int(A.count()/2):]
+    A =  AskedQuestions.petitionCategory.all()
+    obj_petition_1 = A[:int(A.count()/2)]
+    obj_petition_2 = A[int(A.count()/2):]
+    A =  AskedQuestions.commendationCategory.all()
+    obj_c_1 = A[:int(A.count()/2)]
+    obj_c_2 = A[int(A.count()/2):]
+    A =  AskedQuestions.donationCategory.all()
+    obj_d_1 = A[:int(A.count()/2)]
+    obj_d_2 = A[int(A.count()/2):]
+    A =  AskedQuestions.blogCategory.all()
+    obj_b_1 = A[:int(A.count()/2)]
+    obj_b_2 = A[int(A.count()/2):]
+    A =  AskedQuestions.othersCategory.all()
+    obj_o_1 = A[:int(A.count()/2)]
+    obj_o_2 = A[int(A.count()/2):]
     context={
-        "objects" : AskedQuestions.objects.all()
+        "obj_account_1": obj_account_1,
+        "obj_account_2":obj_account_2,
+        'obj_petition_1': obj_petition_1,
+        'obj_petition_2': obj_petition_2,
+        'obj_c_1':obj_c_1,
+        'obj_c_2':obj_c_2,
+        'obj_d_1':obj_d_1,
+        'obj_d_2':obj_d_2,
+        'obj_b_1':obj_b_1,
+        'obj_b_2':obj_b_2,
+        'obj_o_1': obj_o_1,
+        'obj_o_2':obj_o_2
     }
     return render(request, template_name, context = context)
 
@@ -1224,3 +1285,97 @@ def Partner(request):
     }
     return render(request, template_name, context = context)
 # ************************************ WEB SPECIFIC PAGES ***************************************
+
+
+# ****************************************************************
+# View User profiles by global admin and assign them rights 
+# ****************************************************************
+@login_required
+def UserProfiles(request , user_id = None):
+    # print(user_id)
+    if request.method != "POST":
+        template_name='mysite/users.html'
+        profile = findUserProfile(request)
+        if profile is None or profile.golbal_Admin != "True":
+            messages.success("You don't have the right to acccess it")
+            return redirect("profile")
+        else:
+            users = UserProfile.objects.all().exclude(user = User.objects.get(username = request.user.username))
+            context={
+                'users_section': True,
+                'profile': profile,
+                'objs' : users
+            }
+            return render(request, template_name, context)
+    else:
+        if user_id is None:
+            return redirect("UserProfiles")
+        else:
+            try:
+                U = User.objects.get(id=user_id)
+                d1, d2 = request.POST['golbal_Admin'], request.POST['Coverage_Admin']
+                try:
+                    profile =UserProfile.objects.get(user = U)
+                    profile.golbal_Admin = d1
+                    profile.Coverage_Admin = d2
+                    profile.save()
+                    mail_subject = 'VoiceItOut Team.'
+                    message = f"You account status has been updated by Global Admin : {request.user.email}"
+                    email = EmailMessage(mail_subject, message, to=[U.email])
+                    email.send()
+                    messages.success(request, str(U.username) + " Account Status has been updated")
+                    return redirect("UserProfiles")
+                except:
+                    messages.success(request, "Invalid Request")
+                    return redirect("UserProfiles")    
+            except:
+                messages.success(request, "Invalid Request")
+                return redirect("UserProfiles")
+                
+                
+# ****************************************************************
+# Petition Details View In case of no response
+# ****************************************************************
+@login_required
+def NoResponsePetitionDetailView(request, petition_id):
+    template_name="mysite/petition_details.html"
+    try:
+        profile=UserProfile.objects.get(user=User.objects.get(username=request.user.username))
+        obj = Petition.objects.get(id=petition_id)
+        context={
+            'profile':profile,
+            'obj' : obj,
+            'specific_petition_details':True
+        }
+        return render(request, template_name, context)
+    
+    except Exception as e:
+        print(e)
+        return redirect("dashboard")
+    
+# ****************************************************************
+# Create FAQ View
+# ****************************************************************
+@login_required
+def CreateFAQ(request):
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+        if profile.golbal_Admin == "True":
+            if request.method != "POST":
+                form = AskedQuestionsForm()
+            elif request.method == "POST":
+                form = AskedQuestionsForm(request.POST)
+                try:
+                    form.save()
+                    return redirect(reverse("FAQ"))
+                except:
+                    return redirect("dashboard")
+            context={
+                'profile':profile,
+                "form" : form
+            }
+            return render(request, "mysite/create_faq.html", context)
+        else:
+            return redirect(reverse("dashboard"))    
+    except:
+        return redirect(reverse("dashboard"))

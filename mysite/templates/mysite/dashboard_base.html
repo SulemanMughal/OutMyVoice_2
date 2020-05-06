@@ -101,9 +101,22 @@
         {% endfor %}
     {% endif %}
 
-    
+    {% if my_commendation_view %}
+        {% if commendations %}
+            {% for commendation in commendations %}
+                {% include 'modals\commendation\Cadmin_commendations_details.html' with obj=commendation %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
 
+    {% if my_petition_view %}
+        {% if petitions  %}
+            {% for petition in petitions %}
+                {% include "modals/petitions/Cadmin_petitions.html" with obj=petition %}
+            {% endfor %}
 
+        {% endif %}
+    {% endif %}
 
 
 

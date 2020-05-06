@@ -20,3 +20,31 @@ class showCommentsCommendationManager(models.Manager):
     def get_queryset(self):
         return super(showCommentsCommendationManager, self).get_queryset().filter(show_comment = True)
 
+
+class AccountManager(models.Manager):
+    def get_queryset(self):
+        return super(AccountManager, self).get_queryset().filter(category = "Account")
+
+class PetitionManager(models.Manager):
+    def get_queryset(self):
+        return super(PetitionManager, self).get_queryset().filter(category = "Petition")
+
+
+class CommendationManager(models.Manager):
+    def get_queryset(self):
+        return super(CommendationManager, self).get_queryset().filter(category = "Commendation")
+
+
+class DonationManager(models.Manager):
+    def get_queryset(self):
+        return super(DonationManager, self).get_queryset().filter(category = "Donation")
+
+
+class BlogManager(models.Manager):
+    def get_queryset(self):
+        return super(BlogManager, self).get_queryset().filter(category = "Blog")
+
+
+class OthersManager(models.Manager):
+    def get_queryset(self):
+        return super(OthersManager, self).get_queryset().filter(category = "Others")

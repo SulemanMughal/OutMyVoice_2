@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth  import get_user_model
 from ckeditor_uploader.fields import RichTextUploadingField
-from .managers import ApprovedManager, showCommentsManager, ApprovedCommendationManager, showCommentsCommendationManager
+from .managers import *
 from django.urls import reverse
 from django.core.exceptions import ValidationError
 
@@ -147,7 +147,7 @@ class Commendation(models.Model):
     Action_Person_Other         =       models.CharField(max_length=100, blank=True)
     Expalnation                 =       RichTextUploadingField() 
     Image                       =       models.ImageField(blank=True)
-    approve                     =       models.BooleanField(blank=True, default=False)
+    approve                     =       models.BooleanField(blank=True, default=None, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()
@@ -229,8 +229,13 @@ class AskedQuestions(models.Model):
     def __str__(self):
         return str(self.questions)
     
-
-
+    objects = models.Manager()
+    accountCategory = AccountManager()
+    petitionCategory = PetitionManager()
+    commendationCategory = CommendationManager()
+    donationCategory = DonationManager()
+    blogCategory = BlogManager()
+    othersCategory  = OthersManager()
 
 def validate_image(image):
     max_height = 350

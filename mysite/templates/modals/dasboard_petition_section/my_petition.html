@@ -20,7 +20,7 @@
             </td>
             <td>{{ petition.Petition_Coverage }}</td>
             <td>{{ petition.Expalnation|safe|escape|truncatechars_html:"50" }}</td>
-            <td><button  class="btn-pill btn-shadow {% ifequal petition.approve None %} btn-danger {% else %} btn-shine btn-focus {%  endifequal %} btn  " > {% ifequal petition.approve None %}Requested{% else %} {% ifequal petition.approve True %}Approved {% else %} Disapproved {% endifequal %}{% endifequal %}</button></td>
+            <td><button  class="btn-pill btn-shadow {% ifequal petition.approve None %} btn-danger {% else %} btn-shine btn-focus {%  endifequal %} btn  " {% if my_petition_view  %} data-toggle="modal" data-target="#exampleModal_{{ petition.id }}_{{ petition.timestamp|slugify }}_details_petition" {% endif %} title="View Petitons Details" > {% ifequal petition.approve None %}Requested{% else %} {% ifequal petition.approve True %}Approved {% else %} Disapproved {% endifequal %}{% endifequal %}</button></td>
                 
             
         </tr>

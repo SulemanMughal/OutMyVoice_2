@@ -1,0 +1,360 @@
+{% extends 'mysite/dashboard_base.html' %}
+{% load static %}
+{% block title %}Voice It Out - Users {% endblock %}
+
+{% block content %}
+<style>
+    /* HIDE RADIO */
+    [type=radio] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* IMAGE STYLES */
+    [type=radio]+img {
+        cursor: pointer;
+    }
+
+    /* CHECKED STYLES */
+    [type=radio]:checked+.states {
+
+        background-color: #5bd9af;
+        padding-top: 8px;
+        padding-left: 5px;
+        padding-bottom: 5px;
+        border-radius: 10px;
+        padding-right: 5px;
+    }
+
+    .state {
+        max-width: 74px;
+    }
+
+    #show_more {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-size: 13px;
+        border: 1px solid transparent;
+        transition: 0.4s all;
+        background-color: #5bd9af;
+        border-radius: 3px;
+        padding: .538em 1.077em;
+        font-family: "Raleway", "Helvetica Neue", Arial, sans-serif;
+        font-weight: 600;
+        color: white;
+    }
+
+    #show_more:hover,
+    #show_more:focus {
+        background-color: white;
+        border-color: grey;
+        color: black;
+    }
+
+    .states_margin {
+        margin-right: 5px;
+    }
+
+    .center-block {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+<div class="app-main__outer">
+    <div class="app-main__inner">
+        <div class="app-page-title">
+            <div class="page-title-wrapper">
+                <div class="page-title-heading">
+                    <div class="page-title-icon">
+                        <i class="fa fa-eye icon-gradient bg-mean-fruit">
+                        </i>
+                    </div>
+                    <div>All User Profiles
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="card-body">
+            {% if messages  %}
+            {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+
+
+
+            <div class="tabs-animation">
+
+
+                <div class="card mb-3">
+                    <div class="card-header-tab card-header">
+                        <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                                class="header-icon fa fa-laptop mr-3 text-muted opacity-6"> </i>
+
+
+                            All Users
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+
+
+                        <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+
+
+
+                            <thead>
+                                <tr>
+                                    <th>User Email</th>
+                                    <th>Global Admin</th>
+                                    <th>Coverage Admin</th>
+                                    <th>Response</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obj in objs %}
+
+                               
+
+                                    <tr>
+                                         <form action="{% url 'UserProfilesUpdate' obj.user.id %}" method="POST">
+                                    {% csrf_token %}
+                                        <td>{{ obj.user.email }}</td>
+                                        <td>
+
+
+                                            <select name="golbal_Admin" class="form-control" id="id_golbal_Admin">
+                                                <option value="True" {% if obj.golbal_Admin == "True" %} selected=""
+                                                    {% endif %}>Yes</option>
+                                                <option value="False" {% if obj.golbal_Admin != "True" %} selected=""
+                                                    {% endif %}>No</option>
+                                            </select>
+
+                                        </td>
+                                        <td>
+                                            <select name="Coverage_Admin" id="id_Coverage_Admin" class="form-control">
+                                                <option value="Nigeria"
+                                                    {% if obj.Coverage_Admin == "Nigeria" %}selected="" {% endif %}>
+                                                    Nigeria</option>
+
+                                                <option value="Abuja" {% if obj.Coverage_Admin == "Abuja" %}selected=""
+                                                    {% endif %}>Abuja</option>
+
+                                                <option value="Abia" {% if obj.Coverage_Admin == "Abia" %}selected=""
+                                                    {% endif %}>Abia</option>
+
+                                                <option value="Adamawa"
+                                                    {% if obj.Coverage_Admin == "Adamawa" %}selected="" {% endif %}>
+                                                    Adamawa</option>
+
+                                                <option value="Akwa Ibom"
+                                                    {% if obj.Coverage_Admin == "Akwa Ibom" %}selected="" {% endif %}>
+                                                    Akwa Ibom</option>
+
+                                                <option value="Anambra"
+                                                    {% if obj.Coverage_Admin == "Anambra" %}selected="" {% endif %}>
+                                                    Anambra</option>
+
+                                                <option value="Bauchi"
+                                                    {% if obj.Coverage_Admin == "Bauchi" %}selected="" {% endif %}>
+                                                    Bauchi</option>
+
+                                                <option value="Bayelsa"
+                                                    {% if obj.Coverage_Admin == "Bayelsa" %}selected="" {% endif %}>
+                                                    Bayelsa</option>
+
+                                                <option value="Benue" {% if obj.Coverage_Admin == "Benue" %}selected=""
+                                                    {% endif %}>Benue</option>
+
+                                                <option value="Cross River"
+                                                    {% if obj.Coverage_Admin == "Cross River" %}selected="" {% endif %}>
+                                                    Cross River</option>
+
+                                                <option value="Delta" {% if obj.Coverage_Admin == "Delta" %}selected=""
+                                                    {% endif %}>Delta</option>
+
+                                                <option value="Ebonyi"
+                                                    {% if obj.Coverage_Admin == "Ebonyi" %}selected="" {% endif %}>
+                                                    Ebonyi</option>
+
+                                                <option value="Enugu" {% if obj.Coverage_Admin == "Enugu" %}selected=""
+                                                    {% endif %}>Enugu</option>
+
+                                                <option value="Edo" {% if obj.Coverage_Admin == "Edo" %}selected=""
+                                                    {% endif %}>Edo</option>
+
+                                                <option value="Ekiti" {% if obj.Coverage_Admin == "Ekiti" %}selected=""
+                                                    {% endif %}>Ekiti</option>
+
+                                                <option value="Gombe" {% if obj.Coverage_Admin == "Gombe" %}selected=""
+                                                    {% endif %}>Gombe</option>
+
+                                                <option value="Imo" {% if obj.Coverage_Admin == "Imo" %}selected=""
+                                                    {% endif %}>Imo</option>
+
+                                                <option value="Jigawa"
+                                                    {% if obj.Coverage_Admin == "Jigawa" %}selected="" {% endif %}>
+                                                    Jigawa</option>
+
+                                                <option value="Kaduna"
+                                                    {% if obj.Coverage_Admin == "Kaduna" %}selected="" {% endif %}>
+                                                    Kaduna</option>
+
+                                                <option value="Kano" {% if obj.Coverage_Admin == "Kano" %}selected=""
+                                                    {% endif %}>Kano</option>
+
+                                                <option value="Katsina"
+                                                    {% if obj.Coverage_Admin == "Katsina" %}selected="" {% endif %}>
+                                                    Katsina</option>
+
+                                                <option value="Kebbi" {% if obj.Coverage_Admin == "Kebbi" %}selected=""
+                                                    {% endif %}>Kebbi</option>
+
+                                                <option value="Kogi" {% if obj.Coverage_Admin == "Kogi" %}selected=""
+                                                    {% endif %}>Kogi</option>
+
+                                                <option value="Kwara" {% if obj.Coverage_Admin == "Kwara" %}selected=""
+                                                    {% endif %}>Kwara</option>
+
+                                                <option value="Lagos" {% if obj.Coverage_Admin == "Lagos" %}selected=""
+                                                    {% endif %}>Lagos</option>
+
+                                                <option value="Nasarawa"
+                                                    {% if obj.Coverage_Admin == "Nasarawa" %}selected="" {% endif %}>
+                                                    Nasarawa</option>
+
+                                                <option value="Niger" {% if obj.Coverage_Admin == "Niger" %}selected=""
+                                                    {% endif %}>Niger</option>
+
+                                                <option value="Ogun" {% if obj.Coverage_Admin == "Ogun" %}selected=""
+                                                    {% endif %}>Ogun</option>
+
+                                                <option value="Ondo" {% if obj.Coverage_Admin == "Ondo" %}selected=""
+                                                    {% endif %}>Ondo</option>
+
+                                                <option value="Osun" {% if obj.Coverage_Admin == "Osun" %}selected=""
+                                                    {% endif %}>Osun</option>
+
+                                                <option value="Oyo" {% if obj.Coverage_Admin == "Oyo" %}selected=""
+                                                    {% endif %}>Oyo</option>
+
+                                                <option value="Plateau"
+                                                    {% if obj.Coverage_Admin == "Plateau" %}selected="" {% endif %}>
+                                                    Plateau</option>
+
+                                                <option value="Rivers"
+                                                    {% if obj.Coverage_Admin == "Rivers" %}selected="" {% endif %}>
+                                                    Rivers</option>
+
+                                                <option value="Sokoto"
+                                                    {% if obj.Coverage_Admin == "Sokoto" %}selected="" {% endif %}>
+                                                    Sokoto</option>
+
+                                                <option value="Taraba"
+                                                    {% if obj.Coverage_Admin == "Taraba" %}selected="" {% endif %}>
+                                                    Taraba</option>
+
+                                                <option value="Yobe" {% if obj.Coverage_Admin == "Yobe" %}selected=""
+                                                    {% endif %}>Yobe</option>
+
+                                                <option value="Zamfara"
+                                                    {% if obj.Coverage_Admin == "Zamfara" %}selected="" {% endif %}>
+                                                    Zamfara</option>
+
+                                                <option value="National Coverage"
+                                                    {% if obj.Coverage_Admin == "National Coverage" %}selected=""
+                                                    {% endif %}>National Coverage</option>
+
+                                                <option value="None" {% if obj.Coverage_Admin == "None" %}selected=""
+                                                    {% endif %}>None</option>
+
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button class="btn-pill btn-shadow btn-shine btn btn-focus" type="submit">
+                                                Change
+                                            </button>
+                                        </td>
+                                    </form>
+                                    </tr>
+                                
+                                {% endfor %}
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </div>
+    <div class="app-wrapper-footer">
+        <div class="app-footer">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="{% static 'mysite/js/jquery.min.js' %}"></script>
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<script>
+
+    $("#show_more").click(function () {
+
+        $("#show_more_states").slideDown();
+        $("#show_more").hide();
+
+    });
+
+    $(".category").change(function () {
+        if ($(this).val() == "Others") {
+            $("#other_cat").show();
+        }
+        else {
+            $("#other_cat").hide();
+        }
+    });
+
+    $(".action").change(function () {
+        if ($(this).val() == "Others") {
+            $("#action_person").show();
+        }
+        else {
+            $("#action_person").hide();
+        }
+    });
+
+
+
+</script>
+<script>
+    CKEDITOR.replace('editor1');
+</script>
+
+{% endblock %}

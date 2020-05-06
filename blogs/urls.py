@@ -46,5 +46,19 @@ urlpatterns = [
     # Assign a blog by a global admin
     # ****************************************************************
     path("assign-a-blog", views.AssignBlog, name="Assign"),
+    
+    
+    # ****************************************************************
+    # Approve Current Publish Project
+    # ****************************************************************
+    path("approve-blog/<int:blog_id>/", views.Approve, name="Approve"),
+    
+    
+        
+    # ****************************************************************
+    # Disapprove Current Publish Project
+    # ****************************************************************
+    path("disapprove-blog/<int:blog_id>/", views.Disapprove, name="Disapprove"),
+
 
 ]

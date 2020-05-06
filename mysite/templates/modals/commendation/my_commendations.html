@@ -25,7 +25,12 @@
         </td>
         <td>{{ commendation.Commendation_Coverage }}</td>
         <td>{{ commendation.Expalnation|safe|escape|truncatechars_html:"50" }}</td>
-        <td><button class="btn-pill btn-shadow btn-shine btn btn-focus" >{{ commendation.approve }}</button></td>
+        <td><button class="btn-pill btn-shadow  {% ifequal petition.approve None %} btn-danger {% else %} btn-shine btn-focus {%  endifequal %} btn" {% if my_commendation_view  %} data-toggle="modal" data-target="#exampleModal_{{ commendation.id }}_{{ commendation.timestamp|slugify }}_details_Commendation" {% endif %} title="View Commendation Details" >
+            
+            {% ifequal commendation.approve None %}Requested{% else %} {% ifequal commendation.approve True %}Approved {% else %} Disapproved {% endifequal %}{% endifequal %}
+            
+            
+            </button></td>
 
 
     </tr>

@@ -32,15 +32,15 @@
                     <div>
 
                         {% if my_commendation_view_global %}
-                        Commendation Responses
+                            Commendation Responses
 
-                        <br>
-                        <span>
-                            Total Submitted Responses: {% with total=commendations.count %}
-                            <button class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary">{{ total }}
-                                Reponse{{ total|pluralize }}</button>
-                            {% endwith %}
-                        </span>
+                            <br>
+                            <span>
+                                Total Submitted Responses: {% with total=commendations.count %}
+                                <button class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary">{{ total }}
+                                    Reponse{{ total|pluralize }}</button>
+                                {% endwith %}
+                            </span>
                         {% else %}
 
                         Commendations
@@ -112,6 +112,7 @@
                             </button>
                         </div>
                     {% endfor %}
+                    {% endif %}
                     <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
                         {% if my_commendation_view_global or specific_commendation_view %}
                             {% include 'modals\commendation\global_or_specific_commendation_table.html' %}

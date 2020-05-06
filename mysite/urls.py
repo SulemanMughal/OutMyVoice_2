@@ -258,4 +258,19 @@ urlpatterns = [
     
     
     # ************************************* Web Specific Pages **************************************
+    
+    
+    path("view-users-profiles/", views.UserProfiles, name="UserProfiles"),
+    
+     path("view-users-profiles/<int:user_id>", views.UserProfiles, name="UserProfilesUpdate"),
+     
+    # ****************************************************************
+    # Petition Detail View in case of no responses submitted
+    # ****************************************************************  
+    path("patition-detail-no-response/<int:petition_id>/", views.NoResponsePetitionDetailView, name="Petition_No_response"),
+
+    # ****************************************************************
+    # Create FAQ
+    # ****************************************************************
+    path("create-faq", views.CreateFAQ, name="CreateFAQ"),
 ]
