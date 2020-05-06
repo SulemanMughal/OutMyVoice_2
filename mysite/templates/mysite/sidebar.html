@@ -9,7 +9,7 @@
             <li {% if dashboard_section or petition_detail_section or view_specific_petiton_response_only  %} class="mm-active" {% endif %}>
                 <a href="{% url 'dashboard' %}"><i class="metismenu-icon fa fa-eye"></i>View Petititons</a>
             </li>
-            <li {% if my_petition_view %} class="mm-active" {% endif %}>
+            <li {% if my_petition_view  %} class="mm-active" {% endif %}>
                 <a href="{% url 'Self-Petitions' %}"><i class="metismenu-icon fa fa-eye"></i>My Petitions</a>
             </li>
             
@@ -20,8 +20,8 @@
                 <a href="{% url 'Start-a-Commendation' %}"><i class="metismenu-icon fa fa-plus-circle"></i>Create Commendation</a>
             </li>
 
-            <li>
-                <a href="{% url 'LiveCommendations_URL' %}"><i class="metismenu-icon fa fa-eye"></i>View Commendations</a>
+            <li {% if commendations_section %} class="mm-active" {% endif %}>
+                <a href="{% url 'all-commendations-url' %}"><i class="metismenu-icon fa fa-eye"></i>View Commendations</a>
             </li>
 
             <li {% if my_commendation_view %} class="mm-active" {% endif %}>

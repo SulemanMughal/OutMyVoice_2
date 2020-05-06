@@ -1,0 +1,77 @@
+{% load static FindResponseTrue FindResponseDate FindResponse FindResponseTrueID FindResponseObject %}
+                         
+   <thead>
+    <tr>
+        <th>Petition Coverage</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Petition Attendant</th>
+        <th>Description</th>
+        {% if all_petitions_section %}
+        {% if profile.golbal_Admin == "True" %}
+            <th>
+                Petition Approval
+            </th>
+        {% else %}
+            <th>
+                Response
+            </th>
+        {% endif %}
+            
+        {% endif %}
+    </tr>
+</thead>
+
+<tbody>
+    {% for petition in petitions %}
+        <tr>
+            <td>
+                {{ petition.Petition_Coverage }}
+            </td>
+            <td>
+                {% if profile.golbal_Admin == "True" %}
+                    <a href="{% url 'SpecificViewPetition_URL' petition.id %}" class="btn-pill btn-shadow btn-shine btn btn-focus" title="View Petition Details">{{ petition.Petition_Title }}</a>
+                {% else %}
+                    <button  data-toggle="modal" data-target="#exampleModal_{{ petition.id }}_{{ petition.timestamp|slugify }}_details_petition" class="btn-pill btn-shadow btn-shine btn btn-focus" title="View Petition Details">{{ petition.Petition_Title }}</button>
+                {% endif %}
+                
+                
+            </td>
+            <td>
+                {{ petition.Petition_Category }}
+            </td>
+            <td>
+                {{ petition.Action_Person }}
+            </td>
+            <td>
+                {{ petition.Expalnation|truncatechars_html:"50"|safe }}
+            </td>
+            {% if all_petitions_section %}
+                {% if profile.golbal_Admin != "True" %}
+                    {% if not request.user.id|FindResponseTrue:petition.id  %}
+                        {% if  petition.id|FindResponseDate %}
+                            <td>
+                                <button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ petition.Petition_Title|slugify  }}{{ petition.id }}">Response</button>
+                            </td>
+                        {% else %}
+                            <td>
+                                <button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button>
+                            </td>
+                        {% endif %}
+                    {% else %}    
+                        {% with obj=request.user.id|FindResponseObject:petition.id   %}
+                        <td>
+                            <button  class="btn-pill btn-shadow btn-shine btn btn-focus"   data-toggle="modal" data-target="#exampleModal_{{ obj.id }}_{{ obj.timestamp|slugify }}_response"  >{% ifequal request.user.id|FindResponse:petition.id "True" %}Yes{% else %}No{% endifequal %}</button>
+                        </td>
+                        {% endwith %}
+                            
+                    {% endif %}
+                {% else %}
+                    <td>
+                        <button  class=" btn btn-pill btn-shadow {% if petition.approve is None %} btn-danger {% else %} btn-shine btn-focus {% endif %}">{% if petition.approve is None %}Requested for Approval {% else %} {% if petition.approve is True %}Approved  {% else  %} Disapproved {% endif %} {% endif %}</button>
+                    </td>
+                {% endif %}
+            {% endif %}
+        </tr>
+    {% endfor %}
+</tbody>

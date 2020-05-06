@@ -1,0 +1,35 @@
+{% load static FindCommendationResponseTrue FindCommendationResponseDate FindCommendationResponse  FindCommendationResponseTrueID %}
+
+<thead>
+    <tr>
+        <th>Commendation User</th>
+        <th>Commendation Title</th>
+        <th>Commendation Coverage Admin</th>
+        <th>Commendation Feedback</th>
+        <th>Commendation Approval</th>
+    </tr>
+</thead>
+<tbody>
+
+    {% if commendations %}
+    {% for commendation in commendations %}
+    <tr>
+        <td>{{ commendation.user }}</td>
+        <td>
+            <a href="{% url 'SpecificViewCommendation_URL' commendation.id  %}"
+                class="btn-pill btn-shadow btn-shine btn btn-focus"
+                title="View Complete Commendation"
+                >
+                {{  commendation.Commendation_Title }}
+            </a>
+        </td>
+        <td>{{ commendation.Commendation_Coverage }}</td>
+        <td>{{ commendation.Expalnation|safe|escape|truncatechars_html:"50" }}</td>
+        <td><button class="btn-pill btn-shadow btn-shine btn btn-focus" >{{ commendation.approve }}</button></td>
+
+
+    </tr>
+    {% endfor %}
+    {% endif %}
+   
+</tbody>

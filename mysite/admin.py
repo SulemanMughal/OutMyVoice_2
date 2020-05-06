@@ -2,13 +2,17 @@ from django.contrib import admin
 
 # Register your models here.
 
+# from .forms import PetitionFormAdmin
+
 from .models import (
     Petition,
     UserProfile,
     PetitionResponseFeedback,
     Commendation,
     CommendationResponseFeedback,
-    Petition_Signer
+    Petition_Signer,
+    AskedQuestions,
+    WebBanner
 )
 
 
@@ -29,6 +33,8 @@ class PetitionAdmin(admin.ModelAdmin):
         'Petition_Category_Other',
         'Action_Person'
     ]
+    
+
     
 # Petition Response Feedback Admin
 class PetitionResponseFeedbackAdmin(admin.ModelAdmin):
@@ -81,9 +87,17 @@ class CommendationResponseFeedbackAdmin(admin.ModelAdmin):
         'commendation__Action_Person'
     ]
 
+
+
+
+
+
+
 admin.site.register(Petition, PetitionAdmin)
 admin.site.register(UserProfile)
 admin.site.register(PetitionResponseFeedback, PetitionResponseFeedbackAdmin)
 admin.site.register(Commendation, CommendationAdmin)
 admin.site.register(CommendationResponseFeedback, CommendationResponseFeedbackAdmin)
 admin.site.register(Petition_Signer)
+admin.site.register(AskedQuestions)
+admin.site.register(WebBanner)

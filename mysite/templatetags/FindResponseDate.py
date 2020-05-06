@@ -1,3 +1,11 @@
+
+# ****************************************************************
+# Check Whether Cadmin has left with some time to give response on
+# on a petition on not.
+# ****************************************************************
+
+
+
 from django import template
 from mysite.models import *
 from django.contrib.auth.models import User

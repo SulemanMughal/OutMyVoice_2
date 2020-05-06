@@ -1,0 +1,196 @@
+ 
+ {% load static %}
+ <!-- Preloader -->
+ 
+ <div class="preloader">
+    <div class="icon"></div>
+</div>
+
+<!-- Main Header -->
+    
+    <header class="main-header header-style-one">
+
+        <!-- Header Top -->
+
+
+       
+        <!-- End Header Top -->
+
+        <!-- Header Upper -->
+        <div class="header-upper">
+            <div class="auto-container">
+                <div class="inner-container clearfix">
+                    <!--Logo-->
+                    <div class="logo-box clearfix">
+                        <div class="logo">
+                            <a href="{% url 'home_page' %}" title="Voice It Out">
+                                <img style="margin-top: 20px;" src="{% static 'mysite/images/voics.png' %}" alt="Voice It Out" title="Voice It Out">
+                            </a>
+                        </div>
+                        <div class="search-btn search-btn-one">
+                            <button type="button" class="theme-btn search-toggler">
+                                <span class="txt">Explore</span> 
+                                <span class="icon flaticon-loupe-1"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!--Nav-->
+                    <div class="nav-outer clearfix">
+                        <!--Mobile Navigation Toggler-->
+                        <div class="mobile-nav-toggler"><span class="icon flaticon-menu-1"></span></div>
+
+                        <!-- Main Menu -->
+                        <nav class="main-menu navbar-expand-md navbar-light">
+                            <div class="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
+                                <ul class="navigation clearfix">
+                                    <li {% if home_section %} class="current" {% endif %}><a href="{% url 'home_page' %}">Home</a>
+                                    </li>
+                                    <li class=" {%  if livePetition_Section or livePetition_Section_detail %} current {% endif %} dropdown"><a href="{% url 'LivePetitions_URL' %}">Petitions</a>
+                                        <ul>
+                                            <li><a href="{% url 'Start-a-Petition' %}">Create Petition</a></li>
+                                            <li ><a href="{% url 'LivePetitions_URL' %}">View Petition</a></li>
+                                            <li ><a href="{% url 'Self-Petitions' %}">My Petition</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="{% if liveCommendation_Section or liveCommendation_Section_detail %}current{% endif %} dropdown"><a href="#">Commendation</a>
+                                        <ul>
+                                            <li><a href="{% url 'Start-a-Commendation' %}">Create Commendation</a></li>
+                                            <li ><a href="{% url 'LiveCommendations_URL' %}">View Commendation</a></li>
+                                            <li ><a href="{% url 'Self-Commendation' %}">My Commendation</a></li>
+                                        </ul>
+                                    </li>
+
+                                    
+                                    <li {% if partner_section %} class="current"{% endif %} ><a href="{% url 'Partner' %}">Partners</a>
+                                    </li>
+
+
+                                    <li {% if blog_all_section or blog_write or blog_detail_section %}class="current"{% endif %}><a href="{% url 'list' %}">Blog</a>
+                                    </li>
+
+                                    
+
+                                    
+                                    {% if user.is_authenticated %}
+                                        <li {% if dashboard_section %}class="current" {% endif %}><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                        <li><a href="{% url 'logout_user_url' %}">Logout</a></li>
+                                    {% else %}
+                                    {% if reigster_section %}
+                                        <li><a href="{% url 'login_user_url' %}">Sign In</a></li>
+                                    {% elif login_section  %}
+                                        <li ><a href="{% url 'register' %}">Sign Up</a></li>
+                                    {% else %}
+                                        <li><a href="{% url 'login_user_url' %}">Sign In</a></li>
+                                        {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!--Other Links-->
+                    <div class="other-links clearfix">
+                        <!--Social Links-->
+                        <div class="social-links-one">
+                            <ul class="clearfix">
+                                <li><a href="#" class="has-tooltip"><span class="fab fa-facebook-f"></span>
+                                        <div class="c-tooltip">
+                                            <div class="tooltip-inner">Facebook</div>
+                                        </div>
+                                    </a></li>
+                                <li><a href="#" class="has-tooltip"><span class="fab fa-twitter"></span>
+                                        <div class="c-tooltip">
+                                            <div class="tooltip-inner">Twitter</div>
+                                        </div>
+                                    </a></li>
+                                <li><a href="#" class="has-tooltip"><span class="fab fa-instagram"></span>
+                                        <div class="c-tooltip">
+                                            <div class="tooltip-inner">Linkedin</div>
+                                        </div>
+                                    </a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--End Header Upper-->
+
+        <!-- Sticky Header  -->
+        <div class="sticky-header">
+            <div class="auto-container clearfix">
+                <!--Logo-->
+                <div class="logo pull-left">
+                    <a href="{% url 'home_page' %}" title=""><img src="{% static 'mysite/images/voice1.png' %}" alt=""
+                            title=""></a>
+                </div>
+                <!--Right Col-->
+                <div class="pull-right">
+                    <!-- Main Menu -->
+                    <nav class="main-menu clearfix">
+                        <!--Keep This Empty / Menu will come through Javascript-->
+                    </nav><!-- Main Menu End-->
+                </div>
+            </div>
+        </div><!-- End Sticky Menu -->
+
+        <!-- Mobile Menu  -->
+        <div class="mobile-menu">
+            <div class="menu-backdrop"></div>
+            <div class="close-btn"><span class="icon flaticon-targeting-cross"></span></div>
+
+            <nav class="menu-box">
+                <div class="nav-logo"><a href="{% url 'home_page' %}"><img src="{% static 'mysite/images/voics.png' %}"
+                            alt="" title=""></a>
+                </div>
+                <div class="menu-outer">
+                    <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+                </div>
+                <!--Social Links-->
+                <div class="social-links">
+                    <ul class="clearfix">
+                        <li><a href="#"><span class="fab fa-twitter"></span></a></li>
+                        <li><a href="#"><span class="fab fa-facebook-square"></span></a></li>
+                        <li><a href="#"><span class="fab fa-pinterest-p"></span></a></li>
+                        <li><a href="#"><span class="fab fa-instagram"></span></a></li>
+                        <li><a href="#"><span class="fab fa-youtube"></span></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div><!-- End Mobile Menu -->
+    
+    </header>
+
+<!-- End Main Header -->
+
+<!--Search Popup-->
+    
+    <div id="search-popup" class="search-popup">
+        <div class="close-search theme-btn"><span class="flaticon-targeting-cross"></span></div>
+        <div class="popup-inner">
+            <div class="overlay-layer"></div>
+            <div class="search-form">
+                <form method="post" action="{% url 'home_page' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <fieldset>
+                            <input type="search" class="form-control" name="search-input" value=""
+                                placeholder="Search Here" required>
+                            <input type="submit" value="Search Now!" class="theme-btn">
+                        </fieldset>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+<!-- End Search Popup -->
+
+<!-- Banner Section -->
+<!--End Banner Section -->

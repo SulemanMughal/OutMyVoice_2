@@ -1,0 +1,109 @@
+{% extends 'mysite/base.html' %}
+{% load static getImageBanner %}
+
+{% block title %}Voice It Out{% endblock %}
+
+{% block content %}
+
+    <!--Page Title-->
+    <section class="page-banner">
+        {% if request.user|getImageBanner %}
+        <div class="image-layer" style="background-image:url('/media/{{ request.user|getImageBanner }}');"></div>
+    
+    {% else %}
+    <div class="image-layer" style="background-image:url('{% static 'mysite/images/background/banner-image-5.jpg' %}');"></div>
+    {% endif %}
+        <div class="banner-inner">
+            <div class="auto-container">
+                <div class="inner-container clearfix">
+                    <h1>Commendations</h1>
+                    <div class="page-nav">
+                        <ul class="bread-crumb clearfix">
+                            <li><a href="{% url 'home_page' %}">Home</a></li>
+                            <li class="active">Commendations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Events Section-->
+    <section class="events-section-two load-more-section" data-load-number="2">
+        <div class="auto-container">
+
+            <div class="upper-info clearfix">
+                <div class="items-label"><span>
+                    
+                    {% with total=counter %}
+                            
+                            
+
+                    {{ total }} </span>  Live Commendation{{ total|default:1|pluralize }}.</div>
+                {% endwith %}                
+            </div>
+                {% if commendations %}
+            <div class="row clearfix">
+                {% for obj in commendations %}
+                        {% if forloop.counter <= 6 %}
+                            <div class="event-block-two col-md-6 col-sm-12 ">
+                                <div class="inner-box">
+                                    <div class="image-box">
+                                        <figure class="image"><a href="{% url 'LiveCommendationsDetails_URL' obj.id %}"><img src="/media/{{ obj.Image }}" alt=""></a></figure>
+                                    </div>
+                                    <div class="lower-box">
+                                        <div class="content-box">
+                                            <div class="date-box"><div class="date"><span class="day">{{ obj.timestamp|date:"d" }}</span><span class="month">{{ obj.timestamp|date:"F" }}</span><span class="year">{{ obj.timestamp|date:"Y" }}</span></div></div>
+                                            <div class="content">
+                                                <div class="cat-info"><a href="{% url 'LiveCommendationsDetails_URL' obj.id %}">{{ obj.Commendation_Category }}</a></div>
+                                                <h3><a href="#">{{ obj.Commendation_Title }}</a></h3>
+                                                <p style="font-size: small;">The Petition was Submitted to: {{ obj.Action_Person }}</p>
+                                                <p style="font-size: small;">Submitted by: {{ obj.user.username }}</p>
+                                                <p style="font-size: small; text-align:justify;">{{ obj.Expalnation|safe|truncatechars_html:50 }}</p>
+                                                <p style="text-align: right; font-size:smaller;">Supported by: {{ obj.commendation_signer_set.all.count }} Person</p>
+                                                <div class="read-more"><a href="{% url 'LiveCommendationsDetails_URL' obj.id %}">Read More</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                        <div class="event-block-two col-md-6 load-more-item col-sm-12 ">
+                            <div class="inner-box">
+                                <div class="image-box">
+                                    <figure class="image"><a href="{% url 'LiveCommendationsDetails_URL' obj.id %}"><img src="/media/{{ obj.Image }}" alt=""></a></figure>
+                                </div>
+                                <div class="lower-box">
+                                    <div class="content-box">
+                                        <div class="date-box"><div class="date"><span class="day">{{ obj.timestamp|date:"d" }}</span><span class="month">{{ obj.timestamp|date:"F" }}</span><span class="year">{{ obj.timestamp|date:"Y" }}</span></div></div>
+                                        <div class="content">
+                                            <div class="cat-info"><a href="#">{{ obj.Commendation_Category }}</a></div>
+                                            <h3><a href="{% url 'LiveCommendationsDetails_URL' obj.id %}">{{ obj.Commendation_Title }}</a></h3>
+                                            <p style="font-size: small;">The Petition was Submitted to: {{ obj.Action_Person }}</p>
+                                            <p style="font-size: small;">Submitted by: {{ obj.user.username }}</p>
+                                            <p style="font-size: small; text-align:justify;">{{ obj.Expalnation|safe|truncatechars_html:50 }}</p>
+                                            <p style="text-align: right; font-size:smaller;">Supported by: {{ obj.commendation_signer_set.all.count }} Person</p>
+                                            <div class="read-more"><a href="{% url 'LiveCommendationsDetails_URL' obj.id %}">Read More</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endif %}
+                    
+                {% endfor %}
+
+            </div>
+            {% endif %}
+            {% if counter > 1 %}
+            <div class="load-more text-center">
+                <a href="#" class="theme-btn btn-style-one load-more-btn"><span class="btn-title">Load More</span></a>
+            </div>
+            {% endif %}
+                
+        </div>
+    </section>
+
+  
+{% endblock %}

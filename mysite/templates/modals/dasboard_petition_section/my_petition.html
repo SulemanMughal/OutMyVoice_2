@@ -1,0 +1,28 @@
+
+
+<thead>
+    <tr>
+        <th>Petition User</th>
+        <th>Petition Title</th>
+        <th>Petition Coverage Admin</th>
+        <th>Petition Feedback</th>
+        <th>Petition Approval</th>
+    </tr>
+</thead>
+<tbody>
+    {% for petition in petitions %}
+        <tr>
+            <td>{{ petition.user }}</td>
+            <td>
+                <a  href="{% url 'SpecificViewPetition_URL' petition.id %}" class="btn-pill btn-shadow btn-shine btn btn-focus" title="View Complete Petition" >
+                    {{ petition.Petition_Title }}
+                </a>
+            </td>
+            <td>{{ petition.Petition_Coverage }}</td>
+            <td>{{ petition.Expalnation|safe|escape|truncatechars_html:"50" }}</td>
+            <td><button  class="btn-pill btn-shadow {% ifequal petition.approve None %} btn-danger {% else %} btn-shine btn-focus {%  endifequal %} btn  " > {% ifequal petition.approve None %}Requested{% else %} {% ifequal petition.approve True %}Approved {% else %} Disapproved {% endifequal %}{% endifequal %}</button></td>
+                
+            
+        </tr>
+    {% endfor %}
+</tbody>

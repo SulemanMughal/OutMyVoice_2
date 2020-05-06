@@ -1,0 +1,62 @@
+{% load static FindCommendationResponseTrue  FindCommendationResponseDate FindCommendationResponse  FindCommendationResponseTrueID FindCommedationResponseObject %}
+
+<thead>
+    <tr>
+        <th>Commendation Coverage</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Commendation Attendant</th>
+        <th>Description</th>
+        {% if commendations_section %}
+            <th>Response</th>
+        {% endif %}
+    </tr>
+</thead>
+<tbody>
+    {% for commendation in commendations %}
+    <tr>
+        <td>{{ commendation.Commendation_Coverage }}</td>
+        <td>
+            {% if profile.golbal_Admin == "True" %}
+                <a href="{% url 'SpecificViewCommendation_URL' commendation.id %}" class="btn-pill btn-shadow btn-shine btn btn-focus" title="View Commendation Details"> {{  commendation.Commendation_Title }}</a>
+            {% else %}
+                <button data-toggle="modal"
+                    data-target="#exampleModal_{{ commendation.id }}_{{ commendation.timestamp|slugify }}_details_Commendation"
+                    class="btn-pill btn-shadow btn-shine btn btn-focus" title="View  Commendation Details">
+                    {{  commendation.Commendation_Title }}
+                </button>
+            {% endif %}
+
+            
+        </td>
+
+        <td>{{ commendation.Commendation_Category }}</td>
+        <td>{{ commendation.Action_Person }}</td>
+        <td>{{ commendation.Expalnation|truncatechars_html:"50"|striptags }}</td>
+        {% if commendations_section %}
+            {% if profile.golbal_Admin != "True" %}
+                {% if not request.user.id|FindCommendationResponseTrue:commendation.id  %}
+                    {% if  commendation.id|FindCommendationResponseDate %}
+                        <td><button class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal"
+                            data-target="#exampleModal{{ commendation.Commendation_Title|slugify  }}{{ commendation.id }}">Response</button>
+                        </td>
+                    {% else %}
+                        <td><button class="btn-pill btn-shadow btn-shine btn btn-focus">Time's Up</button></td>
+                    {% endif %}
+                {% else %}
+                    {% with obj=request.user.id|FindCommedationResponseObject:commendation.id   %}
+                    <td>
+                        <button  class="btn-pill btn-shadow btn-shine btn btn-focus"   data-toggle="modal" data-target="#exampleModal_{{ obj.id }}_{{ obj.timestamp|slugify }}_response"  >{% ifequal request.user.id|FindCommendationResponse:commendation.id "True" %}Yes{% else %}No{% endifequal %}</button>
+                    </td>
+                    {% endwith %}
+                {% endif %}
+            {% else %}
+                <td>
+                    <button  class=" btn btn-pill btn-shadow {% if commendation.approve is None %} btn-danger {% else %} btn-shine btn-focus {% endif %}">{% if commendation.approve is None %}Requested for Approval {% else %} {% if commendation.approve is True %}Approved  {% else  %} Disapproved {% endif %} {% endif %}</button>
+                </td>
+            
+            {% endif %}
+        {% endif %}
+    </tr>
+    {% endfor %}
+</tbody>

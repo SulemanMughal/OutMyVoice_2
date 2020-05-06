@@ -27,3 +27,12 @@ class blogform(ModelForm):
     class Meta:
         model=Blog
         exclude = ['author','slug','publish']
+        
+        
+class AssignBlogForm(ModelForm):
+    class Meta:
+        model = Blog
+        exclude = [
+            'slug',
+            'publish'
+        ]

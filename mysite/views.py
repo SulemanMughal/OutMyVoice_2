@@ -66,7 +66,8 @@ from .models import (
     PetitionResponseFeedback,
     Commendation,
     CommendationResponseFeedback,
-    Commendation_Signer
+    Commendation_Signer,
+    AskedQuestions
 )
 
 # User App Decorators
@@ -115,6 +116,7 @@ def login_User(request):
         form = loginForm()
     else:
         form = loginForm(request.POST)
+        valuenext= request.POST.get('next')
         if form.is_valid():
             user = authenticate(request, 
                         username = form.cleaned_data['username'], 
@@ -124,7 +126,10 @@ def login_User(request):
                 login(request, 
                     user
                 )
-                return redirect('dashboard')
+                if len(valuenext) == 0 or valuenext is not None:
+                    return redirect(valuenext)   
+                else: 
+                    return redirect('dashboard')
             else:
                 messages.warning(request, 'Usename or password may have been entered incorrectly.')
     context={
@@ -268,18 +273,20 @@ def change_password(request):
 
 
 # --------------------------------------- PETITION SECTION --------------------------------------
-# Dashboard View
+
+# ****************************************************************
+# Cadmin dashboard
+# ****************************************************************
 @login_required()
 def dashboard(request):
     template_name = "mysite/dashboard.html"
     responses = []      #Variable used to store petition responses
     try:
-        profile = findUserProfile(request)  #Find Profile of a user
-        if request.user.is_superuser:
-            petitions = Petition.objects.all().order_by('-timestamp')      #Find Results for a superuser
-        else:
+        profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+        if profile.golbal_Admin == "True":
+            petitions = Petition.objects.all().order_by("-timestamp")
+        elif profile.Coverage_Admin is not None:
             petitions = Petition.objects.filter(Petition_Coverage = profile.Coverage_Admin)     #Find Results for a specific coverage admin
-        
         # Find petition responses
         for i in petitions:
             j = i.petitionresponsefeedback_set.filter(
@@ -289,13 +296,14 @@ def dashboard(request):
                     )
                 )
             if len(j) != 0:
-                responses.append(j)
-    except :
+                responses.append(j[0])
+    except Exception as e:
+        # print(e)
         profile = None
         petitions = None
     context={
-        'dashboard_section':True,
-        'all_petitions_section': True,
+        'dashboard_section':True,       #   Just only to indicate dashboard page
+        'all_petitions_section': True,  #   Cadmin dashboard section
         'profile': profile,
         'petitions' : petitions,
         'responses': responses
@@ -378,6 +386,7 @@ def User_Petitions(request):
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
     except:
         profile = None
+    # print(petitions)
     context = {
         'petitions': petitions,
         'profile': profile,
@@ -718,7 +727,7 @@ def LivePetitionsDetailView(request, petition_id):
         }
         return render(request, template_name, context)
     except Exception as e:
-        # print(e)
+        print(e)
         return redirect("LivePetitions_URL")
  
  
@@ -820,27 +829,37 @@ def commendation_start(request):
 
 
 
-
-
-
-
-
-
-
-
-# User All Commendations View
+# ****************************************************************
+# All Commendations By a CAdmin or Global Admin
+# ****************************************************************
 @login_required
 def All_Commendations(request):
     template_name="mysite/commendations.html"
-    commendations = Commendation.objects.all()
+    responses = []
     try:
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
-    except:
+        if profile.golbal_Admin == "True":
+            commendations = Commendation.objects.all().order_by("-timestamp")
+        elif profile.Coverage_Admin is not None:
+            commendations = Commendation.objects.filter(Commendation_Coverage = profile.Coverage_Admin).order_by("-timestamp")
+        for i in commendations:
+            j = i.commendationresponsefeedback_set.filter(
+                    commendation__id = i.id, 
+                    user=User.objects.get(
+                        username=request.user.username
+                    )
+                )
+            if len(j) != 0:
+                responses.append(j[0])
+    except Exception as e:
         profile = None
+        commendations=None
     context={
         'commendations':commendations,
         'commendations_section': True,
-        'profile':profile
+        'all_commendation_section': True,
+        'profile':profile,
+        'responses' :responses
     }
     return render(request,
                 template_name,
@@ -944,24 +963,32 @@ def globalAdminResponsesCommendations(request):
 # Approved Commendation By Global Admin
 @login_required
 def approved_commendation(request, commendation_id):
-    if request.method != "POST":
-        return redirect("globalAdminResponsesCommendations_URL")
-    else:
-        try:
-            profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
-            if profile.golbal_Admin == "True":
-                commendation = Commendation.objects.get(id=commendation_id)
-                # print(request.POST)
-                if request.POST.get("response", None) is None:
-                    commendation.approve = False
-                elif "on" in request.POST['response']:
-                    commendation.approve = True
-                commendation.save()
-                return redirect(reverse("SpecificViewCommendation_URL", args=[commendation_id]))
-            else:
-                return redirect("globalAdminResponsesCommendations_URL")
-        except:
-            return redirect("dashboard")
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
+        if profile.golbal_Admin == "True":
+            commendation = Commendation.objects.get(id=commendation_id)
+            commendation.approve = True
+            commendation.save()
+            messages.success(request, "Commendation has been approved")
+            current_site = get_current_site(request)
+            message = '''“Commendation has now go on live.”'''
+            message += "\n\n\nFollowing is the link for the Commendation review\n\n\n"
+            mail_subject = 'VoiceItOut Team.'
+            build_link =  str(request.scheme) + str("://") + str( current_site.domain) + str(reverse("LiveCommendationsDetails_URL", args = [commendation.id]))
+            message += str(build_link)
+            to_email = []
+            for i in UserProfile.objects.filter(Coverage_Admin = commendation.Commendation_Coverage):
+                to_email.append(str(i.user.email))
+            to_email.append(commendation.user.email)
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            return redirect(reverse("Commendation_Details", args=[commendation_id]))
+        else:
+            messages.success(request, "You don't have the right to approve it.")
+            return redirect(reverse("Commendation_Details",args = [commendation_id]))
+    except:
+        messages.success(request, "Invalid Request")
+        return redirect("dashboard")
         
         
         
@@ -976,34 +1003,28 @@ def SpecificViewCommendation(request, commendation_id):
     template_name = "mysite/commendations.html"
     try:
         profile = UserProfile.objects.get(user = User.objects.get(username=request.user.username))
-        if profile.golbal_Admin == "True":
-            obj = Commendation.objects.get(id=commendation_id)
-            # print("*********************************************************")
-            # print(obj)
-            # print("*********************************************************")
-            if obj.Commendation_Coverage == profile.Coverage_Admin:
-                commendations = obj.commendationresponsefeedback_set.all()
-                # print("*********************************************************")
-                # print(obj)
-                # print("*********************************************************")
-                context = {
-                    'commendations': commendations,
-                    'profile': profile,
-                    'specific_commendation_view': True,
-                    'title' : obj.Commendation_Title,
-                    'obj' : obj
-                }
-                # print(context)
-                return render(request,
-                            template_name,
-                            context
-                )
-            else:
-                return redirect("globalAdminResponsesCommendations_URL")
-        else:
-            return redirect("globalAdminResponsesCommendations_URL")
-    except:
-        return redirect("globalAdminResponsesCommendations_URL")
+        obj = Commendation.objects.get(id=commendation_id)
+        commendations = obj.commendationresponsefeedback_set.all()
+        # print("*********************************************************")
+        # print(obj)
+        # print("*********************************************************")
+        context = {
+            'commendations': commendations,
+            'profile': profile,
+            'specific_commendation_view': True,
+            'title' : obj.Commendation_Title,
+            'obj' : obj
+        }
+        # print(context)
+        return render(request,
+                    template_name,
+                    context
+        )
+    except Exception as e:
+        print(e)
+        messages.success(request, "Invalid Request")
+        return redirect("all-commendations-url")
+           
     
     
         
@@ -1045,35 +1066,26 @@ def SpecificCommendationResponse(request, commendation_id):
 # Live Commendations View (Both Auth and Unauth)
 def LiveCommendationsView(request):
     commendations = Commendation.approved_objects.all()
+    counter = commendations.all().count()
     profile = None
-    template_name="mysite/commendation-list-sidebar.html"
+    template_name="mysite/Commendations_live.html"
     if request.user.is_authenticated:
-        # template_name="mysite/live_petitions.html"    
         try:
             profile = UserProfile.objects.get(user=User.objects.get(username=request.user.username))
         except Exception as e:
         # print(e)
             return redirect("dashboard")
-        # context=  {
-        # 'petitions': petitions,
-        # 'profile' : profile,
-        # 'livePetition_Section': True
-        # }
-        # return render(request,
-        #                 template_name,
-        #                 context)
-    paginator = Paginator(commendations ,10, allow_empty_first_page=True)
-    page = request.GET.get('page', 1)
-    try:
-        petitions = paginator.page(page)
-    except PageNotAnInteger:
-        commendations = paginator.page(1)
-    except EmptyPage :
-        commendations = paginator.page(paginator.num_pages)
+    if counter > 10:
+        commendations_1 = commendations[:10]
+        commendations_2 = commendations[10:]
+    else:
+        commendations_1 = []
+        commendations_2 = []
+
     context = {
         'commendations':commendations,
         'liveCommendation_Section': True,
-        'paginator': paginator,
+        'counter' : counter,
     }
     return render(request,template_name,context)
 
@@ -1087,13 +1099,13 @@ def LiveCommendationsDetailView(request,commendation_id):
         except Exception as e:
         # print(e)
             return redirect("dashboard")
-    template_name="mysite/commendation-single.html"
+    template_name="mysite/commedation_details (2).html"
     try:
         commendation = Commendation.approved_objects.get(id=commendation_id)
-        template_name="mysite/commendation-single.html"
+        template_name="mysite/commedation_details (2).html"
         context={
             'liveCommendation_Section_detail': True,
-            'commendation': commendation,
+            'obj': commendation,
             'profile' : profile   
         }
         return render(request, template_name, context)
@@ -1169,7 +1181,10 @@ def Help(request):
 # ****************************************************************
 def FAQ(request):
     template_name="web_pages/faqs.html"
-    return render(request, template_name, context = {})
+    context={
+        "objects" : AskedQuestions.objects.all()
+    }
+    return render(request, template_name, context = context)
 
 # ****************************************************************
 # Privacy Policy

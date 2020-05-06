@@ -1,5 +1,5 @@
 {% extends 'mysite/base.html' %}
-{% load static %}
+{% load static getImageBanner social_share  %}
 
 {% block title %}Voice It Out{% endblock %}
 
@@ -7,8 +7,12 @@
 
     <!--Page Banner-->
     <section class="event-banner">
-        <div class="image-layer" style="background-image:url({% static 'images/background/banner-image-7.jpg' %});"></div>
-
+        {% if request.user|getImageBanner %}
+        <div class="image-layer" style="background-image:url('/media/{{ request.user|getImageBanner }}');"></div>
+    
+    {% else %}
+    <div class="image-layer" style="background-image:url('{% static 'mysite/images/background/banner-image-5.jpg' %}');"></div>
+    {% endif %}
         <div class="banner-inner">
             <div class="auto-container">
                 <div class="inner-container clearfix">
@@ -69,10 +73,9 @@
                             <div class="share-post">
                                 <strong>Share this petition with your friends</strong>
                                 <ul class="links clearfix">
-                                    <li class="facebook"><a href="#"><span class="icon fab fa-facebook-f"></span><span class="txt">Facebook</span></a></li>
-                                    <li class="twitter"><a href="#"><span class="icon fab fa-twitter"></span><span class="txt">Twiter</span></a></li>
-                                    <li class="instagram"><a href="#"><span class="icon fab fa-instagram"></span><span class="txt">Instagram</span></a></li>
-                                    <li class="whatsapp"><a href="#"><span class="icon fab fa-whatsapp"></span><span class="txt">Whatsapp</span></a></li>
+                                    <li class="facebook">{% post_to_facebook obj.get_absolute_url '<span class="icon fab fa-facebook-f"></span><span class="txt">Facebook</span>' %}
+                                    <li class="twitter">{% post_to_twitter obj.Petition_Title obj.get_absolute_url '<span class="icon fab fa-twitter"></span><span class="txt">Twiter</span>' %}</li>
+                                    <li class="whatsapp">{% post_to_whatsapp obj.get_absolute_url '<span class="icon fab fa-whatsapp"></span><span class="txt">Whatsapp</span>' %}</li>
                                 </ul>
                             </div>
 

@@ -1,5 +1,8 @@
 
-
+# ****************************************************************
+# Find whether the petition response exists for a given petition 
+# and Cadmin or not
+# ****************************************************************
 
 from django import template
 from mysite.models import *

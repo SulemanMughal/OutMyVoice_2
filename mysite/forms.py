@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.core import validators
+from .models import ACTION_PERSON_CHOICES
+
 from .models import (
     Petition,
     PetitionResponseFeedback,
@@ -112,6 +114,8 @@ class Petitionform(forms.ModelForm):
     class Meta:
         model=Petition
         exclude =  ['user','approve']
+
+
 
 
 # Petition Response Feedback Form

@@ -1,9 +1,6 @@
 {% extends 'mysite/dashboard_base.html' %}
-{% load static %}
-{% load FindCommendationResponseTrue %}
-{% load FindCommendationResponseDate %}
-{% load FindCommendationResponse %}
-{% load FindCommendationResponseTrueID %}
+{% load static FindCommendationResponseTrue FindCommendationResponseDate FindCommendationResponse  FindCommendationResponseTrueID %}
+
 {% block title %}
     {% if my_petition_view %}
         Voice It Out - User Petitions
@@ -12,13 +9,13 @@
     {% elif commendations_section %}
         Voice It Out - User Commendations
     {% elif my_commendation_view_global %}
-    Voice It Out - Commendation Responses
+        Voice It Out - Commendation Responses
     {%  elif specific_commendation_view %}
         {{ title }}
     {% else %}
         Voice It Out - User Dashboard
     {% endif %}
-    {% endblock %}
+{% endblock %}
 
 {% block content %}
 
@@ -33,41 +30,43 @@
                         </i>
                     </div>
                     <div>
-                        
+
                         {% if my_commendation_view_global %}
-                            Commendation Responses
+                        Commendation Responses
 
-                            <br>
-                            <span>
+                        <br>
+                        <span>
                             Total Submitted Responses: {% with total=commendations.count %}
-                            <button  class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary" >{{ total }} Reponse{{ total|pluralize }}</button>
+                            <button class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary">{{ total }}
+                                Reponse{{ total|pluralize }}</button>
                             {% endwith %}
-                            </span>
-                            {% else %}
+                        </span>
+                        {% else %}
 
-                                Commendations
-                            {% endif %}
+                        Commendations
+                        {% endif %}
 
                         {% if specific_commendation_view %}
-                            {{ title  }}'s Response
-                            
+                        {{ title  }}'s Response
+
                         <br>
-                        <button  class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary" >{{ commendations.count }} Reponse{{ commendations.count|pluralize }}</button>
-                       {% endif %}
+                        <button
+                            class="btn-pill btn-shadow btn-shine btn btn-focus btn-primary">{{ commendations.count }}
+                            Reponse{{ commendations.count|pluralize }}</button>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="page-title-actions">
 
                     <div class="d-inline-block dropdown">
-                        <button type="button" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            class="btn-shadow dropdown-toggle btn btn-info">
                             <span class="btn-icon-wrapper pr-2 opacity-7">
                                 <i class="fa fa-business-time fa fa-eye"></i>
                             </span>
                             Buttons
                         </button>
-                        <div tabindex="-1" role="menu" aria-hidden="true"
-                            class="dropdown-menu dropdown-menu-right">
+                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'Self-Commendation' %}">
@@ -104,92 +103,22 @@
 
                 </div>
                 <div class="card-body">
-                    <table style="width: 100%;" id="example"
-                        class="table table-hover table-striped table-bordered">
+                    {% if messages  %}
+                    {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                    <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
                         {% if my_commendation_view_global or specific_commendation_view %}
-                            <thead>
-                                <tr>
-                                    <th>Commendation User</th>
-                                    <th>Commendation Title</th>
-                                    <th>Commendation Coverage Admin</th>
-                                    <th>Commendation Feedback</th>
-                                    <th>Commendation Response</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% if commendations %}
-                                    {% for commendation in commendations %}
-                                    <tr>
-                                        <td>{{ commendation.user }}</td>
-                                        <td>
-                                            <a  href="{% url 'SpecificViewCommendation_URL' commendation.commendation.id  %}" class="btn-pill btn-shadow btn-shine btn btn-focus"  title="View Complete Commendation"  {% if specific_commendation_view %}data-toggle="modal" data-target="#exampleModal_{{ obj.id }}_{{ obj.timestamp|slugify }}_details_Commendation" {% endif %}>
-                                                {{  commendation.commendation.Commendation_Title }}
-                                            </a>
-                                        </td>
-                                        <td>{{ commendation.Coverage_Admin }}</td>
-                                        <td>{{ commendation.Feedback|safe|escape|truncatechars_html:"50" }}</td>
-                                        <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal_{{ commendation.id }}_{{ commendation.timestamp|slugify }}_response" title="View Commendation Response" >{{ commendation.response }}</button></td>
-                                            
-                                        
-                                    </tr>
-                                    {% endfor %}
-                                {% endif %}
-                            </tbody>
+                            {% include 'modals\commendation\global_or_specific_commendation_table.html' %}
+                        {%  elif my_commendation_view %}
+                            {% include "modals\commendation\my_commendations.html" %}
                         {% else %}
-                            <thead>
-                                <tr>
-                                    <th>Commendation Coverage</th>
-                                    <th>Title</th>
-                                    <th>Category</th>
-                                    <th>Commendation Attendant</th>
-                                    <th>Description</th>
-                                    {% if commendations_section %}
-                                        
-                                        <th>Response</th>
-                                    {% endif %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for commendation in commendations %}
-                                    <tr>
-                                        <td>{{ commendation.Commendation_Coverage }}</td>
-                                        <td>
-                                            <a  href="{% url 'Commendation_Details' commendation.id  %}" class="btn-pill btn-shadow btn-shine btn btn-focus"  title="View  Commendation Details"  >
-                                                {{  commendation.Commendation_Title }}
-                                            </a>
-                                        </td>
-                                        
-                                        <td>{{ commendation.Commendation_Category }}</td>
-                                        <td>{{ commendation.Action_Person }}</td>
-                                        <td>{{ commendation.Expalnation|truncatechars_html:"50"|striptags }}</td>
-                                        {% if commendations_section %}
-                                        
-                                                        
-                                            {% if not request.user.id|FindCommendationResponseTrue:commendation.id  %}
-                                                {% if  commendation.id|FindCommendationResponseDate %}
-                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal" data-target="#exampleModal{{ commendation.Commendation_Title|slugify  }}{{ commendation.id }}">Response</button></td>
-                                                {% else %}
-                                                    <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Time's Up</button></td>
-                                                {% endif %}
-                                            {% else %}
-                                                {% if request.user.id|FindCommendationResponse:commendation.id == "True"  %}
-                                                    {% if request.user.id|FindCommendationResponseTrueID:commendation.id %}
-                                                        <td><a  href="{% url 'ViewSpecificCommendationResponse_URL' request.user.id|FindCommendationResponseTrueID:commendation.id %}" class="btn-pill btn-shadow btn-shine btn btn-focus" >Yes</a></td>
-                                                    {% else %}
-                                                        <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >Yes</button></td>    
-                                                    {% endif %}
-                                                {% else %}
-                                                    {% if request.user.id|FindCommendationResponseTrueID:commendation.id %}
-                                                        <td><a  href="{% url 'ViewSpecificCommendationResponse_URL' request.user.id|FindCommendationResponseTrueID:commendation.id %}" class="btn-pill btn-shadow btn-shine btn btn-focus" >No</a></td>
-                                                    {% else %}
-                                                        <td><button  class="btn-pill btn-shadow btn-shine btn btn-focus" >No</button></td>    
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endif %}
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
+                            {% include "modals\commendation\all_commendations_table.html" %}
                         {% endif %}
 
                     </table>

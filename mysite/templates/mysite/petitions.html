@@ -1,5 +1,5 @@
 {% extends 'mysite/base.html' %}
-{% load static %}
+{% load static getImageBanner %}
 
 {% block title %}Voice It Out{% endblock %}
 
@@ -7,8 +7,12 @@
 
     <!--Page Title-->
     <section class="page-banner">
-        <div class="image-layer" style="background-image:url({% static '/images/background/banner-image-5.jpg' %});"></div>
-
+        {% if request.user|getImageBanner %}
+        <div class="image-layer" style="background-image:url('/media/{{ request.user|getImageBanner }}');"></div>
+    
+    {% else %}
+    <div class="image-layer" style="background-image:url('{% static 'mysite/images/background/banner-image-5.jpg' %}');"></div>
+    {% endif %}
         <div class="banner-inner">
             <div class="auto-container">
                 <div class="inner-container clearfix">
@@ -94,108 +98,11 @@
             {% endif %}
 
             <div class="load-more text-center">
-                <a href="portfolio-grid-2.html" class="theme-btn btn-style-one load-more-btn"><span class="btn-title">Load More</span></a>
+                <a href="#" class="theme-btn btn-style-one load-more-btn"><span class="btn-title">Load More</span></a>
             </div>
                 
         </div>
     </section>
 
-    <!-- Main Footer -->
-    <footer class="main-footer">
-        
-        <!--Widgets Section-->
-        <div class="widgets-section">
-            <div class="auto-container">
-                <div class="row clearfix">
-                    <!--Column-->
-                    <div class="column col-lg-3 col-md-6 col-sm-12">
-                        <div class="footer-widget links-widget">
-                            <div class="widget-title">
-                                <h4>Departments</h4>
-                            </div>
-                            <div class="widget-content">
-                                <ul class="links">
-                                    <li><a href="#">Police and crime</a></li>
-                                    <li><a href="#">Arts and culture</a></li>
-                                    <li><a href="#">Transport and traffic</a></li>
-                                    <li><a href="#">Housing and land</a></li>
-                                    <li><a href="#">Education</a></li>
-                                </ul>
-                            </div>  
-                        </div>
-                    </div>
-                    <!--Column-->
-                    <div class="column col-lg-3 col-md-6 col-sm-12">
-                        <div class="footer-widget links-widget">
-                            <div class="widget-title">
-                                <h4>Information</h4>
-                            </div>
-                            <div class="widget-content">
-                                <ul class="links">
-                                    <li><a href="#">About city govt</a></li>
-                                    <li><a href="#">Mayor’s profile</a></li>
-                                    <li><a href="#">Highlights</a></li>
-                                    <li><a href="#">Online services</a></li>
-                                    <li><a href="#">About 311</a></li>
-                                </ul>
-                            </div>  
-                        </div>
-                    </div>
-                    <!--Column-->
-                    <div class="column col-lg-3 col-md-6 col-sm-12">
-                        <div class="footer-widget num-widget">
-                            <div class="widget-title">
-                                <h4>Emergency</h4>
-                            </div>
-                            <div class="widget-content">
-                                <ul class="num-links">
-                                    <li><a href="#">Police <span class="hvr-info">Call: 977</span></a></li>
-                                    <li><a href="#">Ambulance <span class="hvr-info">Call: 911</span></a></li>
-                                    <li><a href="#">Fire Brigade <span class="hvr-info">Call: 922</span></a></li>
-                                    <li><a href="#">Gas service <span class="hvr-info">Call: 111</span></a></li>
-                                    <li><a href="#">Poison centre <span class="hvr-info">Call: 101</span></a></li>
-                                </ul>
-                            </div>  
-                        </div>
-                    </div>
-                    <!--Column-->
-                    <div class="column col-lg-3 col-md-6 col-sm-12">
-                        <div class="footer-widget about-widget">
-                            <div class="logo">
-                                <a href="#"><img src="images/footer-logo.png" alt=""></a>
-                            </div>
-                            <div class="address">
-                                <h5>London city govt</h5>
-                                <div class="text">46, The queen's walk <br>london 5241, UK</div>
-                            </div>
-                            <div class="address">
-                                <h5>Opening hrs</h5>
-                                <div class="text">10am to 6pm, Sun: Closed</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            <div class="auto-container">
-                <div class="inner">
-                    <div class="copyright">Copyrights <a href="#">&copy; 2020 london city govt.</a> All rights reserved.</div>
-                    <ul class="social-links clearfix">
-                        <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
-                        <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                        <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-    </footer>
-
-<!--End pagewrapper-->
-<!--Scroll to top-->
-<div class="scroll-to-top scroll-to-target" data-target="html"><span class="icon flaticon-up-arrow-angle"></span></div>
-
+  
 {% endblock %}

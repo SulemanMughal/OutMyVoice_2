@@ -1,11 +1,18 @@
 {% extends 'mysite/base.html' %}
-{% load static %}
+{% load static getImageBanner social_share %}
+
 {% block title %}{{ blogs.title|truncatechars:20 }}{% endblock %}
 {% block content %}
 
     <!--Page Title-->
     <section class="blog-banner">
-        <div class="image-layer" style="background-image:url(images/background/banner-image-6.jpg);"></div>
+        {% if request.user|getImageBanner %}
+        <div class="image-layer" style="background-image:url('/media/{{ request.user|getImageBanner }}');"></div>
+    
+    {% else %}
+    <div class="image-layer" style="background-image:url('{% static 'mysite/images/background/banner-image-5.jpg' %}');"></div>
+    {% endif %}
+
 
         <div class="banner-inner">
             <div class="auto-container">
@@ -47,10 +54,10 @@
                             <div class="share-post">
                                 <strong>Share this post with your friends</strong>
                                 <ul class="links clearfix">
-                                    <li class="facebook"><a href="#"><span class="icon fab fa-facebook-f"></span><span class="txt">Facebook</span></a></li>
-                                    <li class="twitter"><a href="#"><span class="icon fab fa-twitter"></span><span class="txt">Twiter</span></a></li>
-                                    <li class="linkedin"><a href="#"><span class="icon fab fa-linkedin-in"></span><span class="txt">Linkedin</span></a></li>
-                                    <li class="pinterest"><a href="#"><span class="icon fab fa-pinterest-p"></span><span class="txt">Pinterest</span></a></li>
+                                    <li class="facebook">{% post_to_facebook blogs.get_absolute_url  '<span class="icon fab fa-facebook-f"></span><span class="txt">Facebook</span>'  %}</li>
+                                    <li class="twitter">{% post_to_twitter  blogs.title blogs.get_absolute_url  '<span class="icon fab fa-twitter"></span><span class="txt">Twiter</span>'  %}</li>
+                                    <li class="linkedin">{% post_to_linkedin   blogs.title blogs.get_absolute_url  '<span class="icon fab fa-linkedin-in"></span><span class="txt">Linkedin</span>'  %}</li>
+                                    
                                 </ul>
                             </div>
 

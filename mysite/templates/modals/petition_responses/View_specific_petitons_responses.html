@@ -1,0 +1,64 @@
+<div class="modal fade" id="exampleModal_{{ petition.id }}_{{ petition.timestamp|slugify }}_response" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ petition.petition.Petition_Title }}
+                    <small id="passwordHelpBlock" class="form-text text-muted">
+                        {{ petition.timestamp|timesince }}
+                    </small>
+                </h5>
+
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="email">User</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ petition.user }}" disabled
+                            autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Coverage Admin</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ petition.Coverage_Admin }}" disabled
+                            autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Feedback</label>
+                    <div>
+                        <textarea class="form-control" disabled autocomplete="off"
+                            style="resize: none;">{{ petition.Feedback|safe }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Response</label>
+                    <div>
+                        <input type="text" class="form-control" value="{{ petition.response }}" disabled
+                            autocomplete="off" />
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                {% if profile.golbal_Admin == "True" %}
+                {% if not obj.approve %}
+                    <a type="button" class="btn btn-primary mt-2" href="{% url  'approve-that-petition' obj.id  %}">Approved</a>
+                {% endif %}
+            {% endif %}
+            </div>
+            
+        </div>
+    </div>
+</div>

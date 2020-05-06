@@ -1,3 +1,8 @@
+# ****************************************************************
+# Find check there exists a reponse objects exists for a petition
+# and Cadmin
+# ****************************************************************
+
 from django import template
 from mysite.models import *
 from django.contrib.auth.models import User

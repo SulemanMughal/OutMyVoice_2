@@ -1,0 +1,37 @@
+{% load static FindCommendationResponseTrue FindCommendationResponseDate FindCommendationResponse  FindCommendationResponseTrueID %}
+
+<thead>
+    <tr>
+        <th>Commendation User</th>
+        <th>Commendation Title</th>
+        <th>Commendation Coverage Admin</th>
+        <th>Commendation Feedback</th>
+        <th>Commendation Response</th>
+    </tr>
+</thead>
+<tbody>
+    
+    {% for commendation in commendations %}
+    <tr>
+        <td>{{ commendation.user }}</td>
+        <td>
+            <a href="{% url 'SpecificViewCommendation_URL' commendation.commendation.id  %}"
+                class="btn-pill btn-shadow btn-shine btn btn-focus"
+                title="View Complete Commendation"
+                {% if specific_commendation_view %}data-toggle="modal"
+                data-target="#exampleModal_{{ obj.id }}_{{ obj.timestamp|slugify }}_details_Commendation"
+                {% endif %}>
+                {{  commendation.commendation.Commendation_Title }}
+            </a>
+        </td>
+        <td>{{ commendation.Coverage_Admin }}</td>
+        <td>{{ commendation.Feedback|safe|escape|truncatechars_html:"50" }}</td>
+        <td><button class="btn-pill btn-shadow btn-shine btn btn-focus" data-toggle="modal"
+                data-target="#exampleModal_{{ commendation.id }}_{{ commendation.timestamp|slugify }}_response"
+                title="View Commendation Response">{{ commendation.response }}</button></td>
+
+
+    </tr>
+    {% endfor %}
+   
+</tbody>

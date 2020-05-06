@@ -85,33 +85,43 @@ urlpatterns = [
         name = "change_password"
     ),
     
+    
+    # ****************************************************************
+    # Petitions URL(s)
+    # ****************************************************************
+    
+    # ****************************************************************
     # Create Petition View URL
-    path("petition_start/", 
-        views.petition_start, 
-        name="Start-a-Petition"
-    ),
+    # ****************************************************************
+    path("petition_start/",  views.petition_start,  name="Start-a-Petition" ),
     
-    # User (Itself) Petitions View URL
-    path("view-petitions/", 
-        views.User_Petitions, 
-        name="Self-Petitions"
-    ),
     
-    # Petition Feedback Response View
-    path("submit-a-response-petition/<int:petition_id>/",
-        views.PetitionResponseFeedbackView,
-        name="PetitionResponse"),
+    # ****************************************************************
+    # User Itself Petitions
+    # ****************************************************************
+    path("view-petitions/",  views.User_Petitions,  name="Self-Petitions" ),
+    
+    
+    # ****************************************************************
+    # Submit a Petition Response 
+    # ****************************************************************
+    path("submit-a-response-petition/<int:petition_id>/", views.PetitionResponseFeedbackView, name="PetitionResponse"),
 
-    # Create Commendation View URL
-    path("commendation_start/", 
-        views.commendation_start, 
-        name="Start-a-Commendation"
-    ),
+
+
+    # ****************************************************************
+    # Commendations URL(s)
+    # ****************************************************************
+
+    # ****************************************************************
+    # Create a Commendation
+    # ****************************************************************
+    path("commendation_start/",  views.commendation_start,  name="Start-a-Commendation" ),
     
-    # User All Commendations View URL
-    url(r'^all-commendations/$',
-        views.All_Commendations,
-        name="all-commendations-url"),
+    # ****************************************************************
+    # Commendations View
+    # ****************************************************************
+    url(r'^all-commendations/$', views.All_Commendations, name="all-commendations-url"),
     
     # Uer Commendation Response Feedback View URL
     path("submit-a-response-commendation/<int:commendation_id>/",
@@ -139,7 +149,10 @@ urlpatterns = [
     # Approve Commendation by Global Admin
     path("approve-commendation/<int:commendation_id>", views.approved_commendation, name="approved_commendation_URL"),
     
+
+    # ****************************************************************
     # Specific Petition Responses View
+    # ****************************************************************
     path("view-specific-petition-responses/<int:petition_id>", views.SpecificViewPetition, name="SpecificViewPetition_URL"),
     
     # Specific Commendation Responses View

@@ -1,12 +1,48 @@
 {% extends 'mysite/base.html' %}
-{% load static %}
+{% load static getImageBanner %}
 
 {% block title %}Voice It Out | Write A  Blog {% if search_section %} Search {% endif %}{% endblock %}
 
 {% block content %}
 
 
-<div class="container mt-5 mb-5">
+<!--Page Title-->
+<section class="page-banner">
+    {% if request.user|getImageBanner %}
+        <div class="image-layer" style="background-image:url('/media/{{ request.user|getImageBanner }}');"></div>
+    
+    {% else %}
+    <div class="image-layer" style="background-image:url('{% static 'mysite/images/background/banner-image-5.jpg' %}');"></div>
+    {% endif %}
+
+
+    <div class="banner-inner">
+        <div class="auto-container">
+            <div class="inner-container clearfix">
+                <h1>Blogs</h1>
+                <div class="page-nav">
+                    <ul class="bread-crumb clearfix">
+                        <li><a href="{% url 'home_page' %}">Home</a></li>
+                        <li><a href="{% url 'list' %}">Blogs</a></li>
+                        <li class="active">Write A Blog</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix">
+
+
+
+<div class="content-side col-lg-8 col-md-12 col-sm-12">
+
+<div class="content-inner">
     
         {% if form.errors %}
         {% for field in form %}
@@ -20,8 +56,8 @@
     <form method="POST" enctype='multipart/form-data' action="{% url 'blog_editing' obj.id %}">
         {% csrf_token %}
         
-        <div class="card" style=" width: auto;">
-                <div class="shadow p-3 bg-white rounded">
+        <div class="card" style=" width: 50rem !important;">
+                <div class="shadow  bg-white rounded">
 
                     <div class="card-header text-center bg-transparent border-0">
                         <h3>
@@ -54,16 +90,77 @@
                     </div>
                 </div>
             </div>
-        </div>
+        
      
       
        
 
     </form>
-    <br>
-    <br>
+    
 
 </div>
+
+</div>  
+
+
+
+
+  <!--Sidebar Side-->
+  <div class="sidebar-side col-lg-4 col-md-12 col-sm-12">
+    <aside class="sidebar">
+        <div class="bg-layer">
+            <div class="image-layer"
+                style="background-image:url('{% static 'mysite/images/background/sidebar-bg-image.jpg' %}');">
+            </div>
+        </div>
+
+        <div class="sidebar-widget search-box">
+            <div class="widget-inner">
+                <div class="sidebar-title">
+                    <h4>Search</h4>
+                </div>
+                <form method="GET" action="{% url 'search' %}">
+
+                    <div class="form-group">
+                        <input type="search" name="query" autocomplete="off" placeholder="Keyword..."
+                            value="{% if search_section %}{% if query %}{{ query }}{% endif %}{% endif %}">
+                        <button type="submit"><span class="icon flaticon-magnifying-glass"></span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="sidebar-widget cat-widget">
+            <div class="widget-content">
+                <div class="sidebar-title">
+                    <h4>Self Blogs</h4>
+                </div>
+                <ul class="cat-links">
+                    <li {% if blog_all_section %} class="current" {% endif %}><a href="{% url 'list' %}">All Blogs</a></li>
+                    <li {% if self_blogs %} class="current" {% endif %}><a href="{% url 'self_blogs_url' %}">My Blogs</a></li>
+                    {% if profile.golbal_Admin == "True" %}
+
+                        <li ><a href="{% url 'Assign' %}">Assign A Bog</a></li>
+                    {% endif %}
+                   
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+    </aside>
+</div>
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
 
 
 

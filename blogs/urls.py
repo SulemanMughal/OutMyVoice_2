@@ -40,5 +40,11 @@ urlpatterns = [
     
     # Editing BLog
     path('edit-blog/<int:blog_id>', views.blogFormViewEditing, name="blog_editing"),
+    
+    
+    # ****************************************************************
+    # Assign a blog by a global admin
+    # ****************************************************************
+    path("assign-a-blog", views.AssignBlog, name="Assign"),
 
 ]

@@ -1,12 +1,18 @@
 {% extends 'mysite/base.html' %}
-{% load static %}
+{% load static getImageBanner %}
 
 {% block title %}About Us{% endblock %}
 
 {% block content %}
 
 <section class="page-banner">
-    <div class="image-layer" style="background-image:url({% static 'images/background/banner-image-5.jpg' %});"></div>
+    
+    {% if request.user|getImageBanner %}
+    <div class="image-layer" style="background-image:url('/media/{{ request.user|getImageBanner }}');"></div>
+
+{% else %}
+<div class="image-layer" style="background-image:url('{% static 'mysite/images/background/banner-image-5.jpg' %}');"></div>
+{% endif %}
 
     <div class="banner-inner">
         <div class="auto-container">

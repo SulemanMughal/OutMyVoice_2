@@ -16,6 +16,13 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
+from mysite.models import *
+
+
+
+
+
+
 
 # Blog Post List View
 def BlogList(request):
@@ -28,11 +35,19 @@ def BlogList(request):
         blogs = paginator.page(1)
     except EmptyPage :
         blogs = paginator.page(paginator.num_pages)
+    if request.user.is_authenticated:
+        try:
+            profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+        except :
+            profile = None
+    else:
+        profile = None
     context = {
         'blogs':blogs,
         'blog':blog,
         'blog_all_section': True,
         'paginator': paginator,
+        'profile':profile
     }
     return render(request,'blog-list-sidebar.html',context)
 
@@ -72,7 +87,6 @@ def BlogDetail(request,slug):
     return render(request,'blog-single.html',context)
 
 # Blog Search View
-@login_required
 def search(request):
     query=request.GET.get('query',None)
     blogs=Blog.objects.all()
@@ -134,12 +148,14 @@ def blogFormView(request):
             new.save()
             form.save()
             return redirect('list')
-                
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+    except:
+        profile = None
     context={
-    #'reply': reply,
     'form':form,
-    'blog_write':True
-
+    'blog_write':True,
+    'profile' : profile
     }
     return render(request,'blogform.html',context)
 
@@ -157,11 +173,19 @@ def self_Blogs(request):
         blogs = paginator.page(1)
     except EmptyPage :
         blogs = paginator.page(paginator.num_pages)
+    if request.user.is_authenticated:
+        try:
+            profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+        except :
+            profile = None
+    else:
+        profile = None
     context = {
         'blogs':blogs,
         'blog':blog,
         'self_blogs':True,
         'paginator': paginator,
+        'profile':profile
     }
     return render(request,
                 template_name,
@@ -181,14 +205,63 @@ def blogFormViewEditing(request, blog_id):
             if form.is_valid():
                 form.save()
                 return redirect(reverse("detail", args=[obj.slug]))
+        if request.user.is_authenticated:
+            try:
+                profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+            except :
+                profile = None
+        else:
+            profile = None
         context={
             'blog_write':True,
             'form' : form,
-            'obj': obj
+            'obj': obj,
+            'profile' : profile
         }
         return render(request,
                     template_name,
                     context
                 )
     except Exception as e:
+        return redirect("list")
+
+@login_required
+def AssignBlog(request):
+    try:
+        profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+        if profile.golbal_Admin == "True":
+            template_name='assign-a-blog.html'
+            form = AssignBlogForm()
+            if request.user.is_authenticated:
+                try:
+                    profile = UserProfile.objects.get(user = User.objects.get(username = request.user.username))
+                except :
+                    profile = None
+            else:
+                profile = None
+            if request.method=='POST':
+                form = AssignBlogForm(request.POST ,  request.FILES)
+                if form.is_valid():
+                    new = form.save(commit=False)
+                    new.slug=slugify(new.title)
+                    new.save()
+                    form.save()
+                    current_site = get_current_site(request)
+                    mail_subject = 'VoiceItOut Team.'
+                    message = f"A blog has been assigned to {form.user.user} -- {form.author.email} from Global Admin {request.user.usernam}"
+                    message += "\nYou can check and edit the details of the blog by following the below link:\n"
+                    build_link = str(request.scheme) + "://" + str(get_current_site(request).domain) + str(reverse("blog_editing", args=[new.id]))
+                    email = EmailMessage(mail_subject, message, to=[new.author.email, request.user.email])
+                    email.send()
+                    return redirect('list')
+            context={
+            'profile':profile,
+            'form':form,
+            'assign_blog':True
+
+            }
+            return render(request, template_name, context)
+        else:
+            return redirect("list")
+    except:
         return redirect("list")
