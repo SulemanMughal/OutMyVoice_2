@@ -119,6 +119,10 @@ def login_User(request):
         form = loginForm(request.POST)
         valuenext= request.POST.get('next')
         if form.is_valid():
+            try:
+                User.objects.get(email = form.cleaned_data['username'])
+            except:
+                messages.error(request, 'Username not found, please register')
             user = authenticate(request, 
                         username = form.cleaned_data['username'], 
                         password = form.cleaned_data['password']
@@ -132,7 +136,7 @@ def login_User(request):
                 else: 
                     return redirect('dashboard')
             else:
-                messages.warning(request, 'Usename or password may have been entered incorrectly.')
+                messages.error(request, 'Username or password entered wrongly.')
     context={
         'form': form,
         'login_section': True
@@ -206,7 +210,7 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, "User has been registered successfully.")
+        messages.error(request, "You have been registered successfully, please sign-in.")
         return redirect('login_user_url')
     else:
         messages.error(request, "Invalid Registration Activation Link")
@@ -548,7 +552,7 @@ def SpecificViewPetition(request, petition_id):
         
         petitions = obj.petitionresponsefeedback_set.all()
         if len(petitions) == 0 :
-            messages.success(request, f"Your petition has been under review. You can view your petition details under column labeled 'Petition Approval Button'")
+            messages.success(request, f"Your petition has been under review.")
             return redirect(reverse("Petition_No_response", args=[obj.id]))
         # print(petitions)
         context = {
@@ -1039,6 +1043,7 @@ def SpecificViewCommendation(request, commendation_id):
         obj = Commendation.objects.get(id=commendation_id)
         commendations = obj.commendationresponsefeedback_set.all()
         if len(commendations) == 0 :
+            messages.success(request, f"Your commendation has been under review.")
             return redirect(reverse("Commendation_Details", args= [commendation_id]))
         context = {
             'commendations': commendations,

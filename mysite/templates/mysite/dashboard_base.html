@@ -97,7 +97,7 @@
             {% include 'modals\commendation\Cadmin_commendations_details.html' with obj=obj %}
         {% endif %}
         {% for commendation in commendations %}
-            {% include "modals/commendation/Cadmin_commendations_responses_submitted.html" with commendation=commendation %}
+            {% include "modals\commendation\Cadmin_commendations_responses_submitted.html" with commendation=commendation %}
         {% endfor %}
     {% endif %}
 
@@ -112,7 +112,7 @@
     {% if my_petition_view %}
         {% if petitions  %}
             {% for petition in petitions %}
-                {% include "modals/petitions/Cadmin_petitions.html" with obj=petition %}
+                {% include "modals\petitions\Cadmin_petitions.html" with obj=petition %}
             {% endfor %}
 
         {% endif %}

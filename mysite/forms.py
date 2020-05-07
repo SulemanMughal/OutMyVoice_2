@@ -50,7 +50,7 @@ class registerForm(forms.ModelForm):
     email = forms.EmailField(label = 'Email Address', 
                             widget = forms.TextInput()
                         )
-    agreeTerms = forms.BooleanField(label = "Aggree Terms and Conditions", error_messages = {'required': "To get register yourself, you should agree upon Terms & Conditions."})
+    agreeTerms = forms.BooleanField(label = "Aggree Terms and Conditions", error_messages = {'required': "Please agree to Voiceitout Terms & Conditions to continue."})
     # username = forms.CharField(label="Username", 
     #                         widget=forms.TextInput()
     #                     )
