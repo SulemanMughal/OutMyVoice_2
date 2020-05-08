@@ -25,7 +25,7 @@ SECRET_KEY = '5w-hkn(wdk(7a8%3c%@247ay0vvui8&8g=bzvhxnmj51s4s05+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["68.183.152.8"]
+ALLOWED_HOSTS = ["68.183.152.7"]
 
 
 # Application definition
