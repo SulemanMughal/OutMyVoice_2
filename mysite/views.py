@@ -123,6 +123,7 @@ def login_User(request):
                 User.objects.get(email = form.cleaned_data['username'])
             except:
                 messages.error(request, 'Username not found, please register')
+                return redirect(reverse("login_user_url"))
             user = authenticate(request, 
                         username = form.cleaned_data['username'], 
                         password = form.cleaned_data['password']
