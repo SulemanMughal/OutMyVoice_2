@@ -115,11 +115,11 @@
                     {% endif %}
                     <table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
                         {% if my_commendation_view_global or specific_commendation_view %}
-                            {% include 'modals\commendation\global_or_specific_commendation_table.html' %}
+                            {% include 'modals/commendation/global_or_specific_commendation_table.html' %}
                         {%  elif my_commendation_view %}
-                            {% include "modals\commendation\my_commendations.html" %}
+                            {% include "modals/commendation/my_commendations.html" %}
                         {% else %}
-                            {% include "modals\commendation\all_commendations_table.html" %}
+                            {% include "modals/commendation/all_commendations_table.html" %}
                         {% endif %}
 
                     </table>
