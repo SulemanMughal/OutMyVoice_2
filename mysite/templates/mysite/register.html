@@ -35,7 +35,11 @@
                             {% endfor %}
                             {% for error in form.non_field_errors %}
                                 <div class="alert alert-danger">
-                                    <strong>{{ field }}{{ error|escape }}</strong>
+                                    {% if field == "agreeTerms" %}
+                                        <strong>{{ error|escape }}</strong>
+                                     {% else %}
+                                        <strong>{{ field }}{{ error|escape }}</strong>
+                                     {% endif %}
                                 </div>
                             {% endfor %}
                         {% endif %}
