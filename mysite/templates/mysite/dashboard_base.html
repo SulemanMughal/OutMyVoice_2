@@ -47,14 +47,14 @@
 
     {% if global_admin_section_petitions   %}
         {% for petition in petitions %}
-            {% include "modals\petition_responses\View_specific_petitons_responses.html" with petiton=petition %}
+            {% include "modals/petition_responses/View_specific_petitons_responses.html" with petiton=petition %}
         {% endfor %}
     {% endif %}
 
 
     {% if specific_petition_view %}
         {% if obj %}
-            {% include "modals\petition_responses\View_specific_petitons_responses_user.html" with obj=obj %}
+            {% include "modals/petition_responses/View_specific_petitons_responses_user.html" with obj=obj %}
         {% endif %}
         {% for petition in petitions %}
             {% include "modals/petition_responses/Cadmin_petition_responses_submitted.html" with petition=petition %}
@@ -66,8 +66,8 @@
     {% if commendations_section %}
         {% if commendations %}
             {% for commendation in commendations %}
-                {% include 'modals\commendation\Cadmin_commendations_details.html' with obj=commendation %}
-                {% include 'modals\commendation\Cadmin_commendations_responses.html' with commendation=commendation %}
+                {% include 'modals/commendation/Cadmin_commendations_details.html' with obj=commendation %}
+                {% include 'modals/commendation/Cadmin_commendations_responses.html' with commendation=commendation %}
             {% endfor %}
         {% endif %}
     {% endif %}
@@ -94,17 +94,17 @@
 
     {% if specific_commendation_view %}
         {% if obj %}
-            {% include 'modals\commendation\Cadmin_commendations_details.html' with obj=obj %}
+            {% include 'modals/commendation/Cadmin_commendations_details.html' with obj=obj %}
         {% endif %}
         {% for commendation in commendations %}
-            {% include "modals\commendation\Cadmin_commendations_responses_submitted.html" with commendation=commendation %}
+            {% include "modals/commendation/Cadmin_commendations_responses_submitted.html" with commendation=commendation %}
         {% endfor %}
     {% endif %}
 
     {% if my_commendation_view %}
         {% if commendations %}
             {% for commendation in commendations %}
-                {% include 'modals\commendation\Cadmin_commendations_details.html' with obj=commendation %}
+                {% include 'modals/commendation/Cadmin_commendations_details.html' with obj=commendation %}
             {% endfor %}
         {% endif %}
     {% endif %}
@@ -112,7 +112,7 @@
     {% if my_petition_view %}
         {% if petitions  %}
             {% for petition in petitions %}
-                {% include "modals\petitions\Cadmin_petitions.html" with obj=petition %}
+                {% include "modals/petitions/Cadmin_petitions.html" with obj=petition %}
             {% endfor %}
 
         {% endif %}
